@@ -1,0 +1,14 @@
+/src/log/puppy-log.html
+.idea/
+bin/
+<<<<<<< HEAD
+QfurGNUplot.txt
+Puppynux.iml
+/src/save
+=======
+out/
+src/log/q_logs/
+src/config/config.json
+Puppynux.iml
+Test.java
+>>>>>>> db034fd354d709e880525bb01ca27165f7304245
