@@ -22,6 +22,7 @@ import java.io.IOException;
 public class MainWindow extends JFrame implements Observer {
 
     private final static Logger logger = Logger.getLogger(MainWindow.class);
+    private final static GameEngine gameEngine = GameEngine.getInstance();
     private Dashboard dashboard;
     private BackgroundPanel environmentPanel;
     private RewardsPanel rewardsPanel;
@@ -72,14 +73,15 @@ public class MainWindow extends JFrame implements Observer {
 
         go();
     }
-/*
-    @Override
-    public void update(int[] coor) {
-        dashboard.getObject().setX(coor[0]);
-        dashboard.getObject().setY(coor[1]);
-        dashboard.drawObjects();
-    }
-*/
+
+    /*
+        @Override
+        public void update(int[] coor) {
+            dashboard.getObject().setX(coor[0]);
+            dashboard.getObject().setY(coor[1]);
+            dashboard.drawObjects();
+        }
+    */
     public void go() throws InterruptedException {
         isRunning = true;
 
@@ -120,17 +122,17 @@ public class MainWindow extends JFrame implements Observer {
                     break;
             }
         }
-   }
+    }
 
-    public void shutDown () {
+    public void shutDown() {
         isRunning = false;
     }
 
-    public boolean isRunning () {
+    public boolean isRunning() {
         return isRunning;
     }
 
-    public void startGame (Object obj) {
+    public void startGame(Object obj) {
         state = 3;
     }
 
@@ -176,9 +178,9 @@ public class MainWindow extends JFrame implements Observer {
 
     @Override
     public void update(int state) {
-        dashboard.getObject().setX(state%4);
-        dashboard.getObject().setY(state/4);
-//        dashboard.drawObjects();
+        dashboard.getObject().setX(state % 4);
+        dashboard.getObject().setY(state / 4);
+        newsPanel.getDebugLabel().setText("Agent reached " + state + " Iteration = " + gameEngine.getIteration());
         repaint();
         logger.trace("[WINDOW] updated");
     }

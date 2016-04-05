@@ -11,13 +11,12 @@ import java.awt.event.ActionListener;
  * Contains MainWindow's bottom panel's elements
  */
 public class RewardsPanel extends JPanel {
-    //JLabel label= new JLabel("DES INFOS...");
     JSlider rewardSlider;
     JLabel sliderValue;
     JButton confirmButton;
+    int reward;
 
     public RewardsPanel() {
-        //add(label);
         initComponent();
     }
 
@@ -37,7 +36,7 @@ public class RewardsPanel extends JPanel {
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                reward = rewardSlider.getValue();
             }
         });
         add(rewardSlider);
