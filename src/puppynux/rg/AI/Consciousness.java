@@ -247,18 +247,34 @@ public abstract class Consciousness implements Observable {
         return Q;
     }
 
+    /**
+     *
+     * @return A string representing the subplace position of the agent
+     */
     public String getSubplacePosition() {
         return subplacePosition;
     }
 
+    /**
+     *
+     * @param subplacePosition A string representing the subplace position of the agent
+     */
     public void setSubplacePosition(String subplacePosition) {
         this.subplacePosition = subplacePosition;
     }
 
+    /**
+     *
+     * @return A string representing the place position of the agent
+     */
     public String getPlacePosition() {
         return placePosition;
     }
 
+    /**
+     *
+     * @param placePosition A string representing the place position of the agent
+     */
     public void setPlacePosition(String placePosition) {
         this.placePosition = placePosition;
     }

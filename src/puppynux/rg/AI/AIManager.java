@@ -68,6 +68,9 @@ public class AIManager extends Thread {
         return agent;
     }
 
+    /**
+     * Used to end properly the agent
+     */
     public void kill() {
         isStarted = false;
         logger.info("[AIMANAGER] agent killed");
@@ -95,7 +98,7 @@ public class AIManager extends Thread {
     }
 
     /**
-     * Generate the Agent, the does it act as a time factor
+     * Generate the Agent, then does it act as a time factor
      */
     @Override
     public void run() {

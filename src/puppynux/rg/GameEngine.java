@@ -62,7 +62,7 @@ public class GameEngine extends Thread implements Observer, Observable {
     //// TODO: 18/03/16 make function loadAgent()
 
     /**
-     * Used to create a new Agent
+     * Used to generate a new Agent
      */
     private void createAgent () {
         iteration = 0;
@@ -80,6 +80,10 @@ public class GameEngine extends Thread implements Observer, Observable {
         aiManager.start();
     }
 
+    /**
+     * Used to active the reward attribution mechanism
+     * @param reward The reward to grant
+     */
     public void attributeReward (int reward) {
         attributeReward = true;
         this.reward = reward;
@@ -139,6 +143,7 @@ public class GameEngine extends Thread implements Observer, Observable {
         agentCoordinate = getCoordinate(agentState);
     }
 
+
     public int[] getAgentCoordinate() {
         return agentCoordinate;
     }
@@ -149,6 +154,9 @@ public class GameEngine extends Thread implements Observer, Observable {
 
     }
 
+    /**
+     * Used in order to end properly the game engine
+     */
     public void shutDown() {
         isStarted = false;
         logger.info("[GAME] shut down");

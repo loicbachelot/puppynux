@@ -10,6 +10,7 @@ import java.util.Map;
  * Created by niamor972 on 24/03/16.
  * Parts of puppynux.rg.AI.
  * >
+ * This is a storage class representing the agent memory
  */
 public class QMatrix {
 
@@ -26,6 +27,11 @@ public class QMatrix {
         }
     }
 
+    /**
+     *
+     * @param state The state where check actions
+     * @return The map presenting possible actions, associated to their expected reward
+     */
     public HashMap<Action, Double> getStateActions(int state) {
         return qmatrix.get(state);
     }
@@ -38,14 +44,29 @@ public class QMatrix {
         return 0;
     }
 
+
     public void addState () {
         qmatrix.add(new HashMap<Action, Double>());
     }
 
+    /**
+     * Used by the agent to propagate rewards
+     *
+     * @param state The state where the action were performed
+     * @param action The action used
+     * @param reward The reward expected
+     */
     public void setReward(int state, Action action, double reward) {
         qmatrix.get(state).put(action, reward);
     }
 
+    /**
+     *Used by the agent to learn with reinforcement
+     *
+     * @param state The state where the action were performed
+     * @param action The action used
+     * @param reward The reward granted
+     */
     public void addReward(int state, Action action, double reward) {
         Double r = qmatrix.get(state).get(action) + reward;
         setReward(state, action, r);
