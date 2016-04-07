@@ -23,6 +23,7 @@ public abstract class Consciousness implements Observable {
 
     private final static Logger logger = Logger.getLogger(Consciousness.class);
     protected final double LEARN_FACTOR = 0.8;
+    protected final double  ACTUALISATION_FACTOR = 1;
     protected final int NOISE_FACTOR = 1000;
     protected HashMap<String, Observer> observers;
     protected Action [] actionTab;
