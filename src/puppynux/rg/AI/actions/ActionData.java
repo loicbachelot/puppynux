@@ -7,14 +7,19 @@ package puppynux.rg.AI.actions;
  */
 public class ActionData {
 
-    private int state, nextState, reward;
+    private int state, nextState, reward, age;
     private Action action;
 
-    public ActionData (int state, Action action, int nextState) {
+    public ActionData (int state, Action action, int nextState, int age) {
+        this.age = age;
         this.state = state;
         this.action = action;
         this.nextState = nextState;
         this.reward = 0;
+    }
+
+    public int getAge () {
+        return age;
     }
 
     public int getState() {
@@ -39,6 +44,6 @@ public class ActionData {
 
     @Override
     public String toString() {
-        return "Action Data : [State : " + state + ", Action : " + action + ", NextState : " + nextState + ", Reward : " + reward + "]";
+        return "Action Data : [State : " + state + ", Action : " + action + ", NextState : " + nextState + ", Reward : " + reward + " / Age : "+ age + "]";
     }
 }

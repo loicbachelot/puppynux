@@ -15,6 +15,10 @@ public class QMatrix {
 
     private ArrayList<HashMap<Action, Double>> qmatrix;
 
+    public QMatrix () {
+        qmatrix = new ArrayList<>();
+    }
+
     public QMatrix (int knownStates) {
         qmatrix = new ArrayList<>();
         for (int i = 0; i < knownStates; i++) {
@@ -34,8 +38,17 @@ public class QMatrix {
         return 0;
     }
 
+    public void addState () {
+        qmatrix.add(new HashMap<Action, Double>());
+    }
+
     public void setReward(int state, Action action, double reward) {
         qmatrix.get(state).put(action, reward);
+    }
+
+    public void addReward(int state, Action action, double reward) {
+        Double r = qmatrix.get(state).get(action) + reward;
+        setReward(state, action, r);
     }
 
     @Override

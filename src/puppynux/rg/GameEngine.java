@@ -5,12 +5,16 @@ import log.LoggerUtility;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import puppynux.lb.env.EnvironmentManager;
 import puppynux.rg.AI.AIBirth;
 import puppynux.rg.AI.AIManager;
-import puppynux.lb.env.EnvironmentManager;
+import puppynux.rg.AI.actions.EmptyActionException;
+import puppynux.rg.AI.actions.OutdatedActionException;
 import puppynux.rg.AI.mock.Observable;
 import puppynux.rg.AI.mock.Observer;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -30,10 +34,12 @@ public class GameEngine extends Thread implements Observer, Observable {
     private boolean isStarted;
     private int[] agentCoordinate = new int[2];
     private boolean createAgent = false;
+    private boolean attributeReward = false;
     private int agentState;
     private String agentPlacePosition;
     private String agentSubplacePosition;
     private int iteration;
+    private int reward;
 
     private GameEngine() {
         super.setName("T_GameEngine");
@@ -74,6 +80,12 @@ public class GameEngine extends Thread implements Observer, Observable {
         aiManager.start();
     }
 
+    public void attributeReward (int reward) {
+        attributeReward = true;
+        this.reward = reward;
+    }
+
+    //// TODO: 07/04/16 makes the given objects be a list of attribute for the agent created
     public void createAgent (Object obj) {
         createAgent = true;
     }
@@ -155,6 +167,18 @@ public class GameEngine extends Thread implements Observer, Observable {
             if (createAgent) {
                 createAgent = false;
                 createAgent();
+            }
+
+            if (attributeReward) {
+                attributeReward = false;
+                try {
+                    aiManager.getAgent().attributeReward(reward);
+
+                } catch (OutdatedActionException | EmptyActionException e) {
+                    //// TODO: 07/04/16 remove JOtionPane from here
+                    logger.warn("[GAME] " + e.getMessage());
+                    JOptionPane.showMessageDialog((Component) observers.get("mainWindow"), e.getMessage());
+                }
             }
             try {
                 Thread.sleep(0L, 1);
