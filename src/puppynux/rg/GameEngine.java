@@ -110,6 +110,14 @@ public class GameEngine extends Thread implements Observer, Observable {
         return iteration;
     }
 
+    public String getAgentPlacePosition() {
+        return agentPlacePosition;
+    }
+
+    public String getAgentSubplacePosition() {
+        return agentSubplacePosition;
+    }
+
     /**
      *
      * @return An instance of the AI Manager

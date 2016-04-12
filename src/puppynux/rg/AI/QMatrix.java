@@ -36,6 +36,12 @@ public class QMatrix {
         return qmatrix.get(state);
     }
 
+    /**
+     * Used to get the reward associated to an action if performed in a state
+     * @param state The state where the action if performed
+     * @param action The action to know reward
+     * @return The reward associated
+     */
     public double getActionReward(int state, Action action) {
         if  (qmatrix.get(state).containsKey(action)) {
             return qmatrix.get(state).get(action);
