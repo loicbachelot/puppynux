@@ -21,7 +21,7 @@ public class IASettingDialog extends JDialog implements PuppyDialog {
     private boolean sendData;
     private JPanel controlPanel, contentPanel;
     private JLabel value;
-    private JSlider slider;
+    private JSlider slider; //TODO récupérer la dernière valeur et pas mettre valeur à 0
 
 
     public IASettingDialog(JFrame parent, String title, boolean modal) {

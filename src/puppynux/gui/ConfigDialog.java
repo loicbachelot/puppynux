@@ -20,11 +20,12 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
     private MainWindow mainWindow;
     private boolean sendData;
     private JPanel controlPanel, contentPanel;
-    private JLabel nameLabel, envLabel, learnSpeedLabel, refreshLabel, velocityLabel;
+    private JLabel nameLabel, envLabel, learnSpeedLabel, refreshLabel, velocityLabel, noiseLabel, oversightLabel;
     private JTextField name;
     private JComboBox<String> environment;
-    private JSlider learnSpeedSlider, refreshSlider;
-    private JSpinner velocitySpinner;//TODO
+    private JSlider learnSpeedSlider, refreshSlider, noiseSlider, oversightSlider;
+    private JSpinner velocitySpinner;
+
     /**
      * @param parent Parent frame
      * @param title  Dialog's title
@@ -59,7 +60,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         //Name
         JPanel agentPanel = new JPanel();
         agentPanel.setBorder(BorderFactory.createTitledBorder("Agent's attributes"));
-        agentPanel.setLayout(new GridLayout(0,1,0,10));
+        agentPanel.setLayout(new GridLayout(0, 1, 0, 10));
         nameLabel = new JLabel("Select name :", JLabel.CENTER);
         name = new JTextField();
         name.setColumns(12);
@@ -104,6 +105,50 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         refreshSliderPanel.add(refreshValueLabel);
         agentPanel.add(refreshSliderPanel);
 
+        velocityLabel = new JLabel("Velocity : ", JLabel.CENTER);
+        SpinnerModel spinnerModel = new SpinnerNumberModel(10, 0, 10, 1);
+        velocitySpinner = new JSpinner(spinnerModel);
+
+        JPanel velocitySpinnerPanel = new JPanel();
+        velocitySpinnerPanel.add(velocityLabel);
+        velocitySpinnerPanel.add(velocitySpinner);
+        agentPanel.add(velocitySpinnerPanel);
+
+        oversightLabel = new JLabel("Oversight factor : ", JLabel.CENTER);
+        oversightSlider = new JSlider();
+        oversightSlider.setMaximum(10);
+        oversightSlider.setMinimum(0);
+        oversightSlider.setValue(10);
+        JLabel oversightValueLabel = new JLabel(String.valueOf(oversightSlider.getValue()));
+        oversightSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                oversightValueLabel.setText(String.valueOf(oversightSlider.getValue()));
+            }
+        });
+        JPanel oversightSliderPanel = new JPanel();
+        oversightSliderPanel.add(oversightLabel);
+        oversightSliderPanel.add(oversightSlider);
+        oversightSliderPanel.add(oversightValueLabel);
+        agentPanel.add(oversightSliderPanel);
+
+        noiseLabel = new JLabel("Noise factor : ", JLabel.CENTER);
+        noiseSlider = new JSlider();
+        noiseSlider.setMaximum(10);
+        noiseSlider.setMinimum(0);
+        noiseSlider.setValue(10);
+        JLabel noiseValueLabel = new JLabel(String.valueOf(noiseSlider.getValue()));
+        noiseSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                noiseValueLabel.setText(String.valueOf(noiseSlider.getValue()));
+            }
+        });
+        JPanel noiseSliderPanel = new JPanel();
+        noiseSliderPanel.add(noiseLabel);
+        noiseSliderPanel.add(noiseSlider);
+        noiseSliderPanel.add(noiseValueLabel);
+        agentPanel.add(noiseSliderPanel);
 
         JPanel envPanel = new JPanel();
         envPanel.setBorder(BorderFactory.createTitledBorder("Environment's attribute"));
@@ -152,8 +197,11 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
      * Initializes info to send to ConfigDialogInfo
      */
     @Override
-    public void initInfo() {// throws Exception {
-        configDialogInfo = new ConfigDialogInfo(name.getText(), environment.getSelectedIndex());
+    public void initInfo() {
+        configDialogInfo = new ConfigDialogInfo(name.getText(),
+                environment.getSelectedIndex(), learnSpeedSlider.getValue(),
+                refreshSlider.getValue(), (int) velocitySpinner.getValue(),
+                oversightSlider.getValue(), noiseSlider.getValue());
     }
 
     /**
