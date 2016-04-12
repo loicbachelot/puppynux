@@ -1,6 +1,11 @@
 package puppynux.gui.components;
 
+import puppynux.gui.objects.Ball;
 import puppynux.gui.objects.Objects;
+import puppynux.gui.objects.Table;
+import puppynux.lb.env.objects.Cell;
+import puppynux.lb.env.objects.Empty;
+import puppynux.rg.GameEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,9 +25,8 @@ public class Dashboard extends BackgroundPanel {
     public JButton debug = new JButton("Debug");
 
     /**
-     *
      * @param animal Animal initialized
-     * @param dim Dashboard's grid dimension
+     * @param dim    Dashboard's grid dimension
      */
     public Dashboard(Objects animal, int dim) {
         super(dim);
@@ -43,7 +47,6 @@ public class Dashboard extends BackgroundPanel {
     }
 
     /**
-     *
      * @return Dashboard's animal
      */
     public Objects getAnimal() {
@@ -60,8 +63,9 @@ public class Dashboard extends BackgroundPanel {
         super.paintComponent(g);
         debug(button, g);
 
-        colorPointDraw(g, 0, 1, "red");
-        colorPointDraw(g, 3, 3, "blue");
+        drawEnvironment();
+//        colorPointDraw(g, 0, 1, "red");
+//        colorPointDraw(g, 3, 3, "blue");
         drawObjects();
     }
 
@@ -77,16 +81,34 @@ public class Dashboard extends BackgroundPanel {
     }
 
     public void drawEnvironment() {
-        Image image = objects.getImage();
-        int x = objects.getX();
-        int y = objects.getY();
-        g.drawImage(image, x * (this.getWidth() / 4), y * (this.getHeight() / 4),
-                this.getWidth() / 4, this.getHeight() / 4, null);
+        Image image;
+        Cell[][] map = GameEngine.getInstance().getEnvironmentManager().getCells("House", "LivingRoom");
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (map[i][j].getType() != "Empty") {
+                    switch (map[i][j].getType()) {
+                        case "Ball":
+                            image = new Ball(i, j).getImage();
+                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
+                                    this.getWidth() / 4, this.getHeight() / 4, null);
+                            break;
+                        case "Table":
+                            image = new Table(i, j).getImage();
+                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
+                                    this.getWidth() / 4, this.getHeight() / 4, null);
+                            break;
+                    }
+                }
+            }
+
+        }
+
     }
 
     /**
      * Debug's element
      * Draw a cross
+     *
      * @param g
      * @param xPlace x coordonate
      * @param yPlace y coordonate
@@ -99,9 +121,10 @@ public class Dashboard extends BackgroundPanel {
     /**
      * Debug's element
      * Draw a "wall"
+     *
      * @param g
-     * @param xPlace x coordonate
-     * @param yPlace y coordonate
+     * @param xPlace      x coordonate
+     * @param yPlace      y coordonate
      * @param orientation Wall's orientation
      */
     private void wallDraw(Graphics g, int xPlace, int yPlace, String orientation) {
@@ -114,10 +137,11 @@ public class Dashboard extends BackgroundPanel {
     /**
      * Debug's element
      * Draw a colored point
+     *
      * @param g
      * @param xPlace x coordonate
      * @param yPlace y coordonate
-     * @param color Point's color
+     * @param color  Point's color
      */
     private void colorPointDraw(Graphics g, int xPlace, int yPlace, String color) {
         if (color.equals("green"))
@@ -132,6 +156,7 @@ public class Dashboard extends BackgroundPanel {
 
     /**
      * Allows developper to debug dashboard
+     *
      * @param b If true, creates debug
      * @param g
      */

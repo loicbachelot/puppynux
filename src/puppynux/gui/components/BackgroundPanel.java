@@ -14,10 +14,12 @@ public class BackgroundPanel extends JPanel {
     private Image backCenter = backgroundCenter.getImage();
     private final ImageIcon backgroundBorder = new ImageIcon(getClass().getClassLoader().getResource("resources/img/roofBorder.png"));
     private Image backBorder = backgroundBorder.getImage();
+
+    private final ImageIcon gardenCenter = new ImageIcon(getClass().getClassLoader().getResource("resources/img/grass.png"));
+    private Image grdCenter = gardenCenter.getImage();
     private Dimension size = getPreferredSize();
 
     /**
-     *
      * @param dim Background's grid dimension
      */
     public BackgroundPanel(int dim) {
@@ -32,6 +34,7 @@ public class BackgroundPanel extends JPanel {
 
     /**
      * Generate the background of the game
+     *
      * @param g
      */
     private void generateBackground(Graphics g) {
