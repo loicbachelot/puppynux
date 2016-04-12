@@ -82,7 +82,9 @@ public class Dashboard extends BackgroundPanel {
 
     public void drawEnvironment() {
         Image image;
-        Cell[][] map = GameEngine.getInstance().getEnvironmentManager().getCells("House", "LivingRoom");
+        Cell[][] map = GameEngine.getInstance().getEnvironmentManager().
+                getCells(GameEngine.getInstance().getAgentPlacePosition(),
+                        GameEngine.getInstance().getAgentSubplacePosition());
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (map[i][j].getType() != "Empty") {

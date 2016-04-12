@@ -4,15 +4,13 @@ import config.Config;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import puppynux.lb.env.RMatrix;
+import puppynux.lb.env.objects.Empty;
 import puppynux.rg.AI.actions.*;
 import puppynux.rg.AI.mock.EnvironmentManager;
 import puppynux.rg.AI.mock.Observable;
 import puppynux.rg.AI.mock.Observer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by niamor972 on 16/02/16.
@@ -23,7 +21,9 @@ public abstract class Consciousness implements Observable {
 
     private final static Logger logger = Logger.getLogger(Consciousness.class);
     protected final double LEARN_FACTOR = 0.8;
+    protected final double  ACTUALISATION_FACTOR = 1;
     protected final int NOISE_FACTOR = 1000;
+    protected final int OVERSIGHT_FACTOR = 10;
     protected HashMap<String, Observer> observers;
     protected Action [] actionTab;
     protected QMatrix Q;
@@ -36,10 +36,12 @@ public abstract class Consciousness implements Observable {
     protected LinkedList<ActionData> actionStack;
     protected String placePosition;
     protected String subplacePosition;
+    protected int age;
 
     public Consciousness() {
         logger.info("Consciousness awake");
         knownActions = 0;
+        age = 0;
         actionStack = new LinkedList<>();
         observers = new HashMap<>();
         Q = new QMatrix(16);
@@ -84,19 +86,14 @@ public abstract class Consciousness implements Observable {
     }
 
     /**
-     * The method used when a reward is received in order to learn it
-     * @param reward The reward to attribute to the last action
+     * The method used by user to order the agent
+     * @param action The action ordered to the agent
+     * @throws ActionException If an error occurs while performing action
      */
-    public void attributeReward (int reward) {
-        actionStack.getFirst().setReward(reward);
-        logger.trace("[AGENT] learned : " + actionStack.getFirst().toString());
-        learn(unstackAction());
-    }
-
     public void forceAct (Action action) throws ActionException {
         this.action = action;
         act();
-//        attributeReward(envTab.get(oldState)[lastAction]);
+        learn();
     }
 
     /**
@@ -107,6 +104,9 @@ public abstract class Consciousness implements Observable {
     public void routine() throws ActionException {
         action = chooseAction(envTab.get(actualState));
         act();
+        learn();
+        //used when rewards were assigned directly
+        /*
         int reward = 0;
         if (action instanceof Pee)
             reward = -100;
@@ -115,6 +115,7 @@ public abstract class Consciousness implements Observable {
         if (action instanceof ClimbTable)
             reward = -50;
         attributeReward(reward);
+        */
     }
 
     /**
@@ -124,7 +125,10 @@ public abstract class Consciousness implements Observable {
     protected void act() throws ActionException {
         oldState = actualState;
         action.use(this);
-        stackAction(new ActionData(oldState, action, actualState));
+        if (!(action instanceof Move)) {
+            stackAction(new ActionData(oldState, action, actualState, age));
+        }
+        age++;
         logger.trace("[AGENT] from " + oldState + " performs " + action + " (to " + actualState + ") with expected reward : " + Q.getActionReward(oldState, action)+ "\n");
     }
 
@@ -136,7 +140,7 @@ public abstract class Consciousness implements Observable {
      */
     protected Action chooseAction (HashMap<Action, Boolean> possibilities) {
         double max = 0.0;
-        Action action = new Pee();
+        Action action = null;
         for (Map.Entry<Action, Boolean> entry : possibilities.entrySet()) {
             if (!entry.getValue())
                 continue;
@@ -150,19 +154,41 @@ public abstract class Consciousness implements Observable {
         return action;
     }
 
-    //// TODO: 26/03/16 make learn() makes the difference between learning and reinforcement
+    /**
+     * The method used when a reward is received in order to learn it
+     *
+     * @param reward The reward to attribute to the last action
+     * @throws EmptyStackException If a reward is given while no action had been recorded
+     * @throws OutdatedActionException If a reward is given when the last action was performed too long
+     */
+    public void attributeReward (int reward) throws EmptyActionException, OutdatedActionException {
+        if (actionStack.isEmpty()) {
+            throw new EmptyActionException(name + " has no action recorded");
+        }
+        if (age - actionStack.getFirst().getAge() >= OVERSIGHT_FACTOR) {
+            actionStack = new LinkedList<>();
+            throw new OutdatedActionException(name + " has forgot his last action.");
+        }
+        actionStack.getFirst().setReward(reward);
+        logger.trace("[AGENT] learned : " + actionStack.getFirst().toString());
+        learn(unstackAction());
+    }
+
+    /**
+     * Used by the agent to propagate rewards in QMatrix
+     */
+    private void learn () {
+        double max = futureSight(actualState);
+        double r = LEARN_FACTOR * ACTUALISATION_FACTOR * max + Q.getActionReward(oldState, action) * (1 - LEARN_FACTOR);
+        Q.setReward(oldState, action, r);
+    }
+
     /**
      * Used by the Agent for reinforcement
-     *
      * @param actionData The Action Data to learn
      */
     protected void learn(ActionData actionData) {
-        int state = actionData.getState(), nextState = actionData.getNextState(), reward = actionData.getReward();
-        Action action = actionData.getAction();
-        double max = futureSight(nextState);
-
-        double r = reward + (int) (LEARN_FACTOR * max);
-        Q.setReward(state, action, r);
+        Q.addReward(actionData.getState(), actionData.getAction(), LEARN_FACTOR * actionData.getReward());
     }
 
     /**
@@ -172,7 +198,7 @@ public abstract class Consciousness implements Observable {
      * @return The maximum reward available from next state
      */
     protected double futureSight (int nextState) {
-        double max = 0;
+        double max = -100;
         for (double reward :
                 Q.getStateActions(nextState).values()) {
             if (reward > max)
@@ -221,18 +247,34 @@ public abstract class Consciousness implements Observable {
         return Q;
     }
 
+    /**
+     *
+     * @return A string representing the subplace position of the agent
+     */
     public String getSubplacePosition() {
         return subplacePosition;
     }
 
+    /**
+     *
+     * @param subplacePosition A string representing the subplace position of the agent
+     */
     public void setSubplacePosition(String subplacePosition) {
         this.subplacePosition = subplacePosition;
     }
 
+    /**
+     *
+     * @return A string representing the place position of the agent
+     */
     public String getPlacePosition() {
         return placePosition;
     }
 
+    /**
+     *
+     * @param placePosition A string representing the place position of the agent
+     */
     public void setPlacePosition(String placePosition) {
         this.placePosition = placePosition;
     }

@@ -25,7 +25,8 @@ public class AIManager extends Thread {
     private final static Config config = Config.getInstance();
     private Consciousness agent;
     private boolean isStarted, isPaused;
-    private long velocity;
+    private int velocity;
+    private long period;
 
     public AIManager() {
         super();
@@ -33,6 +34,7 @@ public class AIManager extends Thread {
         isStarted = true;
         isPaused = false;
         velocity = 0;
+        period = 2000;
         agent = new Agent();
     }
 
@@ -52,8 +54,9 @@ public class AIManager extends Thread {
     }
 
     //// TODO: 17/03/16 find equation for velocity (0-10) = (500-2000) ms for wait()
-    public void setVelocity(long velocity) {
+    public void setVelocity(int velocity) {
         this.velocity = velocity;
+
     }
 
     public long getVelocity() {
@@ -68,6 +71,9 @@ public class AIManager extends Thread {
         return agent;
     }
 
+    /**
+     * Used to end properly the agent
+     */
     public void kill() {
         isStarted = false;
         logger.info("[AIMANAGER] agent killed");
@@ -95,7 +101,7 @@ public class AIManager extends Thread {
     }
 
     /**
-     * Generate the Agent, the does it act as a time factor
+     * Generate the Agent, then does it act as a time factor
      */
     @Override
     public void run() {
@@ -110,7 +116,7 @@ public class AIManager extends Thread {
             } else {
                 try {
                     agent.routine();
-                    Thread.sleep(1000);
+                    Thread.sleep(period);
                 } catch (ActionException | InterruptedException e) {
                     e.printStackTrace();
                 }
