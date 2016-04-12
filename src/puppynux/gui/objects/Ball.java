@@ -1,0 +1,10 @@
+package puppynux.gui.objects;
+
+/**
+ * Created by william on 12/04/16.
+ */
+public class Ball extends Objects {
+    public Ball(String image, int x, int y) {
+        super("src/resources/img/ball.png", x, y);
+    }
+}

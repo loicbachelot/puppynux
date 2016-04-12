@@ -1,6 +1,5 @@
 package puppynux.gui.components;
 
-import puppynux.gui.objects.Dog;
 import puppynux.gui.objects.Objects;
 
 import javax.swing.*;
@@ -14,19 +13,20 @@ import java.awt.event.ActionListener;
  */
 public class Dashboard extends BackgroundPanel {
 
-    Objects object;
+    Objects animal;
+    Objects objects;
     Graphics g;
     boolean button = false;
     public JButton debug = new JButton("Debug");
 
     /**
      *
-     * @param object Animal initialized
+     * @param animal Animal initialized
      * @param dim Dashboard's grid dimension
      */
-    public Dashboard(Objects object, int dim) {
+    public Dashboard(Objects animal, int dim) {
         super(dim);
-        this.object = object;
+        this.animal = animal;
         debug.addActionListener(
                 new ActionListener() {
                     @Override
@@ -46,8 +46,12 @@ public class Dashboard extends BackgroundPanel {
      *
      * @return Dashboard's animal
      */
-    public Objects getObject() {
-        return object;
+    public Objects getAnimal() {
+        return animal;
+    }
+
+    public Objects getObjects() {
+        return objects;
     }
 
     @Override
@@ -65,10 +69,18 @@ public class Dashboard extends BackgroundPanel {
      * Draw dashboard's animal
      */
     public void drawObjects() {
-        Image image = object.getImage();
-        int x = object.getX();
-        int y = object.getY();
-       g.drawImage(image, x * (this.getWidth() / 4), y * (this.getHeight() / 4),
+        Image image = animal.getImage();
+        int x = animal.getX();
+        int y = animal.getY();
+        g.drawImage(image, x * (this.getWidth() / 4), y * (this.getHeight() / 4),
+                this.getWidth() / 4, this.getHeight() / 4, null);
+    }
+
+    public void drawEnvironment() {
+        Image image = objects.getImage();
+        int x = objects.getX();
+        int y = objects.getY();
+        g.drawImage(image, x * (this.getWidth() / 4), y * (this.getHeight() / 4),
                 this.getWidth() / 4, this.getHeight() / 4, null);
     }
 
