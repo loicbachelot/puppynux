@@ -40,6 +40,10 @@ public class EnvironmentManager {
         return environmentData.getEnvironment().get(place).getSubplaces().get(subplace).getCell(x, y);
     }
 
+    public Cell[][] getCells (String place, String subplace) {
+        return environmentData.getSubplace(place, subplace).getCells();
+    }
+
     public RMatrix initRMatrix(Cell[][] cells) {
         RMatrix matrix = new RMatrix();
         for (int x = 0; x < 4; x++) {
@@ -136,6 +140,10 @@ public class EnvironmentManager {
 
     public RMatrix getRMatrix(String placeString, String subplaceString) {
         return environmentData.getRMatrix(placeString, subplaceString);
+    }
+
+    public Subplace getSubplace(String placeString, String subplaceString) {
+        return environmentData.getSubplace(placeString, subplaceString);
     }
 
     public HashMap<String, Place> getEnvironment() {

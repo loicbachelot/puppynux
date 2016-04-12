@@ -1,5 +1,7 @@
 package puppynux.gui.components;
 
+import puppynux.rg.GameEngine;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -37,6 +39,8 @@ public class RewardsPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 reward = rewardSlider.getValue();
+                GameEngine.getInstance().attributeReward(reward);
+//                GameEngine.getInstance().getAiManager().getAgent().attributeReward(reward);
             }
         });
         add(rewardSlider);

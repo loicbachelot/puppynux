@@ -178,8 +178,8 @@ public class MainWindow extends JFrame implements Observer {
 
     @Override
     public void update(int state) {
-        dashboard.getObject().setX(state % 4);
-        dashboard.getObject().setY(state / 4);
+        dashboard.getAnimal().setX(state % 4);
+        dashboard.getAnimal().setY(state / 4);
         newsPanel.getDebugLabel().setText("Agent reached " + state + " Iteration = " + gameEngine.getIteration());
         repaint();
         logger.trace("[WINDOW] updated");
