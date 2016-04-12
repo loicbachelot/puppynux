@@ -1,6 +1,7 @@
 package puppynux.lb.env;
 
 import puppynux.lb.env.place.Place;
+import puppynux.lb.env.subplaces.Subplace;
 
 import java.util.HashMap;
 
@@ -33,5 +34,9 @@ public class EnvironmentData {
 
     public HashMap<String, Place> getEnvironment() {
         return environment;
+    }
+
+    public Subplace getSubplace(String placeString, String subplaceString){
+        return environment.get(placeString).getSubplaces().get(subplaceString);
     }
 }

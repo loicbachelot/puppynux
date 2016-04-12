@@ -138,6 +138,10 @@ public class EnvironmentManager {
         return environmentData.getRMatrix(placeString, subplaceString);
     }
 
+    public Subplace getSubplace(String placeString, String subplaceString) {
+        return environmentData.getSubplace(placeString, subplaceString);
+    }
+
     public HashMap<String, Place> getEnvironment() {
         return environmentData.getEnvironment();
     }
