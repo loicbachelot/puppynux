@@ -39,7 +39,7 @@ public class EnvFactory {
         }
         Document document = null;
         try {
-            document = builder.parse(new File("src/resources/environment/"+path));
+            document = builder.parse(new File("src/resources/environment/" + path));
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
