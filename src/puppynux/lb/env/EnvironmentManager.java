@@ -40,7 +40,7 @@ public class EnvironmentManager {
         return environmentData.getEnvironment().get(place).getSubplaces().get(subplace).getCell(x, y);
     }
 
-    public Cell[][] getCells (String place, String subplace, int x, int y) {
+    public Cell[][] getCells (String place, String subplace) {
         return environmentData.getSubplace(place, subplace).getCells();
     }
 
