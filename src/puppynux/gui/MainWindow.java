@@ -115,7 +115,7 @@ public class MainWindow extends JFrame implements Observer {
                     add(dashboard, BorderLayout.CENTER);
                     add(rewardsPanel, BorderLayout.SOUTH);
                     add(newsPanel, BorderLayout.EAST);
-                    GameEngine.getInstance().createAgent(null);
+                    GameEngine.getInstance().createAgent(configDialogInfo);
                     break;
                 default:
                     Thread.sleep(0L, 1);
