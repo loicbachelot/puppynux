@@ -25,15 +25,17 @@ public class Main {
             e.printStackTrace();
         }
 
-        GameEngine.getInstance().start();
+        GameEngine gameEngine = GameEngine.getInstance();
+        gameEngine.start();
         MainWindow mainWindow = new MainWindow();
         try {
             config.save();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        GameEngine.getInstance().getAiManager().kill();
-        GameEngine.getInstance().shutDown();
+        if (gameEngine.getAiManager() != null)
+            gameEngine.getAiManager().kill();
+        gameEngine.shutDown();
         System.out.println("Program ended correctly");
     }
 }

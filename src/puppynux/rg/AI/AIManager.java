@@ -2,6 +2,7 @@ package puppynux.rg.AI;
 
 import config.Config;
 import org.apache.log4j.Logger;
+import puppynux.gui.data.ConfigDialogInfo;
 import puppynux.rg.AI.actions.ActionException;
 
 import java.io.*;
@@ -28,6 +29,16 @@ public class AIManager extends Thread {
     private int velocity;
     private long period;
 
+    public AIManager(ConfigDialogInfo info) {
+        super();
+        super.setName("T_AIManager");
+        isStarted = true;
+        isPaused = false;
+        velocity = info.getVelocity();
+        periodByRuleOf3();
+        agent = new Agent(info);
+    }
+
     public AIManager() {
         super();
         super.setName("T_AIManager");
@@ -51,6 +62,10 @@ public class AIManager extends Thread {
         printWriter.println(agent.getQ().toString());
         printWriter.close();
         logger.info("QMatrix printed");
+    }
+
+    private void periodByRuleOf3 () {
+        period = (long) (2000 - (velocity * 150));
     }
 
     //// TODO: 17/03/16 find equation for velocity (0-10) = (500-2000) ms for wait()
@@ -93,6 +108,9 @@ public class AIManager extends Thread {
         isPaused = false;
     }
 
+    public synchronized boolean isLiving () {
+        return !isPaused;
+    }
 
     @Override
     public synchronized void start() {

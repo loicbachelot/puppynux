@@ -5,6 +5,7 @@ import puppynux.rg.GameEngine;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,14 +16,29 @@ import java.awt.event.ActionListener;
 public class RewardsPanel extends JPanel {
     JSlider rewardSlider;
     JLabel sliderValue;
-    JButton confirmButton;
+    JButton confirmButton, pauseButton;
     int reward;
 
     public RewardsPanel() {
         initComponent();
     }
 
-    public void initComponent() {
+    public void initComponent() { //TODO Bouton à l'échelle de la fenètre
+        pauseButton = new JButton(new ImageIcon(new ImageIcon("src/resources/img/pauseButton.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT)));
+        pauseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (GameEngine.getInstance().getAiManager().isLiving()) {
+                    GameEngine.getInstance().getAiManager().pause();
+                    pauseButton.setIcon(new ImageIcon(new ImageIcon("src/resources/img/playButton.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT)));
+                }
+                else {
+                    GameEngine.getInstance().getAiManager().play();
+                    pauseButton.setIcon(new ImageIcon(new ImageIcon("src/resources/img/pauseButton.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT)));
+                }
+            }
+        });
+
         rewardSlider = new JSlider(-100, 100, 0);
         sliderValue = new JLabel(String.valueOf(rewardSlider.getValue()));
         rewardSlider.addChangeListener(new ChangeListener() {
@@ -43,6 +59,8 @@ public class RewardsPanel extends JPanel {
 //                GameEngine.getInstance().getAiManager().getAgent().attributeReward(reward);
             }
         });
+
+        add(pauseButton);
         add(rewardSlider);
         add(sliderValue);
         add(confirmButton);

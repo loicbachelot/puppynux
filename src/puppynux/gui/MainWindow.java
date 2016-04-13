@@ -4,9 +4,13 @@ import config.Config;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 import puppynux.gui.components.*;
-import puppynux.gui.data.*;
-import puppynux.rg.GameEngine;
+import puppynux.gui.data.ConfigDialogInfo;
+import puppynux.gui.data.FirstDialogInfo;
+import puppynux.gui.data.IASettingDialogInfo;
+import puppynux.gui.data.LoadDialogInfo;
+import puppynux.rg.AI.Agent;
 import puppynux.rg.AI.mock.Observer;
+import puppynux.rg.GameEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +25,7 @@ import java.io.IOException;
  */
 public class MainWindow extends JFrame implements Observer {
 
+    public final static Font font = new Font("Monospaced", Font.BOLD, 30);
     private final static Logger logger = Logger.getLogger(MainWindow.class);
     private final static GameEngine gameEngine = GameEngine.getInstance();
     private Dashboard dashboard;
@@ -115,7 +120,7 @@ public class MainWindow extends JFrame implements Observer {
                     add(dashboard, BorderLayout.CENTER);
                     add(rewardsPanel, BorderLayout.SOUTH);
                     add(newsPanel, BorderLayout.EAST);
-                    GameEngine.getInstance().createAgent(null);
+                    GameEngine.getInstance().createAgent(configDialogInfo);
                     break;
                 default:
                     Thread.sleep(0L, 1);
@@ -132,7 +137,8 @@ public class MainWindow extends JFrame implements Observer {
         return isRunning;
     }
 
-    public void startGame(Object obj) {
+    public void startGame(ConfigDialogInfo info) {
+        configDialogInfo = info;
         state = 3;
     }
 
@@ -178,9 +184,15 @@ public class MainWindow extends JFrame implements Observer {
 
     @Override
     public void update(int state) {
+        dashboard.getAnimal().setOldX(gameEngine.getAiManager().getAgent().getOldState() % 4);
+        dashboard.getAnimal().setOldY(gameEngine.getAiManager().getAgent().getOldState() / 4);
         dashboard.getAnimal().setX(state % 4);
         dashboard.getAnimal().setY(state / 4);
-        newsPanel.getDebugLabel().setText("Agent reached " + state + " Iteration = " + gameEngine.getIteration());
+        Agent agent = (Agent)gameEngine.getAiManager().getAgent();
+        newsPanel.getIterationLabel().setText("Iteration : " + gameEngine.getIteration());
+        newsPanel.getLocationLabel().setText("Agent's location : " + state);
+        newsPanel.getActionLabel().setText("Agent performed action \"" + agent.getAction() + "\""); //TODO getAction
+        newsPanel.getRewardLabel().setText("With expected reward : " + agent.getQ().getActionReward(agent.getOldState(), agent.getAction())); //TODO getReward
         repaint();
         logger.trace("[WINDOW] updated");
     }
