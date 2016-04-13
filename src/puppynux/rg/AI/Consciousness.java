@@ -49,7 +49,7 @@ public abstract class Consciousness implements Observable {
         name = info.getName();
         LEARN_FACTOR = info.getLearnSpeed();
         ACTUALISATION_FACTOR = info.getRefreshFrequency();
-        NOISE_FACTOR = info.getNoise();
+        NOISE_FACTOR = info.getNoise() * 100;
         OVERSIGHT_FACTOR = info.getOversight();
 
     }
@@ -261,6 +261,10 @@ public abstract class Consciousness implements Observable {
      */
     public int getOldState () {
         return oldState;
+    }
+
+    public Action getAction() {
+        return action;
     }
 
     /**

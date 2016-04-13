@@ -109,7 +109,7 @@ public class AIManager extends Thread {
     }
 
     public synchronized boolean isLiving () {
-        return isPaused;
+        return !isPaused;
     }
 
     @Override

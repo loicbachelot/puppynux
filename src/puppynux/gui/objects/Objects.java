@@ -10,6 +10,7 @@ public abstract class Objects {
     private String image;
     private int x;
     private int y;
+    private int oldX=0, oldY=0;
 
     public Objects(String image, int x, int y) {
         super();
@@ -41,5 +42,21 @@ public abstract class Objects {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getOldX() {
+        return oldX;
+    }
+
+    public void setOldX(int oldX) {
+        this.oldX = oldX;
+    }
+
+    public int getOldY() {
+        return oldY;
+    }
+
+    public void setOldY(int oldY) {
+        this.oldY = oldY;
     }
 }
