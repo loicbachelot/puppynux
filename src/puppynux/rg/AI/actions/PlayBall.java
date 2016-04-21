@@ -8,14 +8,15 @@ import puppynux.rg.AI.Consciousness;
  * >
  */
 public class PlayBall implements Action {
+    public int position;
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     @Override
     public void use(Consciousness agent) throws ActionException {
-        int state = agent.getActualState();
-        if (!(state == 11 || state == 14 || state == 15))
-            throw new ActionException("Can't play ball");
-
-        agent.setState(15);
+        agent.setState(position);
     }
 
     @Override

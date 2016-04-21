@@ -8,18 +8,19 @@ import puppynux.rg.AI.Consciousness;
  * >
  */
 public class ClimbTable implements Action {
+    public int position;
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     @Override
     public void use(Consciousness agent) throws ActionException {
-        int state = agent.getActualState();
-        if (!(state == 0 || state == 4 || state == 5 || state == 8))
-            throw new ActionException("Can't climb table");
-
-        agent.setState(4);
+        agent.setState(position);
     }
 
     @Override
     public String toString() {
-        return "Climb Table";
+        return "climb table";
     }
 }
