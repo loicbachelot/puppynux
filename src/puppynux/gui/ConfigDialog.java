@@ -62,7 +62,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
     private void initComponent() {
         //Name
         JPanel agentPanel = new JPanel();
-        agentPanel.setBorder(BorderFactory.createTitledBorder("Agent's attributes"));
+        agentPanel.setBorder(BorderFactory.createTitledBorder("Agent's attributes")); //TODO Configurations prédéfinies pour utilisateur lambda
         agentPanel.setLayout(new GridLayout(0, 1, 0, 10));
         nameLabel = new PuppynuxLabel("Select name :", PuppynuxLabel.CENTER);
         name = new JTextField();
@@ -156,7 +156,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         JPanel envPanel = new JPanel();
         envPanel.setBorder(BorderFactory.createTitledBorder("Environment's attribute"));
         envLabel = new PuppynuxLabel("Choose environement : ");
-        String[] elements = {"Env1", "Env2"};
+        String[] elements = {"Env1", "Env2"}; //TODO Récupérer env avec Loïc
         environment = new JComboBox<>(elements);
         PuppynuxButton edit = new PuppynuxButton("Edit");
         envPanel.add(envLabel);
