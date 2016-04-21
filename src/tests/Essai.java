@@ -6,7 +6,15 @@ package tests;
  * >
  */
 public class Essai {
-    public void bonjour () {
-        System.out.print("Hello World");
+
+    public static void main (String [] args) {
+        String test = null;
+        try {
+            test.equals("");
+            System.out.println("test = " + test);
+        } catch (NullPointerException e ) {
+            System.err.println("exception\n");
+        }
+        System.out.println("test success\n");
     }
 }

@@ -23,8 +23,6 @@ public class BackgroundPanel extends JPanel {
      * @param dim Background's grid dimension
      */
     public BackgroundPanel(int dim) {
-        size.width = 800 / 4;
-        setPreferredSize(size);
         this.dim = dim;
     }
 

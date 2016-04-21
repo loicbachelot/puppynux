@@ -21,6 +21,7 @@ public class Dashboard extends BackgroundPanel {
     Objects animal;
     Objects objects;
     Graphics g;
+    int value = 0;
     boolean button = false;
     public JButton debug = new JButton("Debug");
 
@@ -66,14 +67,17 @@ public class Dashboard extends BackgroundPanel {
         drawEnvironment();
 //        colorPointDraw(g, 0, 1, "red");
 //        colorPointDraw(g, 3, 3, "blue");
-        drawObjects();
+        drawAnimal();
     }
+
 
     /**
      * Draw dashboard's animal
      */
-    public void drawObjects() {
+
+    public void drawAnimal() { //Todo animations
         Image image = animal.getImage();
+
         int x = animal.getX();
         int y = animal.getY();
         g.drawImage(image, x * (this.getWidth() / 4), y * (this.getHeight() / 4),

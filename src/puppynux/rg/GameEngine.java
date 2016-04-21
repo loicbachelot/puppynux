@@ -5,6 +5,7 @@ import log.LoggerUtility;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import puppynux.gui.data.ConfigDialogInfo;
 import puppynux.lb.env.EnvironmentManager;
 import puppynux.rg.AI.AIBirth;
 import puppynux.rg.AI.AIManager;
@@ -30,14 +31,15 @@ public class GameEngine extends Thread implements Observer, Observable {
     private final static GameEngine INSTANCE = new GameEngine();
     private HashMap<String, Observer> observers;
     private EnvironmentManager environmentManager;
+    private ConfigDialogInfo configDialogInfo;
     private AIManager aiManager;
     private boolean isStarted;
     private int[] agentCoordinate = new int[2];
     private boolean createAgent = false;
     private boolean attributeReward = false;
     private int agentState;
-    private String agentPlacePosition;
-    private String agentSubplacePosition;
+    private String agentPlacePosition = "";
+    private String agentSubplacePosition = "";
     private int iteration;
     private int reward;
 
@@ -66,7 +68,7 @@ public class GameEngine extends Thread implements Observer, Observable {
      */
     private void createAgent () {
         iteration = 0;
-        aiManager = new AIManager();
+        aiManager = new AIManager(configDialogInfo);
         aiManager.getAgent().addObserver("gameEngine", this);
         AIBirth.generate(aiManager.getAgent(), "House", "LivingRoom");
         agentPlacePosition = "House";
@@ -90,7 +92,8 @@ public class GameEngine extends Thread implements Observer, Observable {
     }
 
     //// TODO: 07/04/16 makes the given objects be a list of attribute for the agent created
-    public void createAgent (Object obj) {
+    public void createAgent (ConfigDialogInfo info) {
+        configDialogInfo = info;
         createAgent = true;
     }
 

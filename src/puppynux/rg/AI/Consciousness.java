@@ -3,6 +3,7 @@ package puppynux.rg.AI;
 import config.Config;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
+import puppynux.gui.data.ConfigDialogInfo;
 import puppynux.lb.env.RMatrix;
 import puppynux.lb.env.objects.Empty;
 import puppynux.rg.AI.actions.*;
@@ -20,10 +21,10 @@ import java.util.*;
 public abstract class Consciousness implements Observable {
 
     private final static Logger logger = Logger.getLogger(Consciousness.class);
-    protected final double LEARN_FACTOR = 0.8;
-    protected final double  ACTUALISATION_FACTOR = 1;
-    protected final int NOISE_FACTOR = 1000;
-    protected final int OVERSIGHT_FACTOR = 10;
+    protected final double LEARN_FACTOR;
+    protected final double  ACTUALISATION_FACTOR;
+    protected final int NOISE_FACTOR;
+    protected final int OVERSIGHT_FACTOR;
     protected HashMap<String, Observer> observers;
     protected Action [] actionTab;
     protected QMatrix Q;
@@ -38,6 +39,21 @@ public abstract class Consciousness implements Observable {
     protected String subplacePosition;
     protected int age;
 
+    public Consciousness(ConfigDialogInfo info) {
+        logger.info("Consciousness awake");
+        knownActions = 0;
+        age = 0;
+        actionStack = new LinkedList<>();
+        observers = new HashMap<>();
+        Q = new QMatrix(16);
+        name = info.getName();
+        LEARN_FACTOR = info.getLearnSpeed();
+        ACTUALISATION_FACTOR = info.getRefreshFrequency();
+        NOISE_FACTOR = info.getNoise() * 100;
+        OVERSIGHT_FACTOR = info.getOversight();
+
+    }
+
     public Consciousness() {
         logger.info("Consciousness awake");
         knownActions = 0;
@@ -46,9 +62,11 @@ public abstract class Consciousness implements Observable {
         observers = new HashMap<>();
         Q = new QMatrix(16);
         name = "test";
+        LEARN_FACTOR = 0.8;
+        ACTUALISATION_FACTOR = 1;
+        NOISE_FACTOR = 1000;
+        OVERSIGHT_FACTOR = 10;
     }
-
-
 
     /**
      * Used to initialize the action tab from config
@@ -188,6 +206,7 @@ public abstract class Consciousness implements Observable {
      * @param actionData The Action Data to learn
      */
     protected void learn(ActionData actionData) {
+        logger.trace("learned " + actionData.getReward());
         Q.addReward(actionData.getState(), actionData.getAction(), LEARN_FACTOR * actionData.getReward());
     }
 
@@ -199,11 +218,16 @@ public abstract class Consciousness implements Observable {
      */
     protected double futureSight (int nextState) {
         double max = -100;
+        int i = 0;
         for (double reward :
                 Q.getStateActions(nextState).values()) {
             if (reward > max)
                 max = reward;
+            i++;
         }
+        //// TODO: 4/12/16 make cleaner here
+        if (i == 0)
+            return i;
         return max;
     }
 
@@ -237,6 +261,10 @@ public abstract class Consciousness implements Observable {
      */
     public int getOldState () {
         return oldState;
+    }
+
+    public Action getAction() {
+        return action;
     }
 
     /**

@@ -1,1 +1,1 @@
-{"WINDOW_WIDTH":800,"KNOWN_ACTIONS":8,"SAVED_FILES":1,"ACTIONS":[{"0":"MoveUp","1":"MoveDown","2":"MoveLeft","3":"MoveRight","4":"Stay","5":"PlayBall","6":"ClimbTable","7":"Pee"}],"WINDOW_HEIGHT":600,"KNOWN_STATES":16}
+{"WINDOW_WIDTH":800,"KNOWN_ACTIONS":8,"SAVED_FILES":3,"ACTIONS":[{"0":"MoveUp","1":"MoveDown","2":"MoveLeft","3":"MoveRight","4":"Stay","5":"PlayBall","6":"ClimbTable","7":"Pee"}],"WINDOW_HEIGHT":600,"KNOWN_STATES":16}
