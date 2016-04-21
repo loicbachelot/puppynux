@@ -33,7 +33,7 @@
                 <attribute type="state">0</attribute>
             </object>
             <object type="Ball">
-                <attribute type="x">1</attribute>
+                <attribute type="x">2</attribute>
                 <attribute type="y">3</attribute>
                 <attribute type="state">0</attribute>
             </object>

@@ -6,18 +6,20 @@ import puppynux.lb.env.objects.Empty;
 
 public class Kitchen implements Subplace {
     private Cell[][] cells = new Cell[4][4];
-    private int state;
+    private int number;
 
-    public Kitchen(){
+    public Kitchen(int number){
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 cells[i][j] = new Empty();
             }
         }
+        this.number = number;
+
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public void setCells(int x, int y, Cell cell) {
