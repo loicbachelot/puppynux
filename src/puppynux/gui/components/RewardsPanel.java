@@ -1,5 +1,6 @@
 package puppynux.gui.components;
 
+import puppynux.gui.MainWindow;
 import puppynux.rg.GameEngine;
 
 import javax.swing.*;
@@ -17,14 +18,14 @@ import java.awt.event.ActionListener;
  */
 public class RewardsPanel extends JPanel {
     JSlider rewardSlider;
-    JLabel sliderValue;
+    PuppynuxLabel sliderValue;
     PuppynuxButton confirmButton, pauseButton;
     int reward;
 
     public RewardsPanel() {
         initComponent();
-        setBackground(new Color(174,215,247));
-        Border border = new MatteBorder(5, 0, 0, 0, new Color(50, 50, 50));
+        setBackground(MainWindow.backgroundsColor);
+        Border border = new MatteBorder(5, 0, 0, 0, MainWindow.bordersColor);
         setBorder(border);
     }
 
@@ -45,7 +46,7 @@ public class RewardsPanel extends JPanel {
         });
 
         rewardSlider = new JSlider(-100, 100, 0);
-        sliderValue = new JLabel(String.valueOf(rewardSlider.getValue()));
+        sliderValue = new PuppynuxLabel(String.valueOf(rewardSlider.getValue()));
         rewardSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

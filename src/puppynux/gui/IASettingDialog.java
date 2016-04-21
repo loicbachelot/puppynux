@@ -1,6 +1,7 @@
 package puppynux.gui;
 
 import puppynux.gui.components.PuppynuxButton;
+import puppynux.gui.components.PuppynuxLabel;
 import puppynux.gui.data.IASettingDialogInfo;
 import puppynux.gui.listeners.CancelListener;
 import puppynux.gui.listeners.OKListener;
@@ -21,7 +22,7 @@ public class IASettingDialog extends JDialog implements PuppyDialog {
     private IASettingDialogInfo iaSettingDialogInfo;
     private boolean sendData;
     private JPanel controlPanel, contentPanel;
-    private JLabel value;
+    private PuppynuxLabel value;
     private JSlider slider; //TODO récupérer la dernière valeur et pas mettre valeur à 0
 
 
@@ -32,7 +33,7 @@ public class IASettingDialog extends JDialog implements PuppyDialog {
         initComponent();
         pack();
         getContentPane().setBackground(new Color(68, 145, 247));
-        setLocation((Toolkit.getDefaultToolkit().getScreenSize().width) / 2 - getWidth() / 2, (Toolkit.getDefaultToolkit().getScreenSize().height) / 2 - getHeight() / 2);
+        setLocationRelativeTo(null);
     }
 
     private void initComponent() {
@@ -40,7 +41,7 @@ public class IASettingDialog extends JDialog implements PuppyDialog {
         JPanel agentPanel = new JPanel();
         agentPanel.setBorder(BorderFactory.createTitledBorder("Agent's curiosity"));
         slider = new JSlider(0, 10, 0);
-        value = new JLabel(String.valueOf((double) slider.getValue() / 10));
+        value = new PuppynuxLabel(String.valueOf((double) slider.getValue() / 10));
         slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

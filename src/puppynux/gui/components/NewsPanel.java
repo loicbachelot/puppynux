@@ -12,44 +12,43 @@ import java.awt.*;
  * Contains MainWindow's right panel's elements
  */
 public class NewsPanel extends JPanel {
-    JLabel mainTitle;
-    JLabel iterationLabel;
-    JLabel locationLabel;
-    JLabel actionLabel;
-    JLabel rewardLabel;
+    PuppynuxLabel mainTitle;
+    PuppynuxLabel iterationLabel;
+    PuppynuxLabel locationLabel;
+    PuppynuxLabel actionLabel;
+    PuppynuxLabel rewardLabel;
 
     public NewsPanel() {
         setPreferredSize(new Dimension((int)MainWindow.windowSize().getWidth() / 3, (int)MainWindow.windowSize().getHeight()));
         setLayout(new GridLayout(0, 1));
-        mainTitle = new JLabel("INFORMATION", JLabel.CENTER);
-        mainTitle.setFont(MainWindow.font);
-        locationLabel = new JLabel("", JLabel.CENTER);
-        iterationLabel = new JLabel("", JLabel.CENTER);
-        actionLabel = new JLabel("", JLabel.CENTER);
-        rewardLabel = new JLabel("", JLabel.CENTER);
+        mainTitle = new PuppynuxLabel("INFORMATION", PuppynuxLabel.CENTER, "title");
+        locationLabel = new PuppynuxLabel("", PuppynuxLabel.CENTER, "");
+        iterationLabel = new PuppynuxLabel("", PuppynuxLabel.CENTER, "");
+        actionLabel = new PuppynuxLabel("", PuppynuxLabel.CENTER, "");
+        rewardLabel = new PuppynuxLabel("", PuppynuxLabel.CENTER, "");
         add(mainTitle);
         add(iterationLabel);
         add(locationLabel);
         add(actionLabel);
         add(rewardLabel);
-        setBackground(new Color(174, 215, 247));
-        Border border = new MatteBorder(0, 5, 0, 0, new Color(50, 50, 50));
+        setBackground(MainWindow.backgroundsColor);
+        Border border = new MatteBorder(0, 5, 0, 0, MainWindow.bordersColor);
         setBorder(border);
     }
 
-    public JLabel getIterationLabel() {
+    public PuppynuxLabel getIterationLabel() {
         return iterationLabel;
     }
 
-    public JLabel getActionLabel() {
+    public PuppynuxLabel getActionLabel() {
         return actionLabel;
     }
 
-    public JLabel getLocationLabel() {
+    public PuppynuxLabel getLocationLabel() {
         return locationLabel;
     }
 
-    public JLabel getRewardLabel() {
+    public PuppynuxLabel getRewardLabel() {
         return rewardLabel;
     }
 }

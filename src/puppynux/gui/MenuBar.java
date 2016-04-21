@@ -24,7 +24,6 @@ public class MenuBar extends JMenuBar {
         initComponent();
         setBackground(new Color(68, 145, 247));
         Border border = new MatteBorder(0, 2, 5, 0, new Color(50, 50, 50));
-
         setBorder(border);
     }
 

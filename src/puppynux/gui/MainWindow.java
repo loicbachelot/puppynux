@@ -26,14 +26,18 @@ import java.io.IOException;
  */
 public class MainWindow extends JFrame implements Observer {
 
-    public final static Font font = new Font("Monospaced", Font.BOLD, 30);
-    private final static Logger logger = Logger.getLogger(MainWindow.class);
+    public final static Font titlePanelFont = new Font("Monospaced", Font.BOLD, 30);
+    public final static Font font = new Font("Monospaced", Font.CENTER_BASELINE, 15);
+    public final static Font mainTitleFont = new Font("Monospaced", Font.BOLD, 60);
+    public final static Color backgroundsColor = new Color(174, 215, 247);
+    public final static Color bordersColor = new Color(50, 50, 50);
+
     private static Toolkit tk = Toolkit.getDefaultToolkit();
     private static Dimension screenSize = tk.getScreenSize();
     public static final int screenHeight = screenSize.height;
     public static final int screenWidth = screenSize.width;
 
-
+    private final static Logger logger = Logger.getLogger(MainWindow.class);
     private final static GameEngine gameEngine = GameEngine.getInstance();
     private Dashboard dashboard;
     private BackgroundPanel environmentPanel;
@@ -61,6 +65,7 @@ public class MainWindow extends JFrame implements Observer {
         state = 0;
         this.setTitle("Puppynux");
         this.setSize(windowSize());
+        this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setJMenuBar(menuBar);
@@ -150,19 +155,23 @@ public class MainWindow extends JFrame implements Observer {
     }
 
     public static Dimension windowSize() {
-        Config config = null;
-        config = config.getInstance();
-        try {
-            config.load("src/config/config.json");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        Config config = null;
+//        config = config.getInstance();
+//        try {
+//            config.load("src/config/config.json");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        Rectangle rec = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 
         Dimension dim = new Dimension();
-        int width = (int) config.getLong("WINDOW_WIDTH");
-        int height = (int) config.getLong("WINDOW_HEIGHT");
+//        int width = (int) config.getLong("WINDOW_WIDTH");
+//        int height = (int) config.getLong("WINDOW_HEIGHT");
+
+        int width = rec.width;
+        int height = rec.height;
         dim.width = width;
         dim.height = height;
 
@@ -191,11 +200,22 @@ public class MainWindow extends JFrame implements Observer {
 
     @Override
     public void update(int state) {
-        dashboard.getAnimal().setOldX(gameEngine.getAiManager().getAgent().getOldState() % 4);
-        dashboard.getAnimal().setOldY(gameEngine.getAiManager().getAgent().getOldState() / 4);
-        dashboard.getAnimal().setX(state % 4);
-        dashboard.getAnimal().setY(state / 4);
-        Agent agent = (Agent)gameEngine.getAiManager().getAgent();
+        int oldX = gameEngine.getAiManager().getAgent().getOldState() % 4;
+        int oldY = gameEngine.getAiManager().getAgent().getOldState() / 4;
+        int x = state % 4;
+        int y = state / 4;
+
+        if (oldX > x) {
+            dashboard.getAnimal().setImage("src/resources/img/dogBack.png");
+        }
+        else {
+            dashboard.getAnimal().setImage("src/resources/img/dog.png");
+        }
+        dashboard.getAnimal().setX(x);
+        dashboard.getAnimal().setY(y);
+
+
+        Agent agent = (Agent) gameEngine.getAiManager().getAgent();
         newsPanel.getIterationLabel().setText("Iteration : " + gameEngine.getIteration());
         newsPanel.getLocationLabel().setText("Agent's location : " + state);
         newsPanel.getActionLabel().setText("Agent performed action \"" + agent.getAction() + "\""); //TODO getAction

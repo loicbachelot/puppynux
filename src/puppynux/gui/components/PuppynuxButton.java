@@ -11,7 +11,6 @@ import java.awt.geom.RoundRectangle2D;
 public class PuppynuxButton extends JButton {
     public PuppynuxButton(String title) {
         super(title);
-        setBackground(new Color(0, 172,193));
         setBorderPainted(false);
         setContentAreaFilled(false);
         setFocusable(false);

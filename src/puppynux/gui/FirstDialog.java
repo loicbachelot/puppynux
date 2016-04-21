@@ -23,9 +23,8 @@ public class FirstDialog extends JDialog implements PuppyDialog {
     private JPanel controlPanel;
 
     /**
-     *
      * @param parent Parent frame
-     * @param title FirstDialog's title
+     * @param title  FirstDialog's title
      * @param modal
      */
     public FirstDialog(JFrame parent, String title, boolean modal) {
@@ -35,11 +34,12 @@ public class FirstDialog extends JDialog implements PuppyDialog {
         initComponent();
         pack();
         this.getContentPane().setBackground(new Color(68, 145, 247));
-        setLocation((Toolkit.getDefaultToolkit().getScreenSize().width)/2 - getWidth()/2, (Toolkit.getDefaultToolkit().getScreenSize().height)/2 - getHeight()/2);
+        setLocationRelativeTo(null);
     }
 
     /**
      * //TODO JavaDoc
+     *
      * @return
      */
     public FirstDialogInfo showDialog() {
