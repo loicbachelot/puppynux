@@ -1,5 +1,6 @@
 package puppynux.gui;
 
+import puppynux.gui.components.PuppynuxButton;
 import puppynux.gui.data.Choices;
 import puppynux.gui.data.ConfigDialogInfo;
 
@@ -38,6 +39,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         initComponent();
         pack();
+        setBackground(new Color(68, 145, 247));
         setLocation((Toolkit.getDefaultToolkit().getScreenSize().width) / 2 - getWidth() / 2, (Toolkit.getDefaultToolkit().getScreenSize().height) / 2 - getHeight() / 2);
     }
 
@@ -154,7 +156,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         envLabel = new JLabel("Choose environement : ");
         String[] elements = {"Env1", "Env2"};
         environment = new JComboBox<>(elements);
-        JButton edit = new JButton("Edit");
+        PuppynuxButton edit = new PuppynuxButton("Edit");
         envPanel.add(envLabel);
         envPanel.add(environment);
         envPanel.add(edit);
@@ -165,8 +167,8 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         contentPanel.add(envPanel);
 
         controlPanel = new JPanel();
-        JButton ok = new JButton("OK");
-        JButton cancel = new JButton("Cancel");
+        PuppynuxButton ok = new PuppynuxButton("OK");
+        PuppynuxButton cancel = new PuppynuxButton("Cancel");
         ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

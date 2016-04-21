@@ -3,6 +3,7 @@ package puppynux.gui;
 import config.Config;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
+import org.w3c.dom.css.Rect;
 import puppynux.gui.components.*;
 import puppynux.gui.data.ConfigDialogInfo;
 import puppynux.gui.data.FirstDialogInfo;
@@ -207,7 +208,6 @@ public class MainWindow extends JFrame implements Observer {
     public void update() {
 
     }
-
 
     public static void main(String[] args) throws InterruptedException {
         MainWindow mainWindow = new MainWindow();

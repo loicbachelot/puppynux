@@ -3,6 +3,10 @@ package puppynux.gui;
 import puppynux.rg.GameEngine;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -18,6 +22,10 @@ public class MenuBar extends JMenuBar {
     public MenuBar(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
         initComponent();
+        setBackground(new Color(68, 145, 247));
+        Border border = new MatteBorder(0, 2, 5, 0, new Color(50, 50, 50));
+
+        setBorder(border);
     }
 
     private void initComponent() {

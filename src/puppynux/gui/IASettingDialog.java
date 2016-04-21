@@ -1,5 +1,6 @@
 package puppynux.gui;
 
+import puppynux.gui.components.PuppynuxButton;
 import puppynux.gui.data.IASettingDialogInfo;
 import puppynux.gui.listeners.CancelListener;
 import puppynux.gui.listeners.OKListener;
@@ -30,6 +31,7 @@ public class IASettingDialog extends JDialog implements PuppyDialog {
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         initComponent();
         pack();
+        getContentPane().setBackground(new Color(68, 145, 247));
         setLocation((Toolkit.getDefaultToolkit().getScreenSize().width) / 2 - getWidth() / 2, (Toolkit.getDefaultToolkit().getScreenSize().height) / 2 - getHeight() / 2);
     }
 
@@ -55,8 +57,8 @@ public class IASettingDialog extends JDialog implements PuppyDialog {
         contentPanel.add(agentPanel);
         controlPanel = new JPanel();
 
-        JButton ok = new JButton("OK");
-        JButton cancel = new JButton("Cancel");
+        PuppynuxButton ok = new PuppynuxButton("OK");
+        PuppynuxButton cancel = new PuppynuxButton("Cancel");
         cancel.addActionListener(new CancelListener(this));
         ok.addActionListener(new OKListener(this));
         controlPanel.add(ok);

@@ -1,6 +1,8 @@
 package puppynux.gui.components;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 
 /**
@@ -24,6 +26,8 @@ public class BackgroundPanel extends JPanel {
      */
     public BackgroundPanel(int dim) {
         this.dim = dim;
+        Border border = new MatteBorder(0, 2, 0, 0, new Color(50, 50, 50));
+        setBorder(border);
     }
 
     protected void paintComponent(Graphics g) {

@@ -3,6 +3,8 @@ package puppynux.gui.components;
 import puppynux.rg.GameEngine;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -16,15 +18,18 @@ import java.awt.event.ActionListener;
 public class RewardsPanel extends JPanel {
     JSlider rewardSlider;
     JLabel sliderValue;
-    JButton confirmButton, pauseButton;
+    PuppynuxButton confirmButton, pauseButton;
     int reward;
 
     public RewardsPanel() {
         initComponent();
+        setBackground(new Color(174,215,247));
+        Border border = new MatteBorder(5, 0, 0, 0, new Color(50, 50, 50));
+        setBorder(border);
     }
 
     public void initComponent() { //TODO Bouton à l'échelle de la fenètre
-        pauseButton = new JButton(new ImageIcon(new ImageIcon("src/resources/img/pauseButton.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT)));
+        pauseButton = new PuppynuxButton(new ImageIcon(new ImageIcon("src/resources/img/pauseButton.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT)));
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,7 +55,7 @@ public class RewardsPanel extends JPanel {
             }
         });
 
-        confirmButton = new JButton("OK");
+        confirmButton = new PuppynuxButton("OK");
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
