@@ -1,7 +1,7 @@
 package puppynux.lb.env;
 
 import puppynux.lb.env.objects.Cell;
-import puppynux.lb.env.objects.SubplaceDoor;
+import puppynux.lb.env.objects.*;
 import puppynux.lb.env.place.Place;
 import puppynux.lb.env.subplaces.Subplace;
 import puppynux.rg.AI.actions.*;
@@ -97,7 +97,23 @@ public class EnvironmentManager {
                             climbTable(matrix.getActionList(), x, y + 1,position);
                         }
                         break;
-                    case "SubplaceDoor":
+                    case "SubplaceTopDoor":
+                        changeSubplace(matrix.getActionList(),x,y,cells[x][y]);
+                        if (x - 1 > -1) {
+                            moveRight(matrix.getActionList(), x - 1, y);
+                        }
+                        if (x + 1 < 4) {
+                            moveLeft(matrix.getActionList(), x + 1, y);
+                        }
+                        if (y - 1 > -1) {
+                            moveDown(matrix.getActionList(), x, y - 1);
+                        }
+                        if (y + 1 < 4) {
+                            moveUp(matrix.getActionList(), x, y + 1);
+                        }
+                        stay(matrix.getActionList(), x, y);
+                        break;
+                    case "SubplaceDownDoor":
                         changeSubplace(matrix.getActionList(),x,y,cells[x][y]);
                         if (x - 1 > -1) {
                             moveRight(matrix.getActionList(), x - 1, y);
