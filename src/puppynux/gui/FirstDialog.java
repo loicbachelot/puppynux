@@ -6,6 +6,7 @@ import puppynux.gui.listeners.CancelListener;
 import puppynux.gui.listeners.OKListener;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,23 +22,22 @@ public class FirstDialog extends JDialog implements PuppyDialog {
     private JPanel controlPanel;
 
     /**
-     *
      * @param parent Parent frame
-     * @param title FirstDialog's title
+     * @param title  FirstDialog's title
      * @param modal
      */
     public FirstDialog(JFrame parent, String title, boolean modal) {
         super(parent, title, modal);
-//        setSize(200, 70);
-        setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         initComponent();
         pack();
+        setLocation((Toolkit.getDefaultToolkit().getScreenSize().width) / 2 - getWidth() / 2, (Toolkit.getDefaultToolkit().getScreenSize().height) / 2 - getHeight() / 2);
     }
 
     /**
      * //TODO JavaDoc
+     *
      * @return
      */
     public FirstDialogInfo showDialog() {

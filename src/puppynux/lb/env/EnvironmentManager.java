@@ -1,6 +1,7 @@
 package puppynux.lb.env;
 
 import puppynux.lb.env.objects.Cell;
+import puppynux.lb.env.objects.SubplaceDoor;
 import puppynux.lb.env.place.Place;
 import puppynux.lb.env.subplaces.Subplace;
 import puppynux.rg.AI.actions.*;
@@ -49,6 +50,7 @@ public class EnvironmentManager {
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
                 pee(matrix.getActionList(),x,y);
+                int position = x + 4* y;
                 switch (cells[x][y].getType()) {
                     case "Empty":
                         if (x - 1 > -1) {
@@ -66,40 +68,61 @@ public class EnvironmentManager {
                         stay(matrix.getActionList(), x, y);
                         break;
                     case "Ball":
-                        playBall(matrix.getActionList(), x, y);
+                        playBall(matrix.getActionList(), x, y, position);
                         if (x - 1 > -1) {
-                            playBall(matrix.getActionList(), x - 1, y);
+                            playBall(matrix.getActionList(), x - 1, y, position);
                         }
                         if (x + 1 < 4) {
-                            playBall(matrix.getActionList(), x + 1, y);
+                            playBall(matrix.getActionList(), x + 1, y,position);
                         }
                         if (y - 1 > -1) {
-                            playBall(matrix.getActionList(), x, y - 1);
+                            playBall(matrix.getActionList(), x, y - 1,position);
                         }
                         if (y + 1 < 4) {
-                            playBall(matrix.getActionList(), x, y + 1);
+                            playBall(matrix.getActionList(), x, y + 1,position);
                         }
                         break;
                     case "Table":
-                        climbTable(matrix.getActionList(), x, y);
+                        climbTable(matrix.getActionList(), x, y,position);
                         if (x - 1 > -1) {
-                            climbTable(matrix.getActionList(), x - 1, y);
+                            climbTable(matrix.getActionList(), x - 1, y,position);
                         }
                         if (x + 1 < 4) {
-                            climbTable(matrix.getActionList(), x + 1, y);
+                            climbTable(matrix.getActionList(), x + 1, y,position);
                         }
                         if (y - 1 > -1) {
-                            climbTable(matrix.getActionList(), x, y - 1);
+                            climbTable(matrix.getActionList(), x, y - 1,position);
                         }
                         if (y + 1 < 4) {
-                            climbTable(matrix.getActionList(), x, y + 1);
+                            climbTable(matrix.getActionList(), x, y + 1,position);
                         }
+                        break;
+                    case "SubplaceDoor":
+                        changeSubplace(matrix.getActionList(),x,y,cells[x][y]);
+                        if (x - 1 > -1) {
+                            moveRight(matrix.getActionList(), x - 1, y);
+                        }
+                        if (x + 1 < 4) {
+                            moveLeft(matrix.getActionList(), x + 1, y);
+                        }
+                        if (y - 1 > -1) {
+                            moveDown(matrix.getActionList(), x, y - 1);
+                        }
+                        if (y + 1 < 4) {
+                            moveUp(matrix.getActionList(), x, y + 1);
+                        }
+                        stay(matrix.getActionList(), x, y);
                         break;
                 }
             }
 
         }
         return matrix;
+    }
+
+    public void changeSubplace(ArrayList<HashMap<Action, Boolean>> list, int x, int y,Cell cell){
+        cell = (SubplaceDoor) cell;
+        list.get(x + 4 * y).put(new ChangeSubplace(((SubplaceDoor) cell).getDestination()), true);
     }
 
     public void moveUp(ArrayList<HashMap<Action, Boolean>> list, int x, int y) {
@@ -122,12 +145,16 @@ public class EnvironmentManager {
         list.get(x + 4 * y).put(new Stay(), true);
     }
 
-    public void playBall(ArrayList<HashMap<Action, Boolean>> list, int x, int y) {
-        list.get(x + 4 * y).put(new PlayBall(), true);
+    public void playBall(ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
+        PlayBall play = new PlayBall();
+        play.setPosition(position);
+        list.get(x + 4 * y).put(play, true);
     }
 
-    public void climbTable(ArrayList<HashMap<Action, Boolean>> list, int x, int y) {
-        list.get(x + 4 * y).put(new ClimbTable(), true);
+    public void climbTable(ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
+        ClimbTable climb = new ClimbTable();
+        climb.setPosition(position);
+        list.get(x + 4 * y).put(climb, true);
     }
 
     public void pee(ArrayList<HashMap<Action, Boolean>> list, int x, int y) {

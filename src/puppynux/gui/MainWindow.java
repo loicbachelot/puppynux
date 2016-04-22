@@ -27,6 +27,12 @@ public class MainWindow extends JFrame implements Observer {
 
     public final static Font font = new Font("Monospaced", Font.BOLD, 30);
     private final static Logger logger = Logger.getLogger(MainWindow.class);
+    private static Toolkit tk = Toolkit.getDefaultToolkit();
+    private static Dimension screenSize = tk.getScreenSize();
+    public static final int screenHeight = screenSize.height;
+    public static final int screenWidth = screenSize.width;
+
+
     private final static GameEngine gameEngine = GameEngine.getInstance();
     private Dashboard dashboard;
     private BackgroundPanel environmentPanel;

@@ -11,6 +11,7 @@ import puppynux.lb.env.subplaces.Subplace;
 public class EnvState {
     public static void main(String[] args) {
         EnvironmentManager env = new EnvironmentManager();
+        env.createEnvironment();
         for (Place place : env.getEnvironment().values()) {
             for (Subplace subplace : place.getSubplaces().values()) {
                 System.out.println(subplace.toString());

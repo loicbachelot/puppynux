@@ -33,13 +33,12 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
      */
     public ConfigDialog(JFrame parent, String title, boolean modal) {
         super(parent, title, modal);
-//        setSize(550, 270);
         mainWindow = (MainWindow) parent;
-//        setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         initComponent();
         pack();
+        setLocation((Toolkit.getDefaultToolkit().getScreenSize().width) / 2 - getWidth() / 2, (Toolkit.getDefaultToolkit().getScreenSize().height) / 2 - getHeight() / 2);
     }
 
     /**
