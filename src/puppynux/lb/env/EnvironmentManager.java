@@ -21,8 +21,8 @@ public class EnvironmentManager {
         environmentData = new EnvironmentData();
     }
 
-    public void createEnvironment (String path) {
-        loadEnvironment(path);
+    public void createEnvironment () {
+        loadEnvironment("env.xml");
         for (Place place :
                 environmentData.getEnvironment().values()) {
             for (Subplace subplace :
