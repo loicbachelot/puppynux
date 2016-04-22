@@ -2,9 +2,11 @@ package puppynux.gui.components;
 
 import puppynux.gui.objects.Ball;
 import puppynux.gui.objects.Objects;
+import puppynux.gui.objects.doors.PlaceDoor;
+import puppynux.gui.objects.doors.SubplaceDownDoor;
 import puppynux.gui.objects.Table;
+import puppynux.gui.objects.doors.SubplaceTopDoor;
 import puppynux.lb.env.objects.Cell;
-import puppynux.lb.env.objects.Empty;
 import puppynux.rg.GameEngine;
 
 import javax.swing.*;
@@ -27,7 +29,6 @@ public class Dashboard extends BackgroundPanel {
 
     /**
      * @param animal Animal initialized
-     * @param dim    Dashboard's grid dimension
      */
     public Dashboard(Objects animal, int dim) {
         super(dim);
@@ -103,6 +104,18 @@ public class Dashboard extends BackgroundPanel {
                             g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
                                     this.getWidth() / 4, this.getHeight() / 4, null);
                             break;
+                        case "SubplaceTopDoor":
+                            image = new SubplaceTopDoor(i, j).getImage();
+                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
+                                    this.getWidth() / 4, this.getHeight() / 4, null);
+                        case "SubplaceDownDoor":
+                            image = new SubplaceDownDoor(i, j).getImage();
+                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
+                                    this.getWidth() / 4, this.getHeight() / 4, null);
+                        case "PlaceDoor":
+                            image = new PlaceDoor(i, j).getImage();
+                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
+                                    this.getWidth() / 4, this.getHeight() / 4, null);
                     }
                 }
             }
