@@ -188,7 +188,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         JPanel envPanel = new JPanel();
         envPanel.setBorder(BorderFactory.createTitledBorder("Environment's attribute"));
         envLabel = new PuppynuxLabel("Choose environement : ");
-        String[] elements = {"Env1", "Env2"}; //TODO Récupérer env avec Loïc
+        String[] elements = {"env.xml", "env2.xml"};
         environment = new JComboBox<>(elements);
         PuppynuxButton edit = new PuppynuxButton("Edit");
         envPanel.add(envLabel);
@@ -205,7 +205,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                configDialogInfo = new ConfigDialogInfo(Choices.OK);
+//                configDialogInfo = new ConfigDialogInfo(Choices.OK);
                 setVisible(false);
                 sendData = true;
                 initInfo();
@@ -234,7 +234,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
     @Override
     public void initInfo() {
         configDialogInfo = new ConfigDialogInfo(name.getText(),
-                environment.getSelectedIndex(), learnSpeedSlider.getValue(),
+                environment.getItemAt(environment.getSelectedIndex()), learnSpeedSlider.getValue(),
                 refreshSlider.getValue(), (int) velocitySpinner.getValue(),
                 oversightSlider.getValue(), noiseSlider.getValue());
     }
