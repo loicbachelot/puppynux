@@ -4,11 +4,14 @@ import puppynux.gui.components.PuppynuxButton;
 import puppynux.gui.components.PuppynuxLabel;
 import puppynux.gui.data.Choices;
 import puppynux.gui.data.ConfigDialogInfo;
+import puppynux.rg.GameEngine;
 import tests.Main;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,6 +63,10 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
      * Initializes ConfigDialog's components
      */
     private void initComponent() {
+
+        PuppynuxButton ok = new PuppynuxButton("OK");
+        ok.setEnabled(false);
+
         //Name
         JPanel agentPanel = new JPanel();
         agentPanel.setBorder(BorderFactory.createTitledBorder("Agent's attributes")); //TODO Configurations prédéfinies pour utilisateur lambda
@@ -71,12 +78,37 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         agentContentPanel.add(nameLabel);
         agentContentPanel.add(name, JPanel.CENTER_ALIGNMENT);
         agentPanel.add(agentContentPanel);
+        name.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                changed();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changed();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                changed();
+            }
+
+            public void changed() {
+                if (name.getText().length() > 12 || name.getText().equals("")) {
+                    ok.setEnabled(false);
+                }
+                else if( !name.getText().equals("")){
+                    ok.setEnabled(true);
+                }
+            }
+        });
 
         learnSpeedLabel = new PuppynuxLabel("Learn speed : ", PuppynuxLabel.CENTER);
         learnSpeedSlider = new JSlider();
         learnSpeedSlider.setMaximum(10);
         learnSpeedSlider.setMinimum(0);
-        learnSpeedSlider.setValue(10);
+        learnSpeedSlider.setValue(5);
         PuppynuxLabel learnValueLabel = new PuppynuxLabel(String.valueOf((double) learnSpeedSlider.getValue() / 10));
         learnSpeedSlider.addChangeListener(new ChangeListener() {
             @Override
@@ -94,7 +126,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         refreshSlider = new JSlider();
         refreshSlider.setMaximum(10);
         refreshSlider.setMinimum(0);
-        refreshSlider.setValue(10);
+        refreshSlider.setValue(5);
         PuppynuxLabel refreshValueLabel = new PuppynuxLabel(String.valueOf((double) refreshSlider.getValue() / 10));
         refreshSlider.addChangeListener(new ChangeListener() {
             @Override
@@ -121,7 +153,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         oversightSlider = new JSlider();
         oversightSlider.setMaximum(10);
         oversightSlider.setMinimum(0);
-        oversightSlider.setValue(10);
+        oversightSlider.setValue(5);
         PuppynuxLabel oversightValueLabel = new PuppynuxLabel(String.valueOf(oversightSlider.getValue()));
         oversightSlider.addChangeListener(new ChangeListener() {
             @Override
@@ -139,7 +171,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         noiseSlider = new JSlider();
         noiseSlider.setMaximum(10);
         noiseSlider.setMinimum(0);
-        noiseSlider.setValue(10);
+        noiseSlider.setValue(5);
         PuppynuxLabel noiseValueLabel = new PuppynuxLabel(String.valueOf(noiseSlider.getValue()));
         noiseSlider.addChangeListener(new ChangeListener() {
             @Override
@@ -169,7 +201,6 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         contentPanel.add(envPanel);
 
         controlPanel = new JPanel();
-        PuppynuxButton ok = new PuppynuxButton("OK");
         PuppynuxButton cancel = new PuppynuxButton("Cancel");
         ok.addActionListener(new ActionListener() {
             @Override
