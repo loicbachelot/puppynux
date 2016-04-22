@@ -17,7 +17,7 @@ public class SubplaceDoor implements Cell {
 
     public SubplaceDoor(int destination) {
         this.destination = destination;
-        type = "SubplaceDoor";
+        type = "SubplaceTopDoor";
     }
 
     @Override

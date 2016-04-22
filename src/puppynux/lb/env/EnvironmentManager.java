@@ -21,8 +21,8 @@ public class EnvironmentManager {
         environmentData = new EnvironmentData();
     }
 
-    public void createEnvironment () {
-        loadEnvironment("env.xml");
+    public void createEnvironment(String path) {
+        loadEnvironment(path);
         for (Place place :
                 environmentData.getEnvironment().values()) {
             for (Subplace subplace :
@@ -37,11 +37,11 @@ public class EnvironmentManager {
         environmentData.load(path);
     }
 
-    public Cell getCell (String place, String subplace, int x, int y) {
+    public Cell getCell(String place, String subplace, int x, int y) {
         return environmentData.getEnvironment().get(place).getSubplaces().get(subplace).getCell(x, y);
     }
 
-    public Cell[][] getCells (String place, String subplace) {
+    public Cell[][] getCells(String place, String subplace) {
         return environmentData.getSubplace(place, subplace).getCells();
     }
 
@@ -49,8 +49,8 @@ public class EnvironmentManager {
         RMatrix matrix = new RMatrix();
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
-                pee(matrix.getActionList(),x,y);
-                int position = x + 4* y;
+                pee(matrix.getActionList(), x, y);
+                int position = x + 4 * y;
                 switch (cells[x][y].getType()) {
                     case "Empty":
                         if (x - 1 > -1) {
@@ -73,32 +73,32 @@ public class EnvironmentManager {
                             playBall(matrix.getActionList(), x - 1, y, position);
                         }
                         if (x + 1 < 4) {
-                            playBall(matrix.getActionList(), x + 1, y,position);
+                            playBall(matrix.getActionList(), x + 1, y, position);
                         }
                         if (y - 1 > -1) {
-                            playBall(matrix.getActionList(), x, y - 1,position);
+                            playBall(matrix.getActionList(), x, y - 1, position);
                         }
                         if (y + 1 < 4) {
-                            playBall(matrix.getActionList(), x, y + 1,position);
+                            playBall(matrix.getActionList(), x, y + 1, position);
                         }
                         break;
                     case "Table":
-                        climbTable(matrix.getActionList(), x, y,position);
+                        climbTable(matrix.getActionList(), x, y, position);
                         if (x - 1 > -1) {
-                            climbTable(matrix.getActionList(), x - 1, y,position);
+                            climbTable(matrix.getActionList(), x - 1, y, position);
                         }
                         if (x + 1 < 4) {
-                            climbTable(matrix.getActionList(), x + 1, y,position);
+                            climbTable(matrix.getActionList(), x + 1, y, position);
                         }
                         if (y - 1 > -1) {
-                            climbTable(matrix.getActionList(), x, y - 1,position);
+                            climbTable(matrix.getActionList(), x, y - 1, position);
                         }
                         if (y + 1 < 4) {
-                            climbTable(matrix.getActionList(), x, y + 1,position);
+                            climbTable(matrix.getActionList(), x, y + 1, position);
                         }
                         break;
-                    case "SubplaceDoor":
-                        changeSubplace(matrix.getActionList(),x,y,cells[x][y]);
+                    case "SubplaceTopDoor":
+                        changeSubplace(matrix.getActionList(), x, y, cells[x][y]);
                         if (x - 1 > -1) {
                             moveRight(matrix.getActionList(), x - 1, y);
                         }
@@ -120,7 +120,7 @@ public class EnvironmentManager {
         return matrix;
     }
 
-    public void changeSubplace(ArrayList<HashMap<Action, Boolean>> list, int x, int y,Cell cell){
+    public void changeSubplace(ArrayList<HashMap<Action, Boolean>> list, int x, int y, Cell cell) {
         cell = (SubplaceDoor) cell;
         list.get(x + 4 * y).put(new ChangeSubplace(((SubplaceDoor) cell).getDestination()), true);
     }
