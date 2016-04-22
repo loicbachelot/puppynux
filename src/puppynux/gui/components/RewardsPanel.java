@@ -1,11 +1,8 @@
 package puppynux.gui.components;
 
-import puppynux.gui.MainWindow;
 import puppynux.rg.GameEngine;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -18,41 +15,32 @@ import java.awt.event.ActionListener;
  */
 public class RewardsPanel extends JPanel {
     JSlider rewardSlider;
-    PuppynuxLabel rewardLabel;
-    JTextArea sliderValue;
-    PuppynuxButton confirmButton, pauseButton, forceActionButton;
-    JComboBox<String> actionComboBox;
+    JLabel sliderValue;
+    JButton confirmButton, pauseButton;
     int reward;
 
     public RewardsPanel() {
-        setLayout(new GridLayout(1, 0));
         initComponent();
-        setBackground(MainWindow.backgroundsColor);
-        Border border = new MatteBorder(5, 0, 0, 0, MainWindow.bordersColor);
-        setBorder(border);
     }
 
     public void initComponent() { //TODO Bouton à l'échelle de la fenètre
-        pauseButton = new PuppynuxButton(new ImageIcon(new ImageIcon("src/resources/img/pauseButton.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+        pauseButton = new JButton(new ImageIcon(new ImageIcon("src/resources/img/pauseButton.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT)));
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (GameEngine.getInstance().getAiManager().isLiving()) {
                     GameEngine.getInstance().getAiManager().pause();
-                    pauseButton.setIcon(new ImageIcon(new ImageIcon("src/resources/img/playButton.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
-                } else {
+                    pauseButton.setIcon(new ImageIcon(new ImageIcon("src/resources/img/playButton.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT)));
+                }
+                else {
                     GameEngine.getInstance().getAiManager().play();
-                    pauseButton.setIcon(new ImageIcon(new ImageIcon("src/resources/img/pauseButton.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+                    pauseButton.setIcon(new ImageIcon(new ImageIcon("src/resources/img/pauseButton.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT)));
                 }
             }
         });
 
-        JPanel rewardPanel = new JPanel();
-        rewardLabel = new PuppynuxLabel("Reward : ");
-
         rewardSlider = new JSlider(-100, 100, 0);
-        sliderValue = new JTextArea(String.valueOf(rewardSlider.getValue()), 1, 3);
-        sliderValue.setEditable(false);
+        sliderValue = new JLabel(String.valueOf(rewardSlider.getValue()));
         rewardSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -62,7 +50,7 @@ public class RewardsPanel extends JPanel {
             }
         });
 
-        confirmButton = new PuppynuxButton("OK");
+        confirmButton = new JButton("OK");
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,20 +59,10 @@ public class RewardsPanel extends JPanel {
 //                GameEngine.getInstance().getAiManager().getAgent().attributeReward(reward);
             }
         });
-        rewardPanel.add(rewardLabel);
-        rewardPanel.add(rewardSlider);
-        rewardPanel.add(sliderValue);
-        rewardPanel.add(confirmButton);
-
-        JPanel forceActionPanel = new JPanel();
-        String[] elements = {"Action1", "Action2"}; //TODO Récupérer Actions avec Romain
-        actionComboBox = new JComboBox<>(elements);
-        forceActionButton = new PuppynuxButton("Force action");
-        forceActionPanel.add(actionComboBox);
-        forceActionPanel.add(forceActionButton);
 
         add(pauseButton);
-        add(rewardPanel);
-        add(forceActionPanel);
+        add(rewardSlider);
+        add(sliderValue);
+        add(confirmButton);
     }
 }
