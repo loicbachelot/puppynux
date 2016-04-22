@@ -48,7 +48,7 @@ public class GameEngine extends Thread implements Observer, Observable {
         logger.info("GameEngine initialization");
         isStarted = false;
         observers = new HashMap<>();
-        createEnvironment();
+//        createEnvironment();
     }
 
     //// TODO: 18/03/16 make function loadEnvironment()
@@ -56,9 +56,9 @@ public class GameEngine extends Thread implements Observer, Observable {
     /**
      * Used to create a new Environment
      */
-    public void createEnvironment () {
+    public void createEnvironment (String path) {
         environmentManager = new EnvironmentManager();
-        environmentManager.createEnvironment();
+        environmentManager.createEnvironment(path);
     }
 
     //// TODO: 18/03/16 make function loadAgent()
@@ -185,6 +185,7 @@ public class GameEngine extends Thread implements Observer, Observable {
         while (isStarted) {
             if (createAgent) {
                 createAgent = false;
+                createEnvironment(configDialogInfo.getEnv()); //ajout ici
                 createAgent();
             }
 
