@@ -1,12 +1,8 @@
 package puppynux.gui.components;
 
 import puppynux.gui.MainWindow;
-import puppynux.gui.data.ConfigDialogInfo;
-import puppynux.rg.GameEngine;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 
 /**
@@ -14,44 +10,41 @@ import java.awt.*;
  * Contains MainWindow's right panel's elements
  */
 public class NewsPanel extends JPanel {
-    PuppynuxLabel mainTitle;
-    PuppynuxLabel iterationLabel;
-    PuppynuxLabel locationLabel;
-    PuppynuxLabel actionLabel;
-    PuppynuxLabel rewardLabel;
-    String iaName;
+    JLabel mainTitle;
+    JLabel iterationLabel;
+    JLabel locationLabel;
+    JLabel actionLabel;
+    JLabel rewardLabel;
 
     public NewsPanel() {
-        setPreferredSize(new Dimension((int) MainWindow.windowSize().getWidth() / 3, (int) MainWindow.windowSize().getHeight()));
+        setPreferredSize(new Dimension((int) MainWindow.windowSize().getWidth() / 3, getHeight()));
         setLayout(new GridLayout(0, 1));
-        mainTitle = new PuppynuxLabel("'s development", PuppynuxLabel.CENTER, "title");
-        locationLabel = new PuppynuxLabel("", PuppynuxLabel.CENTER, "");
-        iterationLabel = new PuppynuxLabel("", PuppynuxLabel.CENTER, "");
-        actionLabel = new PuppynuxLabel("", PuppynuxLabel.CENTER, "");
-        rewardLabel = new PuppynuxLabel("", PuppynuxLabel.CENTER, "");
+        mainTitle = new JLabel("INFORMATIONS", JLabel.CENTER);
+        mainTitle.setFont(MainWindow.font);
+        locationLabel = new JLabel("", JLabel.CENTER);
+        iterationLabel = new JLabel("", JLabel.CENTER);
+        actionLabel = new JLabel("", JLabel.CENTER);
+        rewardLabel = new JLabel("", JLabel.CENTER);
         add(mainTitle);
         add(iterationLabel);
         add(locationLabel);
         add(actionLabel);
         add(rewardLabel);
-        setBackground(MainWindow.backgroundsColor);
-        Border border = new MatteBorder(0, 5, 0, 0, MainWindow.bordersColor);
-        setBorder(border);
     }
 
-    public PuppynuxLabel getIterationLabel() {
+    public JLabel getIterationLabel() {
         return iterationLabel;
     }
 
-    public PuppynuxLabel getActionLabel() {
+    public JLabel getActionLabel() {
         return actionLabel;
     }
 
-    public PuppynuxLabel getLocationLabel() {
+    public JLabel getLocationLabel() {
         return locationLabel;
     }
 
-    public PuppynuxLabel getRewardLabel() {
+    public JLabel getRewardLabel() {
         return rewardLabel;
     }
 }

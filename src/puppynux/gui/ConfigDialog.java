@@ -1,17 +1,11 @@
 package puppynux.gui;
 
-import puppynux.gui.components.PuppynuxButton;
-import puppynux.gui.components.PuppynuxLabel;
 import puppynux.gui.data.Choices;
 import puppynux.gui.data.ConfigDialogInfo;
-import puppynux.rg.GameEngine;
-import tests.Main;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +20,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
     private MainWindow mainWindow;
     private boolean sendData;
     private JPanel controlPanel, contentPanel;
-    private PuppynuxLabel nameLabel, envLabel, learnSpeedLabel, refreshLabel, velocityLabel, noiseLabel, oversightLabel;
+    private JLabel nameLabel, envLabel, learnSpeedLabel, refreshLabel, velocityLabel, noiseLabel, oversightLabel;
     private JTextField name;
     private JComboBox<String> environment;
     private JSlider learnSpeedSlider, refreshSlider, noiseSlider, oversightSlider;
@@ -44,8 +38,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         initComponent();
         pack();
-        setBackground(new Color(68, 145, 247));
-        setLocationRelativeTo(null);
+        setLocation((Toolkit.getDefaultToolkit().getScreenSize().width) / 2 - getWidth() / 2, (Toolkit.getDefaultToolkit().getScreenSize().height) / 2 - getHeight() / 2);
     }
 
     /**
@@ -63,53 +56,24 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
      * Initializes ConfigDialog's components
      */
     private void initComponent() {
-
-        PuppynuxButton ok = new PuppynuxButton("OK");
-        ok.setEnabled(false);
-
         //Name
         JPanel agentPanel = new JPanel();
-        agentPanel.setBorder(BorderFactory.createTitledBorder("Agent's attributes")); //TODO Configurations prédéfinies pour utilisateur lambda
+        agentPanel.setBorder(BorderFactory.createTitledBorder("Agent's attributes"));
         agentPanel.setLayout(new GridLayout(0, 1, 0, 10));
-        nameLabel = new PuppynuxLabel("Select name :", PuppynuxLabel.CENTER);
+        nameLabel = new JLabel("Select name :", JLabel.CENTER);
         name = new JTextField();
         name.setColumns(12);
         JPanel agentContentPanel = new JPanel();
         agentContentPanel.add(nameLabel);
         agentContentPanel.add(name, JPanel.CENTER_ALIGNMENT);
         agentPanel.add(agentContentPanel);
-        name.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                changed();
-            }
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                changed();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                changed();
-            }
-
-            public void changed() {
-                if (name.getText().length() > 12 || name.getText().equals("")) {
-                    ok.setEnabled(false);
-                }
-                else if( !name.getText().equals("")){
-                    ok.setEnabled(true);
-                }
-            }
-        });
-
-        learnSpeedLabel = new PuppynuxLabel("Learn speed : ", PuppynuxLabel.CENTER);
+        learnSpeedLabel = new JLabel("Learn spead : ", JLabel.CENTER);
         learnSpeedSlider = new JSlider();
         learnSpeedSlider.setMaximum(10);
         learnSpeedSlider.setMinimum(0);
-        learnSpeedSlider.setValue(5);
-        PuppynuxLabel learnValueLabel = new PuppynuxLabel(String.valueOf((double) learnSpeedSlider.getValue() / 10));
+        learnSpeedSlider.setValue(10);
+        JLabel learnValueLabel = new JLabel(String.valueOf((double) learnSpeedSlider.getValue() / 10));
         learnSpeedSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -122,12 +86,12 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         sliderPanel.add(learnValueLabel);
         agentPanel.add(sliderPanel);
 
-        refreshLabel = new PuppynuxLabel("Refresh frequency : ", PuppynuxLabel.CENTER);
+        refreshLabel = new JLabel("Refresh frequency : ", JLabel.CENTER);
         refreshSlider = new JSlider();
         refreshSlider.setMaximum(10);
         refreshSlider.setMinimum(0);
-        refreshSlider.setValue(5);
-        PuppynuxLabel refreshValueLabel = new PuppynuxLabel(String.valueOf((double) refreshSlider.getValue() / 10));
+        refreshSlider.setValue(10);
+        JLabel refreshValueLabel = new JLabel(String.valueOf((double) refreshSlider.getValue() / 10));
         refreshSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -140,8 +104,8 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         refreshSliderPanel.add(refreshValueLabel);
         agentPanel.add(refreshSliderPanel);
 
-        velocityLabel = new PuppynuxLabel("Velocity : ", PuppynuxLabel.CENTER);
-        SpinnerModel spinnerModel = new SpinnerNumberModel(5, 0, 10, 1);
+        velocityLabel = new JLabel("Velocity : ", JLabel.CENTER);
+        SpinnerModel spinnerModel = new SpinnerNumberModel(10, 0, 10, 1);
         velocitySpinner = new JSpinner(spinnerModel);
 
         JPanel velocitySpinnerPanel = new JPanel();
@@ -149,12 +113,12 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         velocitySpinnerPanel.add(velocitySpinner);
         agentPanel.add(velocitySpinnerPanel);
 
-        oversightLabel = new PuppynuxLabel("Oversight factor : ", PuppynuxLabel.CENTER);
+        oversightLabel = new JLabel("Oversight factor : ", JLabel.CENTER);
         oversightSlider = new JSlider();
         oversightSlider.setMaximum(10);
         oversightSlider.setMinimum(0);
-        oversightSlider.setValue(5);
-        PuppynuxLabel oversightValueLabel = new PuppynuxLabel(String.valueOf(oversightSlider.getValue()));
+        oversightSlider.setValue(10);
+        JLabel oversightValueLabel = new JLabel(String.valueOf(oversightSlider.getValue()));
         oversightSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -167,12 +131,12 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         oversightSliderPanel.add(oversightValueLabel);
         agentPanel.add(oversightSliderPanel);
 
-        noiseLabel = new PuppynuxLabel("Noise factor : ", PuppynuxLabel.CENTER);
+        noiseLabel = new JLabel("Noise factor : ", JLabel.CENTER);
         noiseSlider = new JSlider();
         noiseSlider.setMaximum(10);
         noiseSlider.setMinimum(0);
-        noiseSlider.setValue(5);
-        PuppynuxLabel noiseValueLabel = new PuppynuxLabel(String.valueOf(noiseSlider.getValue()));
+        noiseSlider.setValue(10);
+        JLabel noiseValueLabel = new JLabel(String.valueOf(noiseSlider.getValue()));
         noiseSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -187,10 +151,10 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
 
         JPanel envPanel = new JPanel();
         envPanel.setBorder(BorderFactory.createTitledBorder("Environment's attribute"));
-        envLabel = new PuppynuxLabel("Choose environement : ");
-        String[] elements = {"Env1", "Env2"}; //TODO Récupérer env avec Loïc
+        envLabel = new JLabel("Choose environement : ");
+        String[] elements = {"Env1", "Env2"};
         environment = new JComboBox<>(elements);
-        PuppynuxButton edit = new PuppynuxButton("Edit");
+        JButton edit = new JButton("Edit");
         envPanel.add(envLabel);
         envPanel.add(environment);
         envPanel.add(edit);
@@ -201,7 +165,8 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         contentPanel.add(envPanel);
 
         controlPanel = new JPanel();
-        PuppynuxButton cancel = new PuppynuxButton("Cancel");
+        JButton ok = new JButton("OK");
+        JButton cancel = new JButton("Cancel");
         ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
