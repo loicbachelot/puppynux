@@ -2,12 +2,9 @@ package puppynux.gui;
 
 import puppynux.gui.components.PuppyTableCellRenderer;
 import puppynux.gui.components.PuppyTableModel;
-import puppynux.gui.components.TableButtonRenderer;
+import puppynux.gui.components.PuppynuxButton;
 import puppynux.gui.data.Choices;
-import puppynux.gui.data.FirstDialogInfo;
 import puppynux.gui.data.LoadDialogInfo;
-import puppynux.gui.listeners.CancelListener;
-import puppynux.gui.listeners.OKListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,16 +23,16 @@ public class LoadDialog extends JDialog implements PuppyDialog {
 
     public LoadDialog(JFrame parent, String title, boolean modal) {
         super(parent, title, modal);
-        setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         initComponent();
         pack();
+        setLocationRelativeTo(null);
     }
 
     public PuppyTableModel getNewLine() {
-        Object[][] elements = {{"Test", "Test", "0", new JButton("Open")},
-                {"Foo", "Bar", "42", new JButton("Open")}};
+        Object[][] elements = {{"Test", "Test", "0", new PuppynuxButton("Open")},
+                {"Foo", "Bar", "42", new PuppynuxButton("Open")}};
         String[] title = {"Agent's name", "Environment", "Last played", "Open"};
         return new PuppyTableModel(elements, title);
         //return new DefaultTableModel(elements, title);
@@ -48,7 +45,7 @@ public class LoadDialog extends JDialog implements PuppyDialog {
         table.setDefaultRenderer(JComponent.class, new PuppyTableCellRenderer());
         //table.getColumn("Open").setCellRenderer(new TableButtonRenderer());
 
-        JButton cancelButton = new JButton("Cancel");
+        PuppynuxButton cancelButton = new PuppynuxButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

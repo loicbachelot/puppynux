@@ -23,7 +23,7 @@ public class ConfigDialogInfo implements PuppyDialogInfo {
      * @param name Name transmitted by ConfigDialog
      * @param env Environment issued by ConfigDialog
      */
-    public ConfigDialogInfo(String name, int env, double learnSpeed, double refreshFrequency, int velocity, int oversight, int noise) {
+    public ConfigDialogInfo(String name, String env, double learnSpeed, double refreshFrequency, int velocity, int oversight, int noise) {
         this.name = name;
         this.env = env;
         this.learnSpeed = learnSpeed;
@@ -41,7 +41,7 @@ public class ConfigDialogInfo implements PuppyDialogInfo {
         return name;
     }
 
-    public int getEnv() {
+    public String getEnv() {
         return env;
     }
 

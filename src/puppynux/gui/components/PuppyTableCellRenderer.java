@@ -12,8 +12,8 @@ import java.awt.*;
 public class PuppyTableCellRenderer extends DefaultTableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if (value instanceof JButton) {
-            return (JButton) value;
+        if (value instanceof PuppynuxButton) {
+            return (PuppynuxButton) value;
         }
         else if (value instanceof JComboBox) {
             return (JComboBox) value;

@@ -1,11 +1,13 @@
 package puppynux.gui;
 
+import puppynux.gui.components.PuppynuxButton;
 import puppynux.gui.data.Choices;
 import puppynux.gui.data.FirstDialogInfo;
 import puppynux.gui.listeners.CancelListener;
 import puppynux.gui.listeners.OKListener;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,27 +19,27 @@ public class FirstDialog extends JDialog implements PuppyDialog {
 
     private boolean sendData;
     private FirstDialogInfo firstDialogInfo;
-    private JButton loadButton, newButton, cancelButton;
+    private PuppynuxButton loadButton, newButton, cancelButton;
     private JPanel controlPanel;
 
     /**
-     *
      * @param parent Parent frame
-     * @param title FirstDialog's title
+     * @param title  FirstDialog's title
      * @param modal
      */
     public FirstDialog(JFrame parent, String title, boolean modal) {
         super(parent, title, modal);
-//        setSize(200, 70);
-        setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         initComponent();
         pack();
+        this.getContentPane().setBackground(new Color(68, 145, 247));
+        setLocationRelativeTo(null);
     }
 
     /**
      * //TODO JavaDoc
+     *
      * @return
      */
     public FirstDialogInfo showDialog() {
@@ -71,9 +73,9 @@ public class FirstDialog extends JDialog implements PuppyDialog {
 
     private void initComponent() {
         controlPanel = new JPanel();
-        newButton = new JButton("New");
-        loadButton = new JButton("Load");
-        cancelButton = new JButton("Cancel");
+        newButton = new PuppynuxButton("New");
+        loadButton = new PuppynuxButton("Load");
+        cancelButton = new PuppynuxButton("Cancel");
 
         newButton.addActionListener(new OKListener(this));
         loadButton.addActionListener(new ActionListener() {

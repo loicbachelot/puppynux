@@ -1,6 +1,11 @@
 package puppynux.gui.components;
 
+import puppynux.gui.MainWindow;
+
+import javax.naming.spi.DirectoryManager;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 
 /**
@@ -16,14 +21,17 @@ public class BackgroundPanel extends JPanel {
     private Image backBorder = backgroundBorder.getImage();
 
     private final ImageIcon gardenCenter = new ImageIcon(getClass().getClassLoader().getResource("resources/img/grass.png"));
-    private Image grdCenter = gardenCenter.getImage();
-    private Dimension size = getPreferredSize();
+
+    int optimizedSizeWidth;
+    int optimizedSizeHeight;
 
     /**
      * @param dim Background's grid dimension
      */
     public BackgroundPanel(int dim) {
         this.dim = dim;
+        Border border = new MatteBorder(0, 2, 0, 0, MainWindow.bordersColor);
+        setBorder(border);
     }
 
     protected void paintComponent(Graphics g) {
@@ -36,12 +44,10 @@ public class BackgroundPanel extends JPanel {
      * @param g
      */
     private void generateBackground(Graphics g) {
-        int optimizedSizeWidth = getWidth();
-        int optimizedSizeHeight = getHeight();
-        while (optimizedSizeWidth % dim != 0)
-            optimizedSizeWidth--;
-        while (optimizedSizeHeight % dim != 0)
-            optimizedSizeHeight++;
+        optimizedSizeWidth = getWidth();
+        optimizedSizeHeight = getHeight();
+        g.setColor(MainWindow.bordersColor);
+        g.fillRect(0,0,optimizedSizeWidth, optimizedSizeHeight);
         for (int j = 0; j < dim; j++)
             for (int i = 0; i < dim; i++) {
                 if (i == 0 || j == 0 || i == dim - 1 || j == dim - 1) {

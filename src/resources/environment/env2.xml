@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<env>
+    <!-- environment -->
+    <places>
+        <place type="House">house2.xml</place>
+        <place type="Garden">garden.xml</place>
+    </places>
+
+
+</env>

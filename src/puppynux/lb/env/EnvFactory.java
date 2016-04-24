@@ -5,14 +5,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import puppynux.lb.env.objects.*;
 import puppynux.lb.env.place.Garden;
 import puppynux.lb.env.subplaces.Grass;
 import puppynux.lb.env.place.House;
 import puppynux.lb.env.place.Place;
 import puppynux.lb.env.subplaces.*;
-import puppynux.lb.env.objects.Ball;
-import puppynux.lb.env.objects.Cell;
-import puppynux.lb.env.objects.Table;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -102,7 +101,26 @@ public class EnvFactory {
                 NodeList objects = room.getElementsByTagName("object");
                 int nbObjects = objects.getLength();
                 subplacetype = room.getAttribute("type");
-                subplace = createSubplace(subplacetype); //creation de la piece vide
+                subplace = createSubplace(subplacetype, i); //creation de la piece vide
+                if (nbRootNodes > 1) {
+                    if (i == nbRootNodes - 1) {
+                        Cell nextDoor = new SubplaceDownDoor(0);
+                        Cell previousDoor = new SubplaceTopDoor(i - 1);
+                        subplace.setCells(2, 0, previousDoor);
+                        subplace.setCells(1, 3, nextDoor);
+                    } else if (i == 0) {
+                        Cell nextDoor = new SubplaceDownDoor(i+1);
+                        Cell previousDoor = new SubplaceTopDoor(nbRootNodes - 1);
+                        subplace.setCells(2, 0, previousDoor);
+                        subplace.setCells(1, 3, nextDoor);
+                    } else {
+                        Cell nextDoor = new SubplaceDownDoor(i+1);
+                        Cell previousDoor = new SubplaceTopDoor(i - 1);
+                        subplace.setCells(2, 0, previousDoor);
+                        subplace.setCells(1, 3, nextDoor);
+                    }
+
+                }
 
                 for (int j = 0; j < nbObjects; j++) {
                     Element object = (Element) objects.item(j);
@@ -153,17 +171,17 @@ public class EnvFactory {
         }
     }
 
-    public static Subplace createSubplace(String type) {
+    public static Subplace createSubplace(String type, int number) {
         //here to add subplace
         switch (type) {
             case "LivingRoom":
-                return new LivingRoom();
+                return new LivingRoom(number);
             case "Kitchen":
-                return new Kitchen();
+                return new Kitchen(number);
             case "Road":
-                return new Road();
+                return new Road(number);
             case "Grass":
-                return new Grass();
+                return new Grass(number);
             default:
                 return null;
         }

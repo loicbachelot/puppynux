@@ -66,7 +66,7 @@ public abstract class ComponentFactory {
      * @return Dashboard
      */
     public static Dashboard initDashboard() {
-        Dashboard dashboard = new Dashboard(new Dog(1,1), 10);
+        Dashboard dashboard = new Dashboard(new Dog(1,1), 50);
         logger.info("Dashboard initialization");
         return dashboard;
     }
@@ -76,7 +76,7 @@ public abstract class ComponentFactory {
      * @return BackgroundPanel
      */
     public static BackgroundPanel initBackgroundPanel() {
-        BackgroundPanel backgroundPanel = new BackgroundPanel(10);
+        BackgroundPanel backgroundPanel = new BackgroundPanel(0);
         logger.info("Environment Panel initialization");
         return backgroundPanel;
     }
