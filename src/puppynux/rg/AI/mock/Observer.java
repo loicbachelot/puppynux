@@ -11,5 +11,5 @@ public interface Observer {
      * @param state
      */
     void update(int state);
-    void update();
+    void update(String placePosition, String subplacePosition);
 }

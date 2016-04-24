@@ -35,4 +35,14 @@ public interface Observable {
      * @param state The new state
      */
     void notifyObserver(String name, int state);
+
+    /**
+     * Used for notifying to an Observer a place or subplace position change
+     *
+     * @see Observer
+     * @param name The name of the Observer
+     * @param placePosition The new place position
+     * @param subplacePosition The new subplace position
+     */
+    void notifyObserver(String name, String placePosition, String subplacePosition);
 }

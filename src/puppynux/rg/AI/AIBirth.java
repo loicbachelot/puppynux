@@ -48,8 +48,8 @@ public abstract class AIBirth {
     private static void generate (Consciousness agent) {
         int state = (int) (Math.random() * 15);
         int [] coor = GameEngine.getCoordinate(state);
-        while (GameEngine.getInstance().getEnvironmentManager().getCell(
-                agent.getPlacePosition(), agent.getSubplacePosition(),coor[0], coor[1]) instanceof Empty)
+        while (!(GameEngine.getInstance().getEnvironmentManager().getCell(
+                agent.getPlacePosition(), agent.getSubplacePosition(),coor[0], coor[1]) instanceof Empty))
         {
             state = (int) (Math.random() * 15);
             coor = GameEngine.getCoordinate(state);

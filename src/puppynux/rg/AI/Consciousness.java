@@ -1,13 +1,10 @@
 package puppynux.rg.AI;
 
-import config.Config;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import puppynux.gui.data.ConfigDialogInfo;
 import puppynux.lb.env.RMatrix;
-import puppynux.lb.env.objects.Empty;
 import puppynux.rg.AI.actions.*;
-import puppynux.rg.AI.mock.EnvironmentManager;
 import puppynux.rg.AI.mock.Observable;
 import puppynux.rg.AI.mock.Observer;
 
@@ -26,7 +23,7 @@ public abstract class Consciousness implements Observable {
     protected final int NOISE_FACTOR;
     protected final int OVERSIGHT_FACTOR;
     protected HashMap<String, Observer> observers;
-    protected Action [] actionTab;
+    protected HashMap<Action, Integer> actionMap;
     protected QMatrix Q;
     protected int knownActions;
     protected int actualState;
@@ -44,6 +41,7 @@ public abstract class Consciousness implements Observable {
         knownActions = 0;
         age = 0;
         actionStack = new LinkedList<>();
+        actionMap = new HashMap<>();
         observers = new HashMap<>();
         Q = new QMatrix(16);
         name = info.getName();
@@ -54,29 +52,23 @@ public abstract class Consciousness implements Observable {
 
     }
 
-    public Consciousness() {
-        logger.info("Consciousness awake");
-        knownActions = 0;
-        age = 0;
-        actionStack = new LinkedList<>();
-        observers = new HashMap<>();
-        Q = new QMatrix(16);
-        name = "test";
-        LEARN_FACTOR = 0.8;
-        ACTUALISATION_FACTOR = 1;
-        NOISE_FACTOR = 1000;
-        OVERSIGHT_FACTOR = 10;
+    public void initActionMap (ArrayList<Action> actionList) {
+        knownActions = actionList.size();
+        for (Action action: actionList) {
+            actionMap.put(action, 0);
+        }
+        logger.info("[AGENT] Action tab initialized with " + actionList.toString());
     }
 
     /**
      * Used to initialize the action tab from config
      */
-    public void initActionTab(JSONObject jsonObject) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public void initActionMap(JSONObject jsonObject) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         knownActions = jsonObject.size();
-        actionTab = new Action[knownActions];
         for (int i = 0; i < knownActions; i++) {
             Class cls = Class.forName("puppynux.rg.AI.actions." + jsonObject.get(String.valueOf(i)).toString());
-            actionTab[i] = (Action) cls.newInstance();
+            Action action = (Action) cls.newInstance();
+            actionMap.put(action, 0);
         }
         logger.info("[AGENT] Action tab initialized with " + jsonObject.toString());
     }
@@ -143,6 +135,8 @@ public abstract class Consciousness implements Observable {
     protected void act() throws ActionException {
         oldState = actualState;
         action.use(this);
+        int count = actionMap.containsKey(action) ? actionMap.get(action) : 0;
+        actionMap.put(action, count + 1);
         if (!(action instanceof Move)) {
             stackAction(new ActionData(oldState, action, actualState, age));
         }
@@ -289,6 +283,7 @@ public abstract class Consciousness implements Observable {
      */
     public void setSubplacePosition(String subplacePosition) {
         this.subplacePosition = subplacePosition;
+        notifyObserver("gameEngine", placePosition, subplacePosition);
     }
 
     /**
@@ -305,6 +300,7 @@ public abstract class Consciousness implements Observable {
      */
     public void setPlacePosition(String placePosition) {
         this.placePosition = placePosition;
+        notifyObserver("gameEngine", placePosition, subplacePosition);
     }
 
     /**
@@ -333,5 +329,10 @@ public abstract class Consciousness implements Observable {
     @Override
     public void notifyObserver(String name, int state) {
         observers.get(name).update(state);
+    }
+
+    @Override
+    public void notifyObserver(String name, String placPosition, String subplacePosition) {
+        observers.get(name).update(placPosition, subplacePosition);
     }
 }

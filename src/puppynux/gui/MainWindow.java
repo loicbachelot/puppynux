@@ -225,7 +225,7 @@ public class MainWindow extends JFrame implements Observer {
     }
 
     @Override
-    public void update() {
+    public void update(String placePosition, String subplacePosition) {
 
     }
 
