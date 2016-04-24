@@ -27,6 +27,7 @@ public class Window extends JFrame implements Observer {
     private MenuBar menu = new MenuBar();
     private AIPanel aiPanel = new AIPanel(ai, 10);
     private BorderLayout borderLayout = new BorderLayout();
+
     public Window() {
         super("Test");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,27 +49,29 @@ public class Window extends JFrame implements Observer {
     public static AI getAi() {
         return ai;
     }
-/*
-    @Override
-    public void update(int[] coor) {
-        ai.setX(coor[0]);
-        ai.setY(coor[1]);
-        repaint();
-    }
+
+    /*
+        @Override
+        public void update(int[] coor) {
+            ai.setX(coor[0]);
+            ai.setY(coor[1]);
+            repaint();
+        }
 
 
-    public void update(int[] coor, Thread t) {
-        update(coor);
-        t.start();
-    }
-*/
+        public void update(int[] coor, Thread t) {
+            update(coor);
+            t.start();
+        }
+    */
     @Override
     public void update(int state) {
 
     }
 
     @Override
-    public void update() {
+    public void update(String placePosition, String subplacePosition) {
 
     }
+
 }

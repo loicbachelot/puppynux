@@ -73,11 +73,6 @@ public class GameEngine extends Thread implements Observer, Observable {
         AIBirth.generate(aiManager.getAgent(), "House", "LivingRoom");
         agentPlacePosition = "House";
         agentSubplacePosition = "LivingRoom";
-        try {
-            aiManager.getAgent().initActionTab( (JSONObject) ((JSONArray) config.get("ACTIONS")).get(0) );
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
-        }
         aiManager.getAgent().sense(environmentManager.getRMatrix(agentPlacePosition, agentSubplacePosition));
         aiManager.start();
     }
@@ -86,7 +81,7 @@ public class GameEngine extends Thread implements Observer, Observable {
      * Used to active the reward attribution mechanism
      * @param reward The reward to grant
      */
-    public void attributeReward (int reward) {
+    public synchronized void attributeReward (int reward) {
         attributeReward = true;
         this.reward = reward;
     }
@@ -109,15 +104,15 @@ public class GameEngine extends Thread implements Observer, Observable {
      *
      * @return The Agent's lifetime
      */
-    public int getIteration() {
+    public synchronized int getIteration() {
         return iteration;
     }
 
-    public String getAgentPlacePosition() {
+    public synchronized String getAgentPlacePosition() {
         return agentPlacePosition;
     }
 
-    public String getAgentSubplacePosition() {
+    public synchronized String getAgentSubplacePosition() {
         return agentSubplacePosition;
     }
 
@@ -150,10 +145,17 @@ public class GameEngine extends Thread implements Observer, Observable {
     /**
      * Used to save the Agent coordinates
      */
-    public void setAgentCoordinate() {
+    public synchronized void setAgentCoordinate() {
         agentCoordinate = getCoordinate(agentState);
     }
 
+    public synchronized void setAgentPlacePosition(String agentPlacePosition) {
+        this.agentPlacePosition = agentPlacePosition;
+    }
+
+    public synchronized void setAgentSubplacePosition(String agentSubplacePosition) {
+        this.agentSubplacePosition = agentSubplacePosition;
+    }
 
     public int[] getAgentCoordinate() {
         return agentCoordinate;
@@ -161,7 +163,7 @@ public class GameEngine extends Thread implements Observer, Observable {
 
     //TODO fill function, link with envManager
     //Will apply the action choosen by agent onto the environmnent
-    public void applyAction(int action) {
+    public synchronized void applyAction(int action) {
 
     }
 
@@ -228,7 +230,12 @@ public class GameEngine extends Thread implements Observer, Observable {
     }
 
     @Override
-    public void update(int state) {
+    public void notifyObserver(String name, String placePosition, String subplacePosition) {
+
+    }
+
+    @Override
+    public synchronized void update(int state) {
         agentState = aiManager.getAgent().getActualState();
         setAgentCoordinate();
 
@@ -252,7 +259,8 @@ public class GameEngine extends Thread implements Observer, Observable {
     }
 
     @Override
-    public void update() {
-
+    public void update(String placePosition, String subplacePosition) {
+        agentPlacePosition = placePosition;
+        agentSubplacePosition = subplacePosition;
     }
 }

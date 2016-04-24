@@ -10,7 +10,7 @@ import puppynux.gui.data.ConfigDialogInfo;
 public class Agent extends Consciousness {
 
     public Agent () {
-        super();
+        super(new ConfigDialogInfo("test", 0, 0.8, 1, 0, 10, 1000));
     }
 
     public Agent (ConfigDialogInfo info) {

@@ -1,5 +1,10 @@
 package tests;
 
+import puppynux.rg.AI.actions.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Created by niamor972 on 22/03/16.
  * Parts of tests.
@@ -8,13 +13,8 @@ package tests;
 public class Essai {
 
     public static void main (String [] args) {
-        String test = null;
-        try {
-            test.equals("");
-            System.out.println("test = " + test);
-        } catch (NullPointerException e ) {
-            System.err.println("exception\n");
-        }
-        System.out.println("test success\n");
+        ArrayList<Action> actionList = new ArrayList<>(Arrays.asList(new MoveUp(), new MoveDown(), new MoveLeft(),
+                new MoveRight(), new Stay(), new Pee()));
+
     }
 }
