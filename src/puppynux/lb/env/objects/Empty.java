@@ -3,7 +3,7 @@ package puppynux.lb.env.objects;
 /**
  * Created by loic on 06/03/16.
  */
-public class Empty implements Cell{
+public class Empty extends Cell{
     private String type;
     public Empty(){
         type = "Empty";

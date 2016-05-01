@@ -3,7 +3,7 @@ package puppynux.lb.env.objects;
 /**
  * Created by loic on 21/04/16.
  */
-public class PlaceDoor  implements Cell {
+public class PlaceDoor  extends Cell {
     private String type;
     private int destination;
 

@@ -6,7 +6,7 @@ package puppynux.lb.env.objects;
  * >creat a object ball in the virtual environment
  */
 
-public class Ball implements Cell {
+public class Ball extends Cell {
     private String type;
 
     public Ball() {

@@ -1,6 +1,6 @@
 package puppynux.lb.env.objects;
 
-public class Table implements Cell {
+public class Table extends Cell {
     private String type;
 
     public Table() {

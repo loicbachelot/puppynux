@@ -3,21 +3,31 @@ package puppynux.lb.env.objects;
 /**
  * Created by loic on 22/04/16.
  */
-public class SubplaceDownDoor implements SubplaceDoor {
+public class SubplaceDownDoor extends Cell implements SubplaceDoor {
     private String type;
-    private int destination;
+    private String subplace1;
+    private String subplace2;
 
-    public int getDestination() {
-        return destination;
+    public String getSubplace1() {
+        return subplace1;
     }
 
-    public void setDestination(int destination) {
-        this.destination = destination;
+    public void setSubplace1(String subplace1) {
+        this.subplace1 = subplace1;
     }
 
-    public SubplaceDownDoor(int destination) {
-        this.destination = destination;
-        type = "SubplaceDownDoor";
+    public String getSubplace2() {
+        return subplace2;
+    }
+
+    public void setSubplace2(String subplace2) {
+        this.subplace2 = subplace2;
+    }
+
+    public SubplaceDownDoor(String subplace1, String subplace2) {
+        this.subplace1 = subplace1;
+        this.subplace2 = subplace2;
+        type = "SubplaceTopDoor";
     }
 
     @Override

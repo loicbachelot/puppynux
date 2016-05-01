@@ -64,12 +64,15 @@ public class EnvFactory {
         }
         return environment;
     }
+
     public static Place placeFactory(String path, String placeType) {
         HashMap<String, Subplace> subplaces = new HashMap<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         String objecttype, subplacetype;
         int x = 0, y = 0;
-        //int state = 0;
+        String orientation = "";
+        String subplace1 = "";
+        String subplace2 = "";
         Subplace subplace = null;
         Cell cell;
 
@@ -82,7 +85,7 @@ public class EnvFactory {
 
         Document document = null;
         try {
-            document = builder.parse(new File("src/resources/environment/"+path));
+            document = builder.parse(new File("src/resources/environment/" + path));
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -102,25 +105,7 @@ public class EnvFactory {
                 int nbObjects = objects.getLength();
                 subplacetype = room.getAttribute("type");
                 subplace = createSubplace(subplacetype, i); //creation de la piece vide
-                if (nbRootNodes > 1) {
-                    if (i == nbRootNodes - 1) {
-                        Cell nextDoor = new SubplaceDownDoor(0);
-                        Cell previousDoor = new SubplaceTopDoor(i - 1);
-                        subplace.setCells(2, 0, previousDoor);
-                        subplace.setCells(1, 3, nextDoor);
-                    } else if (i == 0) {
-                        Cell nextDoor = new SubplaceDownDoor(i+1);
-                        Cell previousDoor = new SubplaceTopDoor(nbRootNodes - 1);
-                        subplace.setCells(2, 0, previousDoor);
-                        subplace.setCells(1, 3, nextDoor);
-                    } else {
-                        Cell nextDoor = new SubplaceDownDoor(i+1);
-                        Cell previousDoor = new SubplaceTopDoor(i - 1);
-                        subplace.setCells(2, 0, previousDoor);
-                        subplace.setCells(1, 3, nextDoor);
-                    }
 
-                }
 
                 for (int j = 0; j < nbObjects; j++) {
                     Element object = (Element) objects.item(j);
@@ -128,23 +113,47 @@ public class EnvFactory {
                     NodeList attributes = object.getElementsByTagName("attribute");
                     int nbAttributes = attributes.getLength();
 
-                    for (int k = 0; k < nbAttributes; k++) {
-                        Element attribute = (Element) attributes.item(k);
-                        switch (attribute.getAttribute("type")) {
-                            case "x":
-                                x = Integer.parseInt(attribute.getFirstChild().getNodeValue());
-                                break;
-                            case "y":
-                                y = Integer.parseInt(attribute.getFirstChild().getNodeValue());
-                                break;
-//                                case "state":
-//                                    state = Integer.parseInt(attribute.getTextContent());
-//                                    break;
+                    if(objecttype.equals("SubplaceDoor")){
+                        for (int k = 0; k < nbAttributes; k++) {
+                            Element attribute = (Element) attributes.item(k);
+                            switch (attribute.getAttribute("type")) {
+                                case "x":
+                                    x = Integer.parseInt(attribute.getFirstChild().getNodeValue());
+                                    break;
+                                case "y":
+                                    y = Integer.parseInt(attribute.getFirstChild().getNodeValue());
+                                    break;
+                                case "Orientation":
+                                    orientation = attribute.getTextContent();
+                                    break;
+                                case "suplace1":
+                                    subplace1 = attribute.getTextContent();
+                                    break;
+                                case "suplace2":
+                                    subplace2 = attribute.getTextContent();
+                                    break;
+                            }
                         }
+                        cell = creatSubplaceDoor(orientation, subplace1, subplace2);
+                        subplace.setCells(x, y, cell);//remplissage de la piece
+                        x = y = 0;
                     }
-                    cell = creatCell(objecttype);
-                    subplace.setCells(x, y, cell);//remplissage de la piece
-                    x = y = 0;
+                    else {
+                        for (int k = 0; k < nbAttributes; k++) {
+                            Element attribute = (Element) attributes.item(k);
+                            switch (attribute.getAttribute("type")) {
+                                case "x":
+                                    x = Integer.parseInt(attribute.getFirstChild().getNodeValue());
+                                    break;
+                                case "y":
+                                    y = Integer.parseInt(attribute.getFirstChild().getNodeValue());
+                                    break;
+                            }
+                        }
+                        cell = creatCell(objecttype);
+                        subplace.setCells(x, y, cell);//remplissage de la piece
+                        x = y = 0;
+                    }
                 }
                 subplaces.put(subplacetype, subplace);
             }
@@ -157,6 +166,14 @@ public class EnvFactory {
                 return new Garden(subplaces);
             default:
                 return null;
+        }
+    }
+
+    public static Cell creatSubplaceDoor(String orientation, String subplace1, String subplace2) {
+        if (orientation == "TopDoor") {
+            return new SubplaceTopDoor(subplace1, subplace2);
+        } else {
+            return new SubplaceDownDoor(subplace1, subplace2);
         }
     }
 
