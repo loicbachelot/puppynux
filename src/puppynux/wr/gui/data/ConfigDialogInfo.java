@@ -8,14 +8,14 @@ public class ConfigDialogInfo implements PuppyDialogInfo {
     private String name, env;
     private int velocity, oversight, noise;
     private double learnSpeed,refreshFrequency;
-    private Choices choices;
+    private Choices choice;
 
     /**
      *
-     * @param choices Choice transmitted by ConfigDialog
+     * @param choice Choice transmitted by ConfigDialog
      */
-    public ConfigDialogInfo(Choices choices) {
-        this.choices = choices;
+    public ConfigDialogInfo(Choices choice) {
+        this.choice = choice;
     }
 
     /**
@@ -31,6 +31,7 @@ public class ConfigDialogInfo implements PuppyDialogInfo {
         this.velocity = velocity;
         this.oversight = oversight;
         this.noise = noise;
+        choice = Choices.CANCEL;
     }
 
     /**
@@ -70,10 +71,14 @@ public class ConfigDialogInfo implements PuppyDialogInfo {
      */
     @Override
     public Object getInfo() {
-        return choices;
+        return choice;
     }
 
     public Choices getChoice() {
-        return choices;
+        return choice;
+    }
+
+    public void setChoice(Choices choice) {
+        this.choice = choice;
     }
 }

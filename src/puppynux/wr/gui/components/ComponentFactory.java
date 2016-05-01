@@ -106,8 +106,8 @@ public abstract class ComponentFactory {
      * Initializes NewsPanel
      * @return NewsPanel
      */
-    public static NewsPanel initNewsPanel() {
-        NewsPanel newsPanel = new NewsPanel();
+    public static NewsPanel initNewsPanel(String name) {
+        NewsPanel newsPanel = new NewsPanel(name);
         logger.info("Side Panel initialization");
         return newsPanel;
     }

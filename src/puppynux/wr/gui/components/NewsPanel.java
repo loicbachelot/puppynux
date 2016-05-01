@@ -1,5 +1,6 @@
 package puppynux.wr.gui.components;
 
+import puppynux.rg.GameEngine;
 import puppynux.wr.gui.MainWindow;
 
 import javax.swing.*;
@@ -19,10 +20,10 @@ public class NewsPanel extends JPanel {
     private PuppynuxLabel rewardLabel;
     private String iaName;
 
-    public NewsPanel() {
+    public NewsPanel(String name) {
         setPreferredSize(new Dimension((int) MainWindow.windowSize().getWidth() / 3, (int) MainWindow.windowSize().getHeight()));
         setLayout(new GridLayout(0, 1));
-        mainTitle = new PuppynuxLabel("'s development", PuppynuxLabel.CENTER, "title");
+        mainTitle = new PuppynuxLabel(name + "'s development", PuppynuxLabel.CENTER, "title");
         locationLabel = new PuppynuxLabel("", PuppynuxLabel.CENTER, "");
         iterationLabel = new PuppynuxLabel("", PuppynuxLabel.CENTER, "");
         actionLabel = new PuppynuxLabel("", PuppynuxLabel.CENTER, "");

@@ -2,11 +2,11 @@ package puppynux.rg.AI;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
-import puppynux.wr.gui.data.ConfigDialogInfo;
 import puppynux.lb.env.RMatrix;
 import puppynux.rg.AI.actions.*;
 import puppynux.rg.AI.mock.Observable;
 import puppynux.rg.AI.mock.Observer;
+import puppynux.wr.gui.data.ConfigDialogInfo;
 
 import java.util.*;
 
@@ -29,7 +29,7 @@ public abstract class Consciousness implements Observable {
     protected int actualState;
     protected int oldState;
     protected Action action;
-    protected String name;
+    protected volatile String name;
     protected ArrayList<HashMap<Action, Boolean>> envTab;
     protected LinkedList<ActionData> actionStack;
     protected String placePosition;
@@ -307,7 +307,7 @@ public abstract class Consciousness implements Observable {
      *
      * @return The name of the Agent
      */
-    public String getName() {
+    public synchronized String getName() {
         return name;
     }
 

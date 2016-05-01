@@ -2,10 +2,7 @@ package puppynux.wr.gui;
 
 import org.apache.log4j.Logger;
 import puppynux.wr.gui.components.*;
-import puppynux.wr.gui.data.ConfigDialogInfo;
-import puppynux.wr.gui.data.FirstDialogInfo;
-import puppynux.wr.gui.data.IASettingDialogInfo;
-import puppynux.wr.gui.data.LoadDialogInfo;
+import puppynux.wr.gui.data.*;
 import puppynux.rg.AI.Agent;
 import puppynux.rg.AI.mock.Observer;
 import puppynux.rg.GameEngine;
@@ -53,7 +50,6 @@ public class MainWindow extends JFrame implements Observer {
         GameEngine.getInstance().addObserver("mainWindow", this);
         dashboard = ComponentFactory.initDashboard();
         rewardsPanel = ComponentFactory.initRewardsPanel();
-        newsPanel = ComponentFactory.initNewsPanel();
         environmentPanel = ComponentFactory.initBackgroundPanel();
         menuBar = ComponentFactory.initMenuBar(this);
         animation = ComponentFactory.initAnimationPanel();
@@ -117,6 +113,9 @@ public class MainWindow extends JFrame implements Observer {
                 case 1:
                     state = 0;
                     showConfigDialog();
+                    if (configDialogInfo.getChoice().equals(Choices.OK)) {
+                        state = 3;
+                    }
                     break;
                 case 2:
                     state = 0;
@@ -127,8 +126,9 @@ public class MainWindow extends JFrame implements Observer {
                     animation.setVisible(false);
                     add(dashboard, BorderLayout.CENTER);
                     add(rewardsPanel, BorderLayout.SOUTH);
-                    add(newsPanel, BorderLayout.EAST);
                     GameEngine.getInstance().createAgent(configDialogInfo);
+                    newsPanel = ComponentFactory.initNewsPanel(configDialogInfo.getName());
+                    add(newsPanel, BorderLayout.EAST);
                     break;
                 default:
                     Thread.sleep(0L, 1);
@@ -203,8 +203,7 @@ public class MainWindow extends JFrame implements Observer {
 
         if (oldX > x) {
             dashboard.getAnimal().setImage("src/resources/img/dogBack.png");
-        }
-        else {
+        } else {
             dashboard.getAnimal().setImage("src/resources/img/dog.png");
         }
         dashboard.getAnimal().setX(x);

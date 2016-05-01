@@ -207,7 +207,8 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
                 setVisible(false);
                 sendData = true;
                 initInfo();
-                mainWindow.startGame(configDialogInfo);
+                configDialogInfo.setChoice(Choices.OK);
+//                mainWindow.startGame(configDialogInfo);
 //                GameEngine.getInstance().getAiManager().start();
             }
         });
