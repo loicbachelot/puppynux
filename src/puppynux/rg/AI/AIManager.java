@@ -2,7 +2,7 @@ package puppynux.rg.AI;
 
 import config.Config;
 import org.apache.log4j.Logger;
-import puppynux.gui.data.ConfigDialogInfo;
+import puppynux.wr.gui.data.ConfigDialogInfo;
 import puppynux.rg.AI.actions.ActionException;
 
 import java.io.*;

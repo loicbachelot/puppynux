@@ -1,11 +1,11 @@
 package puppynux.wr.gui.objects;
 
 /**
- * Created by william on 06/03/16.
+ * Created by william on 12/04/16.
  */
-public class Cat extends AI {
+public class Cat extends Objects {
 
     public Cat(int x, int y) {
-        super("src/resources/img/cat.png",x, y);
+        super("src/resources/img/cat.png", x, y);
     }
 }

@@ -3,12 +3,12 @@ package puppynux.rg.AI.mock;
 
 import config.Config;
 import org.apache.log4j.Logger;
-import puppynux.gui.ConfigDialog;
-import puppynux.gui.FirstDialog;
-import puppynux.gui.IASettingDialog;
-import puppynux.gui.LoadDialog;
-import puppynux.gui.components.*;
-import puppynux.gui.data.*;
+import puppynux.wr.gui.ConfigDialog;
+import puppynux.wr.gui.FirstDialog;
+import puppynux.wr.gui.IASettingDialog;
+import puppynux.wr.gui.LoadDialog;
+import puppynux.wr.gui.components.*;
+import puppynux.wr.gui.data.*;
 import puppynux.rg.GameEngine;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ import java.awt.event.WindowEvent;
 */
 /**
  * Created by niamor972 on 09/03/16.
- * Parts of puppynux.gui.
+ * Parts of puppynux.wr.gui.
  * >
  *//*
 

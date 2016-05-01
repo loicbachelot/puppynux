@@ -2,7 +2,7 @@ package tests;
 
 import config.Config;
 import org.json.simple.parser.ParseException;
-import puppynux.gui.MainWindow;
+import puppynux.wr.gui.MainWindow;
 import puppynux.rg.GameEngine;
 
 import java.io.File;
