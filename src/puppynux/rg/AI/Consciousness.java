@@ -2,7 +2,7 @@ package puppynux.rg.AI;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
-import puppynux.gui.data.ConfigDialogInfo;
+import puppynux.wr.gui.data.ConfigDialogInfo;
 import puppynux.lb.env.RMatrix;
 import puppynux.rg.AI.actions.*;
 import puppynux.rg.AI.mock.Observable;

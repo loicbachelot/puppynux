@@ -1,6 +1,6 @@
 package puppynux.rg.AI;
 
-import puppynux.gui.data.ConfigDialogInfo;
+import puppynux.wr.gui.data.ConfigDialogInfo;
 
 /**
  * Created by niamor972 on 16/02/16.
