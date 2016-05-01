@@ -98,7 +98,8 @@ public class EnvironmentManager {
                         }
                         break;
                     case "SubplaceTopDoor":
-                        changeSubplace(matrix.getActionList(), x, y, cells[x][y]);
+                        changeSubplace(matrix.getActionList(), x, y, cells[x][y],
+                                ((SubplaceDoor) cells[x][y]).getX() + ((SubplaceDoor) cells[x][y]).getY() * 4);
                         if (x - 1 > -1) {
                             moveRight(matrix.getActionList(), x - 1, y);
                         }
@@ -114,7 +115,7 @@ public class EnvironmentManager {
                         stay(matrix.getActionList(), x, y);
                         break;
                     case "SubplaceDownDoor":
-                        changeSubplace(matrix.getActionList(), x, y, cells[x][y]);
+                        changeSubplace(matrix.getActionList(), x, y, cells[x][y], position);
                         if (x - 1 > -1) {
                             moveRight(matrix.getActionList(), x - 1, y);
                         }
@@ -136,9 +137,27 @@ public class EnvironmentManager {
         return matrix;
     }
 
-    public void changeSubplace(ArrayList<HashMap<Action, Boolean>> list, int x, int y, Cell cell) {
-        cell = cell;
-        list.get(x + 4 * y).put(new ChangeSubplace(((SubplaceDoor) cell).getSubplace1(), ((SubplaceDoor) cell).getSubplace2()), true);
+    public void changeSubplace(ArrayList<HashMap<Action, Boolean>> list, int x, int y, Cell cell, int destination) {
+        ChangeSubplace changeSubplace = new ChangeSubplace();
+        changeSubplace.setPosition(destination);
+        changeSubplace.setSubplace(((SubplaceDoor) cell).getSubplace());
+        list.get(x + 4 * y).put(changeSubplace, true);
+    }
+
+    public void playBall(ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
+        PlayBall play = new PlayBall();
+        play.setPosition(position);
+        list.get(x + 4 * y).put(play, true);
+    }
+
+    public void climbTable(ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
+        ClimbTable climb = new ClimbTable();
+        climb.setPosition(position);
+        list.get(x + 4 * y).put(climb, true);
+    }
+
+    public void pee(ArrayList<HashMap<Action, Boolean>> list, int x, int y) {
+        list.get(x + 4 * y).put(new Pee(), true);
     }
 
     public void moveUp(ArrayList<HashMap<Action, Boolean>> list, int x, int y) {
@@ -161,25 +180,6 @@ public class EnvironmentManager {
         list.get(x + 4 * y).put(new Stay(), true);
     }
 
-    public void playBall(ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
-        PlayBall play = new PlayBall();
-        play.setPosition(position);
-        list.get(x + 4 * y).put(play, true);
-    }
-
-    public void climbTable(ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
-        ClimbTable climb = new ClimbTable();
-        climb.setPosition(position);
-        list.get(x + 4 * y).put(climb, true);
-    }
-
-    public void pee(ArrayList<HashMap<Action, Boolean>> list, int x, int y) {
-        list.get(x + 4 * y).put(new Pee(), true);
-    }
-
-//    public void door(ArrayList<HashMap<Action, Boolean>> list, int x, int y) {
-//        list.get(x + 4 * y).put(new PassDoor(), true);
-//    }
 
     public RMatrix getRMatrix(String placeString, String subplaceString) {
         return environmentData.getRMatrix(placeString, subplaceString);

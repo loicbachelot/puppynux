@@ -69,10 +69,9 @@ public class EnvFactory {
         HashMap<String, Subplace> subplaces = new HashMap<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         String objecttype, subplacetype;
-        int x = 0, y = 0;
+        int x = 0, y = 0, x1 = 0, y1 = 0;
         String orientation = "";
-        String subplace1 = "";
-        String subplace2 = "";
+        String subplacename = "";
         Subplace subplace = null;
         Cell cell;
 
@@ -123,18 +122,21 @@ public class EnvFactory {
                                 case "y":
                                     y = Integer.parseInt(attribute.getFirstChild().getNodeValue());
                                     break;
-                                case "Orientation":
-                                    orientation = attribute.getTextContent();
+                                case "x1":
+                                    x1 = Integer.parseInt(attribute.getFirstChild().getNodeValue());
                                     break;
-                                case "suplace1":
-                                    subplace1 = attribute.getTextContent();
+                                case "y1":
+                                    y1 = Integer.parseInt(attribute.getFirstChild().getNodeValue());
                                     break;
-                                case "suplace2":
-                                    subplace2 = attribute.getTextContent();
+                                case "orientation":
+                                    orientation = attribute.getFirstChild().getNodeValue();
+                                    break;
+                                case "subplace":
+                                    subplacename = attribute.getFirstChild().getNodeValue();
                                     break;
                             }
                         }
-                        cell = creatSubplaceDoor(orientation, subplace1, subplace2);
+                        cell = creatSubplaceDoor(orientation, subplacename, x1, y1);
                         subplace.setCells(x, y, cell);//remplissage de la piece
                         x = y = 0;
                     }
@@ -169,11 +171,11 @@ public class EnvFactory {
         }
     }
 
-    public static Cell creatSubplaceDoor(String orientation, String subplace1, String subplace2) {
-        if (orientation == "TopDoor") {
-            return new SubplaceTopDoor(subplace1, subplace2);
+    public static Cell creatSubplaceDoor(String orientation, String subplace, int x, int y) {
+        if (orientation.equals("TopDoor")) {
+            return new SubplaceTopDoor(subplace, x, y);
         } else {
-            return new SubplaceDownDoor(subplace1, subplace2);
+            return new SubplaceDownDoor(subplace, x, y);
         }
     }
 

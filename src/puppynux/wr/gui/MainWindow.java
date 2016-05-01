@@ -122,11 +122,11 @@ public class MainWindow extends JFrame implements Observer {
                     showLoadDialog();
                     break;
                 case 3:
+                    GameEngine.getInstance().createAgent(configDialogInfo);
                     state = 0;
                     animation.setVisible(false);
                     add(dashboard, BorderLayout.CENTER);
                     add(rewardsPanel, BorderLayout.SOUTH);
-                    GameEngine.getInstance().createAgent(configDialogInfo);
                     newsPanel = ComponentFactory.initNewsPanel(configDialogInfo.getName());
                     add(newsPanel, BorderLayout.EAST);
                     break;
