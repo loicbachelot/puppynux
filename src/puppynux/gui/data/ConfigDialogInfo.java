@@ -5,10 +5,10 @@ package puppynux.gui.data;
  * Manages ConfigDialog's info
  */
 public class ConfigDialogInfo implements PuppyDialogInfo {
-    String name, env;
-    int velocity, oversight, noise;
-    double learnSpeed,refreshFrequency;
-    Choices choices;
+    private String name, env;
+    private int velocity, oversight, noise;
+    private double learnSpeed,refreshFrequency;
+    private Choices choices;
 
     /**
      *

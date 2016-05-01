@@ -5,7 +5,7 @@ package puppynux.gui.data;
  * Manages IASettingDialog's info
  */
 public class IASettingDialogInfo implements PuppyDialogInfo {
-    Double value;
+    private Double value;
 
     /**
      *

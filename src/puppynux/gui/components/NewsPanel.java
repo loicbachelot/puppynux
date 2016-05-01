@@ -14,12 +14,12 @@ import java.awt.*;
  * Contains MainWindow's right panel's elements
  */
 public class NewsPanel extends JPanel {
-    PuppynuxLabel mainTitle;
-    PuppynuxLabel iterationLabel;
-    PuppynuxLabel locationLabel;
-    PuppynuxLabel actionLabel;
-    PuppynuxLabel rewardLabel;
-    String iaName;
+    private PuppynuxLabel mainTitle;
+    private PuppynuxLabel iterationLabel;
+    private PuppynuxLabel locationLabel;
+    private PuppynuxLabel actionLabel;
+    private PuppynuxLabel rewardLabel;
+    private String iaName;
 
     public NewsPanel() {
         setPreferredSize(new Dimension((int) MainWindow.windowSize().getWidth() / 3, (int) MainWindow.windowSize().getHeight()));

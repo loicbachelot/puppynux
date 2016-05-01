@@ -12,8 +12,8 @@ import java.awt.*;
 
 public class AnimationPanel extends JPanel{
 
-    JLabel loadingLabel;
-    PuppynuxLabel mainTitleLabel;
+    private JLabel loadingLabel;
+    private PuppynuxLabel mainTitleLabel;
 
     public AnimationPanel() {
         mainTitleLabel = new PuppynuxLabel("Welcome to PUPPYNUX", JLabel.CENTER, "mainTitle");

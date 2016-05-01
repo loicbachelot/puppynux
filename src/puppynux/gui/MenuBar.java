@@ -50,11 +50,12 @@ public class MenuBar extends JMenuBar {
         });
         file.add(open);
         JMenuItem close = new JMenuItem("Close");
-        //TODO stop closing system but current agent instance
         close.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 GameEngine.getInstance().getAiManager().kill();
+                mainWindow.getEnvironmentPanel().setVisible(false);
+                mainWindow.getAnimation().setVisible(true);
             }
         });
         file.add(close);

@@ -20,12 +20,12 @@ import java.awt.event.ActionListener;
  */
 public class Dashboard extends BackgroundPanel {
 
-    Objects animal;
-    Objects objects;
-    Graphics g;
-    int value = 0;
-    boolean button = false;
-    public JButton debug = new JButton("Debug");
+    private Objects animal;
+    private Objects objects;
+    private Graphics g;
+    private int value = 0;
+    private boolean button = false;
+    private JButton debug = new JButton("Debug");
 
     /**
      * @param animal Animal initialized

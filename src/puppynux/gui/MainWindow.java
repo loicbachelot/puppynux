@@ -229,6 +229,14 @@ public class MainWindow extends JFrame implements Observer {
 
     }
 
+    public BackgroundPanel getEnvironmentPanel() {
+        return environmentPanel;
+    }
+
+    public AnimationPanel getAnimation() {
+        return animation;
+    }
+
     public static void main(String[] args) throws InterruptedException {
         MainWindow mainWindow = new MainWindow();
     }
