@@ -92,47 +92,11 @@ public class Dashboard extends BackgroundPanel {
                         GameEngine.getInstance().getAgentSubplacePosition());
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if(true) {
-                    g.drawRect(i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                            this.getWidth() / 4, this.getHeight() / 4);
+                if (map[i][j].isPee) {
+                    g.setColor(Color.YELLOW);
+                    g.fillRect(i * (this.getWidth() / 4), j * (this.getHeight() / 4),
+                            this.getWidth() / 5, this.getHeight() / 5);
                 }
-                if (map[i][j].getType() != "Empty") {
-                    switch (map[i][j].getType()) {
-                        case "Ball":
-                            image = new Ball(i, j).getImage();
-                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                                    this.getWidth() / 4, this.getHeight() / 4, null);
-                            break;
-                        case "Table":
-                            image = new Table(i, j).getImage();
-                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                                    this.getWidth() / 4, this.getHeight() / 4, null);
-                            break;
-                        case "SubplaceTopDoor":
-                            image = new SubplaceTopDoor(i, j).getImage();
-                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                                    this.getWidth() / 4, this.getHeight() / 4, null);
-                        case "SubplaceDownDoor":
-                            image = new SubplaceDownDoor(i, j).getImage();
-                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                                    this.getWidth() / 4, this.getHeight() / 4, null);
-                        case "PlaceDoor":
-                            image = new PlaceDoor(i, j).getImage();
-                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                                    this.getWidth() / 4, this.getHeight() / 4, null);
-                    }
-                }
-            }
-        }
-    }
-
-    public void drawElements() {
-        Image image;
-        Cell[][] map = GameEngine.getInstance().getEnvironmentManager().
-                getCells(GameEngine.getInstance().getAgentPlacePosition(),
-                        GameEngine.getInstance().getAgentSubplacePosition());
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
                 if (map[i][j].getType() != "Empty") {
                     switch (map[i][j].getType()) {
                         case "Ball":
