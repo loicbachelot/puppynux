@@ -17,12 +17,12 @@ import java.awt.event.ActionListener;
  * Contains MainWindow's bottom panel's elements
  */
 public class RewardsPanel extends JPanel {
-    JSlider rewardSlider;
-    PuppynuxLabel rewardLabel;
-    JTextArea sliderValue;
-    PuppynuxButton confirmButton, pauseButton, forceActionButton;
-    JComboBox<String> actionComboBox;
-    int reward;
+    private JSlider rewardSlider;
+    private PuppynuxLabel rewardLabel;
+    private JTextArea sliderValue;
+    private PuppynuxButton confirmButton, pauseButton, forceActionButton;
+    private JComboBox<String> actionComboBox;
+    private int reward;
 
     public RewardsPanel() {
         setLayout(new GridLayout(1, 0));

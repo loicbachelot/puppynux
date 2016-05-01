@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
  */
 public class CancelListener implements ActionListener {
 
-    PuppyDialog dialog;
+    private PuppyDialog dialog;
 
     /**
      * @param dialog
