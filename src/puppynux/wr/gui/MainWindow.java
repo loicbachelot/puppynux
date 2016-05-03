@@ -49,7 +49,6 @@ public class MainWindow extends JFrame implements Observer {
     public MainWindow() throws InterruptedException {
         GameEngine.getInstance().addObserver("mainWindow", this);
         dashboard = ComponentFactory.initDashboard();
-        rewardsPanel = ComponentFactory.initRewardsPanel();
         environmentPanel = ComponentFactory.initBackgroundPanel();
         menuBar = ComponentFactory.initMenuBar(this);
         animation = ComponentFactory.initAnimationPanel();
@@ -129,6 +128,7 @@ public class MainWindow extends JFrame implements Observer {
                 case 4:
                     if (gameEngine.isLiving()) {
                         state = 0;
+                        rewardsPanel = ComponentFactory.initRewardsPanel();
                         animation.setVisible(false);
                         add(dashboard, BorderLayout.CENTER);
                         add(rewardsPanel, BorderLayout.SOUTH);

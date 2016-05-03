@@ -8,7 +8,7 @@ import puppynux.rg.AI.Consciousness;
  * >
  */
 public class ClimbTable implements Action {
-    public int position;
+    public int position = -1;
 
     public void setPosition(int position) {
         this.position = position;
