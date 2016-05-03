@@ -10,10 +10,7 @@ import puppynux.rg.AI.Consciousness;
 public class Stay extends Move {
     @Override
     protected void modifyCoordinate(Consciousness agent) throws ActionException {
-        int state = agent.getActualState();
-        if (state == 4 || state == 15)
-            throw new ActionException("Can't stay here");
-        agent.notifyObserver("gameEngine", state);
+//        agent.notifyObserver("gameEngine", state);
     }
 
     @Override

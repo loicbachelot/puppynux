@@ -37,7 +37,7 @@ public abstract class Consciousness implements Observable {
     protected int age;
 
     public Consciousness(ConfigDialogInfo info) {
-        logger.info("Consciousness awake");
+        logger.info("Consciousness awaking");
         knownActions = 0;
         age = 0;
         actionStack = new LinkedList<>();
@@ -45,8 +45,8 @@ public abstract class Consciousness implements Observable {
         observers = new HashMap<>();
         Q = new QMatrix(16);
         name = info.getName();
-        LEARN_FACTOR = info.getLearnSpeed();
-        ACTUALISATION_FACTOR = info.getRefreshFrequency();
+        LEARN_FACTOR = info.getLearnSpeed() / 10;
+        ACTUALISATION_FACTOR = info.getRefreshFrequency() / 10;
         NOISE_FACTOR = info.getNoise() * 100;
         OVERSIGHT_FACTOR = info.getOversight();
 
@@ -76,13 +76,13 @@ public abstract class Consciousness implements Observable {
     /**
      * Used for changing the state of the Agent
      *
-     * @see Observable#notifyObserver(String, int)
+     * @see Observable#notifyObserver(String, String, String, int)
      * @param state The new state for the Agent
      */
     public synchronized void setState (int state) {
         this.actualState = state;
         logger.trace("[AGENT] state changed to : " + state);
-        notifyObserver("gameEngine", state);
+        notifyObserver("gameEngine", placePosition, subplacePosition, state);
     }
 
     /**
@@ -115,17 +115,6 @@ public abstract class Consciousness implements Observable {
         action = chooseAction(envTab.get(actualState));
         act();
         learn();
-        //used when rewards were assigned directly
-        /*
-        int reward = 0;
-        if (action instanceof Pee)
-            reward = -100;
-        if (action instanceof PlayBall)
-            reward = 100;
-        if (action instanceof ClimbTable)
-            reward = -50;
-        attributeReward(reward);
-        */
     }
 
     /**
@@ -154,6 +143,9 @@ public abstract class Consciousness implements Observable {
         double max = 0.0;
         Action action = null;
         for (Map.Entry<Action, Boolean> entry : possibilities.entrySet()) {
+            if (!actionMap.containsKey(entry.getKey())) {
+                actionMap.put(entry.getKey(), 0);
+            }
             if (!entry.getValue())
                 continue;
             double reward = Q.getActionReward(actualState, entry.getKey());
@@ -211,17 +203,16 @@ public abstract class Consciousness implements Observable {
      * @return The maximum reward available from next state
      */
     protected double futureSight (int nextState) {
+        if (Q.getStateActions(nextState).isEmpty()) {
+            return 0;
+        }
         double max = -100;
-        int i = 0;
         for (double reward :
                 Q.getStateActions(nextState).values()) {
             if (reward > max)
                 max = reward;
-            i++;
         }
-        //// TODO: 4/12/16 make cleaner here
-        if (i == 0)
-            return i;
+
         return max;
     }
 
@@ -281,9 +272,9 @@ public abstract class Consciousness implements Observable {
      *
      * @param subplacePosition A string representing the subplace position of the agent
      */
-    public void setSubplacePosition(String subplacePosition) {
+    public void setSubplacePosition(String subplacePosition, int state) {
         this.subplacePosition = subplacePosition;
-        notifyObserver("gameEngine", placePosition, subplacePosition);
+        setState(state);
     }
 
     /**
@@ -296,11 +287,13 @@ public abstract class Consciousness implements Observable {
 
     /**
      *
-     * @param placePosition A string representing the place position of the agent
+     * @param placePosition
+     * @param subplacePosition
+     * @param state
      */
-    public void setPlacePosition(String placePosition) {
+    public void setPlacePosition(String placePosition, String subplacePosition, int state) {
         this.placePosition = placePosition;
-        notifyObserver("gameEngine", placePosition, subplacePosition);
+        setSubplacePosition(subplacePosition, state);
     }
 
     /**
@@ -327,12 +320,7 @@ public abstract class Consciousness implements Observable {
     }
 
     @Override
-    public void notifyObserver(String name, int state) {
-        observers.get(name).update(state);
-    }
-
-    @Override
-    public void notifyObserver(String name, String placPosition, String subplacePosition) {
-        observers.get(name).update(placPosition, subplacePosition);
+    public void notifyObserver(String name, String placPosition, String subplacePosition, int state) {
+        observers.get(name).update(placPosition, subplacePosition, state);
     }
 }

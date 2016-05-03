@@ -28,21 +28,13 @@ public interface Observable {
     void removeObservers();
 
     /**
-     * Used for notifying to an Observer a state change
-     *
-     * @see Observer
-     * @param name The name of the Observer
-     * @param state The new state
-     */
-    void notifyObserver(String name, int state);
-
-    /**
      * Used for notifying to an Observer a place or subplace position change
      *
      * @see Observer
      * @param name The name of the Observer
      * @param placePosition The new place position
      * @param subplacePosition The new subplace position
+     * @param state The new state
      */
-    void notifyObserver(String name, String placePosition, String subplacePosition);
+    void notifyObserver(String name, String placePosition, String subplacePosition, int state);
 }

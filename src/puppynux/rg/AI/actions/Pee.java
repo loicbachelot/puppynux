@@ -11,7 +11,7 @@ public class Pee implements Action {
 
     @Override
     public void use(Consciousness agent) throws ActionException {
-        agent.notifyObserver("gameEngine", agent.getActualState());
+//        agent.notifyObserver("gameEngine", agent.getActualState());
     }
 
     @Override

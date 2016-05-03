@@ -7,9 +7,11 @@ package puppynux.rg.AI.mock;
  */
 public interface Observer {
     /**
+     *
      * @see Observable
+     * @param placePosition
+     * @param subplacePosition
      * @param state
      */
-    void update(int state);
-    void update(String placePosition, String subplacePosition);
+    void update(String placePosition, String subplacePosition, int state);
 }

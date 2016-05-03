@@ -21,23 +21,9 @@ public abstract class AIBirth {
      * @param subplace The Subplace to born the Agent
      * @param state The state to attribute
      */
-    public static void generate (Consciousness agent, String place, String subplace, int state) {
-        agent.setPlacePosition(place);
-        agent.setSubplacePosition(subplace);
-        generate(agent, state);
-    }
-
-    /**
-     * Used to generate randomly an Agent specifying the Place and Subplace position
-     *
-     * @param agent An instance of the Agent to generate
-     * @param place The Place to born the Agent
-     * @param subplace The Subplace to born the Agent
-     */
-    public static void generate (Consciousness agent, String place, String subplace) {
-        agent.setPlacePosition(place);
-        agent.setSubplacePosition(subplace);
-        generate(agent);
+    private static void generate (Consciousness agent, String place, String subplace, int state) {
+        agent.setPlacePosition(place, subplace, state);
+        logger.info("[BIRTH] Agent born in the " + subplace + " [" + place + "], on cell " + state);
     }
 
     /**
@@ -45,26 +31,16 @@ public abstract class AIBirth {
      *
      * @param agent The agent to generate
      */
-    private static void generate (Consciousness agent) {
+    public static void generate (Consciousness agent) {
+        //TODO make cleaner
         int state = (int) (Math.random() * 15);
         int [] coor = GameEngine.getCoordinate(state);
         while (!(GameEngine.getInstance().getEnvironmentManager().getCell(
-                agent.getPlacePosition(), agent.getSubplacePosition(),coor[0], coor[1]) instanceof Empty))
+                "House", "LivingRoom",coor[0], coor[1]) instanceof Empty))
         {
             state = (int) (Math.random() * 15);
             coor = GameEngine.getCoordinate(state);
         }
-        generate(agent, state);
+        generate(agent, "House", "LivingRoom", state);
     }
-
-    /**
-     * Used to generate an Agent by setting his state to value
-     * @param agent The agent to generate
-     * @param value The state to attribute
-     */
-    private static void generate (Consciousness agent, int value) {
-        logger.info("[BIRTH] Agent born on " + value);
-        agent.setState(value);
-    }
-
 }

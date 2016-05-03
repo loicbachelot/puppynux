@@ -112,6 +112,7 @@ public class MainWindow extends JFrame implements Observer {
             switch (state) {
                 case 1:
                     state = 0;
+                    System.err.println("mW state1");
                     showConfigDialog();
                     if (configDialogInfo.getChoice().equals(Choices.OK)) {
                         state = 3;
@@ -119,16 +120,25 @@ public class MainWindow extends JFrame implements Observer {
                     break;
                 case 2:
                     state = 0;
+                    System.err.println("mW state2");
                     showLoadDialog();
                     break;
                 case 3:
-                    GameEngine.getInstance().createAgent(configDialogInfo);
-                    state = 0;
-                    animation.setVisible(false);
-                    add(dashboard, BorderLayout.CENTER);
-                    add(rewardsPanel, BorderLayout.SOUTH);
+                    state = 4;
                     newsPanel = ComponentFactory.initNewsPanel(configDialogInfo.getName());
-                    add(newsPanel, BorderLayout.EAST);
+                    gameEngine.createAgent(configDialogInfo);
+                    break;
+                case 4:
+                    if (gameEngine.isLiving()) {
+                        state = 0;
+                        animation.setVisible(false);
+                        add(dashboard, BorderLayout.CENTER);
+                        add(rewardsPanel, BorderLayout.SOUTH);
+                        add(newsPanel, BorderLayout.EAST);
+                    }
+                    else {
+                        Thread.sleep(1L);
+                    }
                     break;
                 default:
                     Thread.sleep(0L, 1);
@@ -195,7 +205,7 @@ public class MainWindow extends JFrame implements Observer {
     }
 
     @Override
-    public void update(int state) {
+    public void update(String placePosition, String subplacePosition, int state) {
         int oldX = gameEngine.getAiManager().getAgent().getOldState() % 4;
         int oldY = gameEngine.getAiManager().getAgent().getOldState() / 4;
         int x = state % 4;
@@ -206,6 +216,8 @@ public class MainWindow extends JFrame implements Observer {
         } else {
             dashboard.getAnimal().setImage("src/resources/img/dog.png");
         }
+        dashboard.setPlacePosition(placePosition);
+        dashboard.setSubplacePosition(subplacePosition);
         dashboard.getAnimal().setX(x);
         dashboard.getAnimal().setY(y);
 
@@ -219,10 +231,6 @@ public class MainWindow extends JFrame implements Observer {
         logger.trace("[WINDOW] updated");
     }
 
-    @Override
-    public void update(String placePosition, String subplacePosition) {
-
-    }
 
     public BackgroundPanel getEnvironmentPanel() {
         return environmentPanel;

@@ -26,6 +26,9 @@ public class Dashboard extends BackgroundPanel {
     private int value = 0;
     private boolean button = false;
     private JButton debug = new JButton("Debug");
+    private volatile String placePosition = "";
+    private volatile String subplacePosition = "";
+    private int state = -1;
 
     /**
      * @param animal Animal initialized
@@ -88,8 +91,7 @@ public class Dashboard extends BackgroundPanel {
     public void drawEnvironment() {
         Image image;
         Cell[][] map = GameEngine.getInstance().getEnvironmentManager().
-                getCells(GameEngine.getInstance().getAgentPlacePosition(),
-                        GameEngine.getInstance().getAgentSubplacePosition());
+                getCells(placePosition, subplacePosition);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (map[i][j].isPee) {
@@ -194,5 +196,17 @@ public class Dashboard extends BackgroundPanel {
             wallDraw(g, this.getWidth() / 4, this.getHeight() / 4, "vertical");
             wallDraw(g, this.getWidth() / 2, this.getHeight() / 4, "vertical");
         }
+    }
+
+    public void setPlacePosition(String placePosition) {
+        this.placePosition = placePosition;
+    }
+
+    public void setSubplacePosition(String subplacePosition) {
+        this.subplacePosition = subplacePosition;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

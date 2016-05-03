@@ -32,6 +32,7 @@ public class GameEngine extends Thread implements Observer, Observable {
     private ConfigDialogInfo configDialogInfo;
     private AIManager aiManager;
     private boolean isStarted;
+    private boolean isLiving;
     private int[] agentCoordinate = new int[2];
     private boolean createAgent = false;
     private boolean attributeReward = false;
@@ -45,8 +46,11 @@ public class GameEngine extends Thread implements Observer, Observable {
         super.setName("T_GameEngine");
         logger.info("GameEngine initialization");
         isStarted = false;
+        isLiving = false;
         observers = new HashMap<>();
-//        createEnvironment();
+        iteration = 0;
+        reward = 0;
+        agentState = -1;
     }
 
     //// TODO: 18/03/16 make function loadEnvironment()
@@ -65,13 +69,14 @@ public class GameEngine extends Thread implements Observer, Observable {
      * Used to generate a new Agent
      */
     private void createAgent () {
+        logger.info("Creating agent");
         iteration = 0;
         aiManager = new AIManager(configDialogInfo);
         aiManager.getAgent().addObserver("gameEngine", this);
-        AIBirth.generate(aiManager.getAgent(), "House", "LivingRoom");
         agentPlacePosition = "House";
         agentSubplacePosition = "LivingRoom";
-        aiManager.getAgent().sense(environmentManager.getRMatrix(agentPlacePosition, agentSubplacePosition));
+        AIBirth.generate(aiManager.getAgent());
+//        aiManager.getAgent().sense(environmentManager.getRMatrix(agentPlacePosition, agentSubplacePosition));
         aiManager.start();
     }
 
@@ -88,6 +93,7 @@ public class GameEngine extends Thread implements Observer, Observable {
     public void createAgent (ConfigDialogInfo info) {
         configDialogInfo = info;
         createAgent = true;
+        System.err.println("test create");
     }
 
     /**
@@ -122,6 +128,9 @@ public class GameEngine extends Thread implements Observer, Observable {
         return aiManager;
     }
 
+    public synchronized boolean isLiving () {
+        return (aiManager != null) && aiManager.isLiving();
+    }
     /**
      *
      * @return An instance of the Environment Manager
@@ -175,13 +184,13 @@ public class GameEngine extends Thread implements Observer, Observable {
 
     @Override
     public synchronized void start() {
+        isStarted = true;
         super.start();
     }
 
     @Override
     public void run() {
         logger.info("GameEngine started");
-        isStarted = true;
         while (isStarted) {
             if (createAgent) {
                 createAgent = false;
@@ -224,42 +233,18 @@ public class GameEngine extends Thread implements Observer, Observable {
     }
 
     @Override
-    public void notifyObserver(String name, int state) {
-        observers.get(name).update(state);
+    public void notifyObserver(String name, String placePosition, String subplacePosition, int state) {
+        observers.get(name).update(placePosition, subplacePosition, state);
     }
 
     @Override
-    public void notifyObserver(String name, String placePosition, String subplacePosition) {
-
-    }
-
-    @Override
-    public synchronized void update(int state) {
-        agentState = aiManager.getAgent().getActualState();
-        setAgentCoordinate();
-
-        if (state == 4 || state == 15) {
-            iteration++;
-            logger.info("[GAME] agent reached " + state + " new it = " + iteration);
-            if (iteration == 100) {
-                try {
-                    aiManager.printQ();
-                } catch (IOException e) {
-                    //TODO handle exception if occurs
-                    e.printStackTrace();
-                }
-            }
-        }
-        else {
-            logger.trace("[GAME] agent moved to " + state);
-        }
-
-        notifyObserver("mainWindow", state);
-    }
-
-    @Override
-    public void update(String placePosition, String subplacePosition) {
+    public synchronized void update(String placePosition, String subplacePosition, int state) {
+        logger.trace("[GAME] agent moved to " + state);
         agentPlacePosition = placePosition;
         agentSubplacePosition = subplacePosition;
+        agentState = state;
+        setAgentCoordinate();
+        aiManager.getAgent().sense(environmentManager.getRMatrix(placePosition, subplacePosition));
+        notifyObserver("mainWindow", placePosition, subplacePosition, state);
     }
 }

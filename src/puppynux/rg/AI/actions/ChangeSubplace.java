@@ -19,8 +19,7 @@ public class ChangeSubplace implements Action {
 
     @Override
     public void use(Consciousness agent) throws ActionException {
-        agent.setSubplacePosition(subplace);
-        agent.setState(position);
+        agent.setSubplacePosition(subplace, position);
     }
 
     @Override

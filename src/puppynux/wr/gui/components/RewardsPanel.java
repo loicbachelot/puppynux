@@ -33,11 +33,11 @@ public class RewardsPanel extends JPanel {
     }
 
     public void initComponent() { //TODO Bouton à l'échelle de la fenètre
-        pauseButton = new PuppynuxButton(new ImageIcon(new ImageIcon("src/resources/img/pauseButton.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+        pauseButton = new PuppynuxButton(new ImageIcon(new ImageIcon("src/resources/img/playButton.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (GameEngine.getInstance().getAiManager().isLiving()) {
+                if (GameEngine.getInstance().getAiManager().isActing()) {
                     GameEngine.getInstance().getAiManager().pause();
                     pauseButton.setIcon(new ImageIcon(new ImageIcon("src/resources/img/playButton.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
                 } else {

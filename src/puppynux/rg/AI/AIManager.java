@@ -32,8 +32,8 @@ public class AIManager extends Thread {
     public AIManager(ConfigDialogInfo info) {
         super();
         super.setName("T_AIManager");
-        isStarted = true;
-        isPaused = false;
+        isStarted = false;
+        isPaused = true;
         velocity = info.getVelocity();
         periodByRuleOf3();
         agent = new Agent(info);
@@ -42,8 +42,8 @@ public class AIManager extends Thread {
     public AIManager() {
         super();
         super.setName("T_AIManager");
-        isStarted = true;
-        isPaused = false;
+        isStarted = false;
+        isPaused = true;
         velocity = 0;
         period = 2000;
         agent = new Agent();
@@ -108,12 +108,17 @@ public class AIManager extends Thread {
         isPaused = false;
     }
 
-    public synchronized boolean isLiving () {
+    public synchronized boolean isActing() {
         return !isPaused;
+    }
+
+    public synchronized boolean isLiving () {
+        return isStarted;
     }
 
     @Override
     public synchronized void start() {
+        isStarted = true;
         super.start();
         logger.info("[AIMANAGER] agent started");
     }
