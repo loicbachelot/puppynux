@@ -24,9 +24,7 @@ public class ChangePlace implements Action {
 
     @Override
     public void use(Consciousness agent) throws ActionException {
-        agent.setPlacePosition(place);
-        agent.setSubplacePosition(subplace);
-        agent.setState(position);
+        agent.setPlacePosition(place, subplace, position);
     }
 
     @Override

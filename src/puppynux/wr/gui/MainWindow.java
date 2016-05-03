@@ -112,7 +112,6 @@ public class MainWindow extends JFrame implements Observer {
             switch (state) {
                 case 1:
                     state = 0;
-                    System.err.println("mW state1");
                     showConfigDialog();
                     if (configDialogInfo.getChoice().equals(Choices.OK)) {
                         state = 3;
@@ -120,7 +119,6 @@ public class MainWindow extends JFrame implements Observer {
                     break;
                 case 2:
                     state = 0;
-                    System.err.println("mW state2");
                     showLoadDialog();
                     break;
                 case 3:

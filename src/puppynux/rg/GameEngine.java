@@ -93,7 +93,6 @@ public class GameEngine extends Thread implements Observer, Observable {
     public void createAgent (ConfigDialogInfo info) {
         configDialogInfo = info;
         createAgent = true;
-        System.err.println("test create");
     }
 
     /**
