@@ -45,6 +45,7 @@ public class Dashboard extends BackgroundPanel {
                         else
                             button = true;
                         repaint();
+                        GameEngine.getInstance().setDebug(button);
                     }
                 }
         );

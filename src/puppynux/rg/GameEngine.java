@@ -163,6 +163,10 @@ public class GameEngine extends Thread implements Observer, Observable {
         this.agentSubplacePosition = agentSubplacePosition;
     }
 
+    public synchronized void setDebug(boolean debug) {
+        aiManager.setDebug(debug);
+    }
+
     public int[] getAgentCoordinate() {
         return agentCoordinate;
     }

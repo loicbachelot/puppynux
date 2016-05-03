@@ -2,6 +2,8 @@ package puppynux.rg.AI;
 
 import config.Config;
 import org.apache.log4j.Logger;
+import puppynux.rg.AI.actions.Move;
+import puppynux.rg.GameEngine;
 import puppynux.wr.gui.data.ConfigDialogInfo;
 import puppynux.rg.AI.actions.ActionException;
 
@@ -15,7 +17,7 @@ import java.io.*;
  */
 
 //TODO fixer un seuil de connaissance totale et faire varier celui de l'agent
-    //de manière à ce que l'agent sache ce qu'il ne connait pas
+//de manière à ce que l'agent sache ce qu'il ne connait pas
 public class AIManager extends Thread {
     //TODO :
     //stock a pile of action / state
@@ -28,11 +30,13 @@ public class AIManager extends Thread {
     private boolean isStarted, isPaused;
     private int velocity;
     private long period;
+    private boolean isDebug;
 
     public AIManager(ConfigDialogInfo info) {
         super();
         super.setName("T_AIManager");
         isStarted = false;
+        isDebug = false;
         isPaused = true;
         velocity = info.getVelocity();
         periodByRuleOf3();
@@ -55,7 +59,7 @@ public class AIManager extends Thread {
      * @throws IOException
      */
     public void printQ() throws IOException {
-        long saved = (long)config.get("SAVED_FILES") + 1;
+        long saved = (long) config.get("SAVED_FILES") + 1;
         config.put("SAVED_FILES", saved);
         File file = new File("src/log/q_logs/Q" + saved + ".txt");
         PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(file)));
@@ -64,8 +68,12 @@ public class AIManager extends Thread {
         logger.info("QMatrix printed");
     }
 
-    private void periodByRuleOf3 () {
+    private void periodByRuleOf3() {
         period = (long) (2000 - (velocity * 150));
+    }
+
+    public void setDebug(boolean isDebug) {
+        this.isDebug = isDebug;
     }
 
     //// TODO: 17/03/16 find equation for velocity (0-10) = (500-2000) ms for wait()
@@ -79,7 +87,6 @@ public class AIManager extends Thread {
     }
 
     /**
-     *
      * @return The Agent instance
      */
     public Consciousness getAgent() {
@@ -97,14 +104,14 @@ public class AIManager extends Thread {
     /**
      * Used for pausing the Agent's decision making
      */
-    public synchronized void pause () {
+    public synchronized void pause() {
         isPaused = true;
     }
 
     /**
      * Used to resume the agent's decision making
      */
-    public synchronized void play () {
+    public synchronized void play() {
         isPaused = false;
     }
 
@@ -112,7 +119,7 @@ public class AIManager extends Thread {
         return !isPaused;
     }
 
-    public synchronized boolean isLiving () {
+    public synchronized boolean isLiving() {
         return isStarted;
     }
 
@@ -132,9 +139,23 @@ public class AIManager extends Thread {
             if (isPaused) {
                 try {
                     Thread.sleep(0L, 1000);
-                }
-                catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
+                }
+            } else if (isDebug) {
+                boolean isMoving = false;
+                if (agent.getAction() instanceof Move) {
+                    isMoving = true;
+                }
+                if (!isMoving) {
+
+                } else {
+                    try {
+                        agent.routine();
+                        Thread.sleep(period);
+                    } catch (ActionException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             } else {
                 try {
