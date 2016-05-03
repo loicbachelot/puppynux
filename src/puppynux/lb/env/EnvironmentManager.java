@@ -115,7 +115,25 @@ public class EnvironmentManager {
                         stay(matrix.getActionList(), x, y);
                         break;
                     case "SubplaceDownDoor":
-                        changeSubplace(matrix.getActionList(), x, y, cells[x][y], position);
+                        changeSubplace(matrix.getActionList(), x, y, cells[x][y],
+                                ((SubplaceDoor) cells[x][y]).getX() + ((SubplaceDoor) cells[x][y]).getY() * 4);
+                        if (x - 1 > -1) {
+                            moveRight(matrix.getActionList(), x - 1, y);
+                        }
+                        if (x + 1 < 4) {
+                            moveLeft(matrix.getActionList(), x + 1, y);
+                        }
+                        if (y - 1 > -1) {
+                            moveDown(matrix.getActionList(), x, y - 1);
+                        }
+                        if (y + 1 < 4) {
+                            moveUp(matrix.getActionList(), x, y + 1);
+                        }
+                        stay(matrix.getActionList(), x, y);
+                        break;
+                    case "PlaceLeftDoor":
+                        changePlace(matrix.getActionList(), x, y, cells[x][y],
+                                ((PlaceDoor) cells[x][y]).getX() + ((PlaceDoor) cells[x][y]).getY() * 4);
                         if (x - 1 > -1) {
                             moveRight(matrix.getActionList(), x - 1, y);
                         }
@@ -135,6 +153,14 @@ public class EnvironmentManager {
 
         }
         return matrix;
+    }
+
+    public void changePlace(ArrayList<HashMap<Action, Boolean>> list, int x, int y, Cell cell, int destination) {
+        ChangePlace changePlace = new ChangePlace();
+        changePlace.setPosition(destination);
+        changePlace.setPlace(((PlaceDoor) cell).getPlace());
+        changePlace.setSubplace(((PlaceDoor) cell).getSubplace());
+        list.get(x + 4 * y).put(changePlace, true);
     }
 
     public void changeSubplace(ArrayList<HashMap<Action, Boolean>> list, int x, int y, Cell cell, int destination) {

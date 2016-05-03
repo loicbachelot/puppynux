@@ -72,6 +72,7 @@ public class EnvFactory {
         int x = 0, y = 0, x1 = 0, y1 = 0;
         String orientation = "";
         String subplacename = "";
+        String placename = "";
         Subplace subplace = null;
         Cell cell;
 
@@ -140,6 +141,37 @@ public class EnvFactory {
                         subplace.setCells(x, y, cell);//remplissage de la piece
                         x = y = 0;
                     }
+                    else if(objecttype.equals("PlaceDoor")){
+                        for (int k = 0; k < nbAttributes; k++) {
+                            Element attribute = (Element) attributes.item(k);
+                            switch (attribute.getAttribute("type")) {
+                                case "x":
+                                    x = Integer.parseInt(attribute.getFirstChild().getNodeValue());
+                                    break;
+                                case "y":
+                                    y = Integer.parseInt(attribute.getFirstChild().getNodeValue());
+                                    break;
+                                case "x1":
+                                    x1 = Integer.parseInt(attribute.getFirstChild().getNodeValue());
+                                    break;
+                                case "y1":
+                                    y1 = Integer.parseInt(attribute.getFirstChild().getNodeValue());
+                                    break;
+                                case "orientation":
+                                    orientation = attribute.getFirstChild().getNodeValue();
+                                    break;
+                                case "Place":
+                                    placename = attribute.getFirstChild().getNodeValue();
+                                    break;
+                                case "subplace":
+                                    subplacename = attribute.getFirstChild().getNodeValue();
+                                    break;
+                            }
+                        }
+                        cell = creatPlaceDoor(orientation, placename, subplacename, x1, y1);
+                        subplace.setCells(x, y, cell);//remplissage de la piece
+                        x = y = 0;
+                    }
                     else {
                         for (int k = 0; k < nbAttributes; k++) {
                             Element attribute = (Element) attributes.item(k);
@@ -168,6 +200,14 @@ public class EnvFactory {
                 return new Garden(subplaces);
             default:
                 return null;
+        }
+    }
+
+    public static Cell creatPlaceDoor(String orientation, String place, String subplace, int x, int y) {
+        if (orientation.equals("leftDoor")) {
+            return new PlaceLeftDoor(place, subplace, x, y);
+        } else {
+            return new PlaceRightDoor(place, subplace, x, y);
         }
     }
 
