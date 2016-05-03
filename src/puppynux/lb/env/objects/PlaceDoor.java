@@ -3,21 +3,42 @@ package puppynux.lb.env.objects;
 /**
  * Created by loic on 21/04/16.
  */
-public class PlaceDoor  extends Cell {
+public abstract class PlaceDoor extends Cell {
     private String type;
-    private int destination;
+    private String place;
+    private String subplace;
+    int x, y;
 
-    public int getDestination() {
-        return destination;
+    public PlaceDoor(String place, String subplace, String type, int x, int y) {
+        this.place = place;
+        this.subplace = subplace;
+        this.type = type;
+        this.x = x;
+        this.y = y;
     }
 
-    public void setDestination(int destination) {
-        this.destination = destination;
+    public int getX() {
+        return x;
     }
 
-    public PlaceDoor(int destination) {
-        this.destination = destination;
-        type = "PlaceDoor";
+    public int getY() {
+        return y;
+    }
+
+    public String getSubplace() {
+        return subplace;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public void setSubplace(String subplace) {
+        this.subplace = subplace;
     }
 
     @Override
