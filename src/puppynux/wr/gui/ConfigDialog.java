@@ -13,6 +13,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 
 /**
  * Created by william on 09/03/16.
@@ -27,9 +28,8 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
     private PuppynuxLabel nameLabel, envLabel, learnSpeedLabel, refreshLabel, velocityLabel, noiseLabel, oversightLabel;
     private JTextField name;
     private JComboBox<String> environment;
-    //    private JSlider learnSpeedSlider, refreshSlider, noiseSlider, oversightSlider;
-//    private JSpinner velocitySpinner;
     private JRadioButton radioButtonConfig1, radioButtonConfig2, radioButtonConfig3;
+    private ButtonGroup bg;
 
     /**
      * @param parent Parent frame
@@ -187,7 +187,7 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         radioButtonConfig1 = new JRadioButton("Config1");
         radioButtonConfig2 = new JRadioButton("Config2");
         radioButtonConfig3 = new JRadioButton("Config3");
-        ButtonGroup bg = new ButtonGroup();
+        bg = new ButtonGroup();
         bg.add(radioButtonConfig1);
         bg.add(radioButtonConfig2);
         bg.add(radioButtonConfig3);
@@ -241,15 +241,25 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         getContentPane().add(controlPanel, BorderLayout.SOUTH);
     }
 
+    public String getSelectedButtonText(ButtonGroup buttonGroup) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                return button.getText();
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Initializes info to send to ConfigDialogInfo
      */
     @Override
     public void initInfo() {
-//        configDialogInfo = new ConfigDialogInfo(name.getText(),
-//                environment.getItemAt(environment.getSelectedIndex()), learnSpeedSlider.getValue(),
-//                refreshSlider.getValue(), (int) velocitySpinner.getValue(),
-//                oversightSlider.getValue(), noiseSlider.getValue());
+        configDialogInfo = new ConfigDialogInfo(name.getText(),
+                environment.getItemAt(environment.getSelectedIndex()), getSelectedButtonText(bg));
     }
 
     /**

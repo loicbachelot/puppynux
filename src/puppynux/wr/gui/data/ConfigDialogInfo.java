@@ -5,13 +5,12 @@ package puppynux.wr.gui.data;
  * Manages ConfigDialog's info
  */
 public class ConfigDialogInfo implements PuppyDialogInfo {
-    private String name, env;
+    private String name, env, config;
     private int velocity, oversight, noise;
-    private double learnSpeed,refreshFrequency;
+    private double learnSpeed, refreshFrequency;
     private Choices choice;
 
     /**
-     *
      * @param choice Choice transmitted by ConfigDialog
      */
     public ConfigDialogInfo(Choices choice) {
@@ -19,51 +18,35 @@ public class ConfigDialogInfo implements PuppyDialogInfo {
     }
 
     /**
-     *
      * @param name Name transmitted by ConfigDialog
-     * @param env Environment issued by ConfigDialog
+     * @param env  Environment issued by ConfigDialog
      */
-    public ConfigDialogInfo(String name, String env, double learnSpeed, double refreshFrequency, int velocity, int oversight, int noise) {
+    public ConfigDialogInfo(String name, String env, String config) {
         this.name = name;
         this.env = env;
-        this.learnSpeed = learnSpeed;
-        this.refreshFrequency = refreshFrequency;
-        this.velocity = velocity;
-        this.oversight = oversight;
-        this.noise = noise;
+        this.config = config;
         choice = Choices.CANCEL;
     }
 
     /**
-     *
      * @return Name
      */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return env
+     */
     public String getEnv() {
         return env;
     }
 
-    public double getLearnSpeed() {
-        return learnSpeed;
-    }
-
-    public double getRefreshFrequency() {
-        return refreshFrequency;
-    }
-
-    public int getNoise() {
-        return noise;
-    }
-
-    public int getOversight() {
-        return oversight;
-    }
-
-    public int getVelocity() {
-        return velocity;
+    /**
+     * @return config
+     */
+    public String getConfig() {
+        return config;
     }
 
     /**
