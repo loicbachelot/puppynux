@@ -1,7 +1,8 @@
 package puppynux.wr.gui.components;
 
-import puppynux.wr.gui.MainWindow;
+import puppynux.rg.AI.actions.Action;
 import puppynux.rg.GameEngine;
+import puppynux.wr.gui.MainWindow;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -11,6 +12,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by william on 17/03/16.
@@ -77,8 +79,19 @@ public class RewardsPanel extends JPanel {
         rewardPanel.add(confirmButton);
 
         JPanel forceActionPanel = new JPanel();
-        String[] elements = {"Action1", "Action2"}; //TODO Récupérer Actions avec Romain
+
+
+        ArrayList<Action> list = GameEngine.getInstance().getEnvironmentManager().getActionList();
+        String[] elements = new String[list.size()];
+        int i = 0;
+        for (Action action :
+                list) {
+            elements[i++] = action.toString();
+        }
         actionComboBox = new JComboBox<>(elements);
+
+
+//        actionComboBox = new JComboBox<>(new String[] {"test", "test2"});
         forceActionButton = new PuppynuxButton("Force action");
         forceActionPanel.add(actionComboBox);
         forceActionPanel.add(forceActionButton);

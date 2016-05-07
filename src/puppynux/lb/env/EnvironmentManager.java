@@ -15,9 +15,12 @@ import java.util.HashMap;
  * Created by loic on 06/03/16.
  */
 public class EnvironmentManager {
+    private ArrayList<Action> actionList;
     private EnvironmentData environmentData;
 
     public EnvironmentManager() {
+        actionList = new ArrayList<>(Arrays.asList(
+                new MoveUp(), new MoveDown(), new MoveLeft(), new MoveRight(), new Stay(), new Pee()));
         environmentData = new EnvironmentData();
     }
 
@@ -43,6 +46,10 @@ public class EnvironmentManager {
 
     public Cell[][] getCells(String place, String subplace) {
         return environmentData.getSubplace(place, subplace).getCells();
+    }
+
+    public ArrayList<Action> getActionList() {
+        return actionList;
     }
 
     public RMatrix initRMatrix(Cell[][] cells) {
@@ -157,6 +164,9 @@ public class EnvironmentManager {
 
     public void changePlace(ArrayList<HashMap<Action, Boolean>> list, int x, int y, Cell cell, int destination) {
         ChangePlace changePlace = new ChangePlace();
+        if (!actionList.contains(changePlace)) {
+            actionList.add(changePlace);
+        }
         changePlace.setPosition(destination);
         changePlace.setPlace(((PlaceDoor) cell).getPlace());
         changePlace.setSubplace(((PlaceDoor) cell).getSubplace());
@@ -165,6 +175,9 @@ public class EnvironmentManager {
 
     public void changeSubplace(ArrayList<HashMap<Action, Boolean>> list, int x, int y, Cell cell, int destination) {
         ChangeSubplace changeSubplace = new ChangeSubplace();
+        if (!actionList.contains(changeSubplace)) {
+            actionList.add(changeSubplace);
+        }
         changeSubplace.setPosition(destination);
         changeSubplace.setSubplace(((SubplaceDoor) cell).getSubplace());
         list.get(x + 4 * y).put(changeSubplace, true);
@@ -172,12 +185,18 @@ public class EnvironmentManager {
 
     public void playBall(ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
         PlayBall play = new PlayBall();
+        if (!actionList.contains(play)) {
+            actionList.add(play);
+        }
         play.setPosition(position);
         list.get(x + 4 * y).put(play, true);
     }
 
     public void climbTable(ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
         ClimbTable climb = new ClimbTable();
+        if (!actionList.contains(climb)) {
+            actionList.add(climb);
+        }
         climb.setPosition(position);
         list.get(x + 4 * y).put(climb, true);
     }

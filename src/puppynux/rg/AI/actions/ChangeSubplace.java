@@ -6,8 +6,8 @@ import puppynux.rg.AI.Consciousness;
  * Created by loic on 21/04/16.
  */
 public class ChangeSubplace implements Action {
-    private String subplace;
-    private int position;
+    private String subplace = "";
+    private int position = -1;
 
     public void setPosition(int position) {
         this.position = position;
