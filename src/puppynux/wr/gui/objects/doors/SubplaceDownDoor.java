@@ -10,4 +10,3 @@ public class SubplaceDownDoor extends Objects {
         super("src/resources/img/downDoor.png", x, y);
     }
 }
-
