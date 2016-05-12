@@ -152,7 +152,7 @@ public abstract class Consciousness implements Observable {
             double noise = Math.random() * NOISE_FACTOR;
             if (reward + noise >= max) {
                 action = entry.getKey();
-                max = reward;
+                max = reward + noise;
             }
         }
         return action;
