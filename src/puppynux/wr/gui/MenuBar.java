@@ -54,7 +54,7 @@ public class MenuBar extends JMenuBar {
             public void actionPerformed(ActionEvent actionEvent) {
                 if (GameEngine.getInstance().isLiving())
                     GameEngine.getInstance().getAiManager().kill();
-                mainWindow.getEnvironmentPanel().setVisible(false);
+                mainWindow.getBackgroundPanel().setVisible(false);
                 mainWindow.getAnimation().setVisible(true);
             }
         });

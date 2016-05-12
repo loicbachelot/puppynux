@@ -14,12 +14,11 @@ import java.awt.*;
 public class BackgroundPanel extends JPanel {
 
     private int dim;
-    private final ImageIcon backgroundCenter = new ImageIcon(getClass().getClassLoader().getResource("resources/img/roofCenter.png"));
-    private Image backCenter = backgroundCenter.getImage();
-    private final ImageIcon backgroundBorder = new ImageIcon(getClass().getClassLoader().getResource("resources/img/roofBorder.png"));
-    private Image backBorder = backgroundBorder.getImage();
-
-    private final ImageIcon gardenCenter = new ImageIcon(getClass().getClassLoader().getResource("resources/img/grass.png"));
+    protected ImageIcon backgroundCenter;
+    protected Image backCenter;
+    protected ImageIcon backgroundBorder;
+    protected Image backBorder;
+    private volatile String subplace;
 
     int optimizedSizeWidth;
     int optimizedSizeHeight;
@@ -31,6 +30,11 @@ public class BackgroundPanel extends JPanel {
         this.dim = dim;
         Border border = new MatteBorder(0, 2, 0, 0, MainWindow.bordersColor);
         setBorder(border);
+        subplace = "";
+    }
+
+    protected void environmentCase() {
+
     }
 
     protected void paintComponent(Graphics g) {
@@ -42,11 +46,12 @@ public class BackgroundPanel extends JPanel {
      *
      * @param g
      */
-    private void generateBackground(Graphics g) {
+    public void generateBackground(Graphics g) {
+        environmentCase();
         optimizedSizeWidth = getWidth();
         optimizedSizeHeight = getHeight();
         g.setColor(MainWindow.bordersColor);
-        g.fillRect(0,0,optimizedSizeWidth, optimizedSizeHeight);
+        g.fillRect(0, 0, optimizedSizeWidth, optimizedSizeHeight);
         for (int j = 0; j < dim; j++)
             for (int i = 0; i < dim; i++) {
                 if (i == 0 || j == 0 || i == dim - 1 || j == dim - 1) {
@@ -55,5 +60,13 @@ public class BackgroundPanel extends JPanel {
                 } else g.drawImage(backCenter, i * (optimizedSizeWidth / dim), j * (optimizedSizeHeight / dim),
                         optimizedSizeWidth / dim, optimizedSizeHeight / dim, null);
             }
+    }
+
+    public void setSubplace(String subplace) {
+        this.subplace = subplace;
+    }
+
+    public String getSubplace() {
+        return subplace;
     }
 }

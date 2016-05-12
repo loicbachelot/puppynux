@@ -64,6 +64,32 @@ public class Dashboard extends BackgroundPanel {
     }
 
     @Override
+    protected void environmentCase() {
+        String sub = "";
+        switch (subplacePosition) {
+            case "Grass":
+                sub = "grass";
+                break;
+            case "Kitchen":
+                sub = "kitchen";
+                break;
+            case "LivingRoom":
+                sub = "roof";
+                break;
+            case "Road":
+                sub = "road";
+                break;
+        }
+        String mainPath = "resources/img/" + sub;
+        String pathCenter = mainPath + "Center.png";
+        String pathBorder = mainPath + "Border.png";
+        backgroundCenter = new ImageIcon(getClass().getClassLoader().getResource(pathCenter));
+        backCenter = backgroundCenter.getImage();
+        backgroundBorder = new ImageIcon(getClass().getClassLoader().getResource(pathBorder));
+        backBorder = backgroundBorder.getImage();
+    }
+
+    @Override
     protected void paintComponent(Graphics g) {
         this.g = g;
         super.paintComponent(g);

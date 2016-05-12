@@ -33,7 +33,7 @@ public class MainWindow extends JFrame implements Observer {
     private final static Logger logger = Logger.getLogger(MainWindow.class);
     private final static GameEngine gameEngine = GameEngine.getInstance();
     private Dashboard dashboard;
-    private BackgroundPanel environmentPanel;
+    private BackgroundPanel backgroundPanel;
     private RewardsPanel rewardsPanel;
     private FirstDialogInfo firstDialogInfo;
     private ConfigDialogInfo configDialogInfo;
@@ -50,7 +50,7 @@ public class MainWindow extends JFrame implements Observer {
         GameEngine.getInstance().addObserver("mainWindow", this);
         dashboard = ComponentFactory.initDashboard();
         rewardsPanel = ComponentFactory.initRewardsPanel();
-        environmentPanel = ComponentFactory.initBackgroundPanel();
+        backgroundPanel = ComponentFactory.initBackgroundPanel();
         menuBar = ComponentFactory.initMenuBar(this);
         animation = ComponentFactory.initAnimationPanel();
         borderLayout = new BorderLayout();
@@ -101,7 +101,6 @@ public class MainWindow extends JFrame implements Observer {
         }
 
 
-
         while (isRunning) {
             switch (state) {
                 case 1:
@@ -109,8 +108,7 @@ public class MainWindow extends JFrame implements Observer {
                     showConfigDialog();
                     if (configDialogInfo.getChoice().equals(Choices.OK)) {
                         state = 3;
-                    }
-                    else
+                    } else
                         JOptionPane.showMessageDialog(null, "No session launched", "WARN", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 2:
@@ -126,13 +124,12 @@ public class MainWindow extends JFrame implements Observer {
                     if (gameEngine.isLiving()) {
                         state = 0;
                         animation.setVisible(false);
-System.err.print("lol");
+                        System.err.print("lol");
 //                        rewardsPanel.setJComboBox(gameEngine.getEnvironmentManager().getActionList());
                         add(dashboard, BorderLayout.CENTER);
                         add(rewardsPanel, BorderLayout.SOUTH);
                         add(newsPanel, BorderLayout.EAST);
-                    }
-                    else {
+                    } else {
                         Thread.sleep(1L);
                     }
                     break;
@@ -205,6 +202,9 @@ System.err.print("lol");
 
     @Override
     public void update(String placePosition, String subplacePosition, int state) {
+        System.out.println(subplacePosition);
+        dashboard.setSubplace(subplacePosition);
+
         int oldX = gameEngine.getAiManager().getAgent().getOldState() % 4;
         int oldY = gameEngine.getAiManager().getAgent().getOldState() / 4;
         int x = state % 4;
@@ -220,6 +220,8 @@ System.err.print("lol");
         dashboard.getAnimal().setX(x);
         dashboard.getAnimal().setY(y);
 
+        rewardsPanel.setJComboBox(GameEngine.getInstance().getEnvironmentManager().getRMatrix(placePosition, subplacePosition).getActionList());
+
 
         Agent agent = (Agent) gameEngine.getAiManager().getAgent();
         newsPanel.getIterationLabel().setText("Iteration : " + gameEngine.getIteration());
@@ -231,8 +233,8 @@ System.err.print("lol");
     }
 
 
-    public BackgroundPanel getEnvironmentPanel() {
-        return environmentPanel;
+    public BackgroundPanel getBackgroundPanel() {
+        return backgroundPanel;
     }
 
     public AnimationPanel getAnimation() {
