@@ -147,17 +147,8 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         controlPanel.add(ok);
         controlPanel.add(cancel);
 
-        getContentPane()
-
-                .
-
-                        add(contentPanel, BorderLayout.NORTH);
-
-        getContentPane()
-
-                .
-
-                        add(controlPanel, BorderLayout.SOUTH);
+        getContentPane().add(contentPanel, BorderLayout.NORTH);
+        getContentPane().add(controlPanel, BorderLayout.SOUTH);
 
     }
 

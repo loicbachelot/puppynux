@@ -116,14 +116,17 @@ public class Dashboard extends BackgroundPanel {
                             image = new SubplaceTopDoor(i, j).getImage();
                             g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
                                     this.getWidth() / 4, this.getHeight() / 4, null);
+                            break;
                         case "SubplaceDownDoor":
                             image = new SubplaceDownDoor(i, j).getImage();
                             g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
                                     this.getWidth() / 4, this.getHeight() / 4, null);
+                            break;
                         case "PlaceDoor":
                             image = new PlaceDoor(i, j).getImage();
                             g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
                                     this.getWidth() / 4, this.getHeight() / 4, null);
+                            break;
                     }
                 }
             }
