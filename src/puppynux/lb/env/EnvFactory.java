@@ -160,7 +160,7 @@ public class EnvFactory {
                                 case "orientation":
                                     orientation = attribute.getFirstChild().getNodeValue();
                                     break;
-                                case "Place":
+                                case "place":
                                     placename = attribute.getFirstChild().getNodeValue();
                                     break;
                                 case "subplace":
