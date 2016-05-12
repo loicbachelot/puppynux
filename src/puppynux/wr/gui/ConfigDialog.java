@@ -101,9 +101,9 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         });
 
         JPanel configPanel = new JPanel();
-        radioButtonConfig1 = new JRadioButton("Config1");
-        radioButtonConfig2 = new JRadioButton("Config2");
-        radioButtonConfig3 = new JRadioButton("Config3");
+        radioButtonConfig1 = new JRadioButton("Bulldog");
+        radioButtonConfig2 = new JRadioButton("Bichon");
+        radioButtonConfig3 = new JRadioButton("Collet");
         bg = new ButtonGroup();
         bg.add(radioButtonConfig1);
         bg.add(radioButtonConfig2);
