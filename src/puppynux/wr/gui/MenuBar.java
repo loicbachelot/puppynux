@@ -35,7 +35,7 @@ public class MenuBar extends JMenuBar {
         create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                mainWindow.showConfigDialog();
+                mainWindow.setState(1);
             }
         });
         file.add(create);
@@ -44,7 +44,7 @@ public class MenuBar extends JMenuBar {
         open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                mainWindow.showLoadDialog();
+                mainWindow.setState(2);
             }
         });
         file.add(open);
@@ -52,7 +52,8 @@ public class MenuBar extends JMenuBar {
         close.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                GameEngine.getInstance().getAiManager().kill();
+                if (GameEngine.getInstance().isLiving())
+                    GameEngine.getInstance().getAiManager().kill();
                 mainWindow.getEnvironmentPanel().setVisible(false);
                 mainWindow.getAnimation().setVisible(true);
             }
@@ -66,7 +67,7 @@ public class MenuBar extends JMenuBar {
         //TODO link set with IASettingDialog
         set.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                mainWindow.showIASettingDialog();
+                mainWindow.setState(5);
             }
         });
         edit.add(set);

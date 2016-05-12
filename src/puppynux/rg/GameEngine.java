@@ -73,8 +73,6 @@ public class GameEngine extends Thread implements Observer, Observable {
         iteration = 0;
         aiManager = new AIManager(configDialogInfo);
         aiManager.getAgent().addObserver("gameEngine", this);
-        agentPlacePosition = "House";
-        agentSubplacePosition = "LivingRoom";
         AIBirth.generate(aiManager.getAgent());
 //        aiManager.getAgent().sense(environmentManager.getRMatrix(agentPlacePosition, agentSubplacePosition));
         aiManager.start();
@@ -243,11 +241,13 @@ public class GameEngine extends Thread implements Observer, Observable {
     @Override
     public synchronized void update(String placePosition, String subplacePosition, int state) {
         logger.trace("[GAME] agent moved to " + state);
-        agentPlacePosition = placePosition;
-        agentSubplacePosition = subplacePosition;
         agentState = state;
         setAgentCoordinate();
-        aiManager.getAgent().sense(environmentManager.getRMatrix(placePosition, subplacePosition));
+        if (!subplacePosition.equals(this.agentSubplacePosition)) {
+            agentPlacePosition = placePosition;
+            agentSubplacePosition = subplacePosition;
+            aiManager.getAgent().sense(environmentManager.getRMatrix(placePosition, subplacePosition));
+        }
         notifyObserver("mainWindow", placePosition, subplacePosition, state);
     }
 }

@@ -49,6 +49,7 @@ public class MainWindow extends JFrame implements Observer {
     public MainWindow() throws InterruptedException {
         GameEngine.getInstance().addObserver("mainWindow", this);
         dashboard = ComponentFactory.initDashboard();
+        rewardsPanel = ComponentFactory.initRewardsPanel();
         environmentPanel = ComponentFactory.initBackgroundPanel();
         menuBar = ComponentFactory.initMenuBar(this);
         animation = ComponentFactory.initAnimationPanel();
@@ -82,14 +83,6 @@ public class MainWindow extends JFrame implements Observer {
         go();
     }
 
-    /*
-        @Override
-        public void update(int[] coor) {
-            dashboard.getObject().setX(coor[0]);
-            dashboard.getObject().setY(coor[1]);
-            dashboard.drawObjects();
-        }
-    */
     public void go() throws InterruptedException {
         isRunning = true;
 
@@ -115,6 +108,8 @@ public class MainWindow extends JFrame implements Observer {
                     if (configDialogInfo.getChoice().equals(Choices.OK)) {
                         state = 3;
                     }
+                    else
+                        JOptionPane.showMessageDialog(null, "No session launched", "WARN", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 2:
                     state = 0;
@@ -128,8 +123,9 @@ public class MainWindow extends JFrame implements Observer {
                 case 4:
                     if (gameEngine.isLiving()) {
                         state = 0;
-                        rewardsPanel = ComponentFactory.initRewardsPanel();
                         animation.setVisible(false);
+System.err.print("lol");
+//                        rewardsPanel.setJComboBox(gameEngine.getEnvironmentManager().getActionList());
                         add(dashboard, BorderLayout.CENTER);
                         add(rewardsPanel, BorderLayout.SOUTH);
                         add(newsPanel, BorderLayout.EAST);
@@ -137,6 +133,9 @@ public class MainWindow extends JFrame implements Observer {
                     else {
                         Thread.sleep(1L);
                     }
+                    break;
+                case 5:
+                    showIASettingDialog();
                     break;
                 default:
                     Thread.sleep(0L, 1);
@@ -151,11 +150,6 @@ public class MainWindow extends JFrame implements Observer {
 
     public boolean isRunning() {
         return isRunning;
-    }
-
-    public void startGame(ConfigDialogInfo info) {
-        configDialogInfo = info;
-        state = 3;
     }
 
     public static Dimension windowSize() {

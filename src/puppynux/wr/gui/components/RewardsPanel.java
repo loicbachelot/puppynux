@@ -70,7 +70,6 @@ public class RewardsPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 reward = rewardSlider.getValue();
                 GameEngine.getInstance().attributeReward(reward);
-//                GameEngine.getInstance().getAiManager().getAgent().attributeReward(reward);
             }
         });
         rewardPanel.add(rewardLabel);
@@ -80,18 +79,7 @@ public class RewardsPanel extends JPanel {
 
         JPanel forceActionPanel = new JPanel();
 
-
-        ArrayList<Action> list = GameEngine.getInstance().getEnvironmentManager().getActionList();
-        String[] elements = new String[list.size()];
-        int i = 0;
-        for (Action action :
-                list) {
-            elements[i++] = action.toString();
-        }
-        actionComboBox = new JComboBox<>(elements);
-
-
-//        actionComboBox = new JComboBox<>(new String[] {"test", "test2"});
+        actionComboBox = new JComboBox<>();
         forceActionButton = new PuppynuxButton("Force action");
         forceActionPanel.add(actionComboBox);
         forceActionPanel.add(forceActionButton);
@@ -100,4 +88,15 @@ public class RewardsPanel extends JPanel {
         add(rewardPanel);
         add(forceActionPanel);
     }
+
+    public void setJComboBox (ArrayList list) {
+        String[] elements = new String[list.size()];
+        int i = 0;
+        for (Object o :
+                list) {
+            elements[i++] = o.toString();
+        }
+        actionComboBox = new JComboBox<>(elements);
+    }
+
 }
