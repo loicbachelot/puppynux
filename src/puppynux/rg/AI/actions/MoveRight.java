@@ -12,7 +12,7 @@ public class MoveRight extends Move {
     @Override
     protected void modifyCoordinate(Consciousness agent) throws ActionException {
         int state = agent.getActualState();
-        if (state == 14 || (state % 4 == 3))
+        if (state % 4 == 3)
             throw new ActionException("Can't go right");
 
         agent.setState(state + 1);

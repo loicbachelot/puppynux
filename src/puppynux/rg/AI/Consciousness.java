@@ -45,9 +45,9 @@ public abstract class Consciousness implements Observable {
         observers = new HashMap<>();
         Q = new QMatrix(16);
         name = info.getName();
-        LEARN_FACTOR = info.getLearnSpeed() / 10;
-        ACTUALISATION_FACTOR = info.getRefreshFrequency() / 10;
-        NOISE_FACTOR = info.getNoise() * 100;
+        LEARN_FACTOR = info.getLearnSpeed();
+        ACTUALISATION_FACTOR = info.getRefreshFrequency();
+        NOISE_FACTOR = info.getNoise();
         OVERSIGHT_FACTOR = info.getOversight();
 
     }
@@ -150,9 +150,9 @@ public abstract class Consciousness implements Observable {
                 continue;
             double reward = Q.getActionReward(actualState, entry.getKey());
             double noise = Math.random() * NOISE_FACTOR;
-            if (reward + noise > max) {
+            if (reward + noise >= max) {
                 action = entry.getKey();
-                max = reward + noise;
+                max = reward;
             }
         }
         return action;

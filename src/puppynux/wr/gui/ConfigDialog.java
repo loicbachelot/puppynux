@@ -185,13 +185,13 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
     public void initInfo(int config) {
         if (config == 1) {
             configDialogInfo = new ConfigDialogInfo(name.getText(),
-                    environment.getItemAt(environment.getSelectedIndex()), 0, 0, 0, 0, 0);
+                    environment.getItemAt(environment.getSelectedIndex()), 0.2, 0.3, 0, 3, 1000);
         } else if (config == 2) {
             configDialogInfo = new ConfigDialogInfo(name.getText(),
-                    environment.getItemAt(environment.getSelectedIndex()), .5, .5, 1, 1, 1);
+                    environment.getItemAt(environment.getSelectedIndex()), .5, .7, 10, 6, 1000);
         } else if (config == 3) {
             configDialogInfo = new ConfigDialogInfo(name.getText(),
-                    environment.getItemAt(environment.getSelectedIndex()), 1, 1, 1, 1, 1);
+                    environment.getItemAt(environment.getSelectedIndex()), .8, 1, 7, 10, 500);
         }
     }
 

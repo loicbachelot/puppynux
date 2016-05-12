@@ -12,7 +12,7 @@ public class MoveDown extends Move {
     @Override
     protected void modifyCoordinate(Consciousness agent) throws ActionException {
         int state = agent.getActualState();
-        if (state == 0 || state == 11 || (state >= 12 && state < 16))
+        if (state >= 12 && state < 16)
             throw new ActionException("Can't go down");
 
         agent.setState(state + 4);

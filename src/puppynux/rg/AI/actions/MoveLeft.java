@@ -12,7 +12,7 @@ public class MoveLeft extends Move {
     @Override
     protected void modifyCoordinate(Consciousness agent) throws ActionException {
         int state = agent.getActualState();
-        if (state == 5 || (state % 4 == 0))
+        if (state % 4 == 0)
             throw new ActionException("Can't go left");
 
         agent.setState(state - 1);
