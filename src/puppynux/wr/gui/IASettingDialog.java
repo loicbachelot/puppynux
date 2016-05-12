@@ -82,6 +82,11 @@ public class IASettingDialog extends JDialog implements PuppyDialog {
     }
 
     @Override
+    public void initInfo(int config) {
+
+    }
+
+    @Override
     public void initInfo() {
         iaSettingDialogInfo = new IASettingDialogInfo(slider.getValue());
     }

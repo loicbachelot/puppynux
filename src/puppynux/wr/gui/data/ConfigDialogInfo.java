@@ -35,13 +35,15 @@ public class ConfigDialogInfo implements PuppyDialogInfo {
     }
 
     /**
-     *
      * @return Name
      */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return env
+     */
     public String getEnv() {
         return env;
     }

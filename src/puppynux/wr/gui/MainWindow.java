@@ -100,6 +100,8 @@ public class MainWindow extends JFrame implements Observer {
                 break;
         }
 
+
+
         while (isRunning) {
             switch (state) {
                 case 1:
@@ -142,6 +144,11 @@ System.err.print("lol");
                     break;
             }
         }
+    }
+
+    @Override
+    public void setState(int state) {
+        this.state = state;
     }
 
     public void shutDown() {

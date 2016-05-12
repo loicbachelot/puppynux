@@ -13,5 +13,6 @@ public interface PuppyDialog {
     PuppyDialogInfo showDialog();
     void setVisible(boolean b);
     //TO-DO handle exception with controller
-    void initInfo();// throws Exception;
+    void initInfo(int config);// throws Exception;
+    void initInfo();
 }

@@ -61,6 +61,11 @@ public class FirstDialog extends JDialog implements PuppyDialog {
         super.setVisible(b);
     }
 
+    @Override
+    public void initInfo(int config) {
+
+    }
+
     public boolean getSendData() {
         return sendData;
     }

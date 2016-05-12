@@ -76,6 +76,11 @@ public class LoadDialog extends JDialog implements PuppyDialog {
     }
 
     @Override
+    public void initInfo(int config) {
+
+    }
+
+    @Override
     public void initInfo() {
         if (!sendData) {
             loadDialogInfo = new LoadDialogInfo(Choices.CANCEL);
