@@ -16,6 +16,7 @@ public class RMatrix {
     private final static int ACTION_NUMBER = 8; //16;
 
     private ArrayList<HashMap<Action, Boolean>> actionList = new ArrayList<>();
+    private ArrayList<Action> possibleActions = new ArrayList<>();
 
     public RMatrix() {
         for (int i = 0; i < STATE_NUMBER; i++) {
@@ -23,8 +24,16 @@ public class RMatrix {
         }
     }
 
+    public void addPossibleAction(Action action){
+        possibleActions.add(action);
+    }
+
     public ArrayList<HashMap<Action, Boolean>> getActionList() {
         return actionList;
+    }
+
+    public ArrayList<Action> getPossibleActions() {
+        return possibleActions;
     }
 
     public HashMap<Action, Boolean> getStateReward(int state) {
@@ -44,6 +53,9 @@ public class RMatrix {
                 j++;
             }
             buffer.append("\n");
+        }
+        for (Action action: possibleActions) {
+            buffer.append(action.toString() + "\n");
         }
         return buffer.toString();
     }

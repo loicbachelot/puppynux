@@ -17,6 +17,25 @@ public class ChangeSubplace implements Action {
         this.subplace = subplace;
     }
 
+    public String getSubplace() {
+        return subplace;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    @Override
+    public boolean equals(Object action) {
+        if(action instanceof ChangeSubplace) {
+            return ((ChangeSubplace) action).getSubplace().equals(subplace)
+                    && ((ChangeSubplace) action).getPosition() == position;
+        }
+        else{
+            return false;
+        }
+    }
+
     @Override
     public void use(Consciousness agent) throws ActionException {
         agent.setSubplacePosition(subplace, position);

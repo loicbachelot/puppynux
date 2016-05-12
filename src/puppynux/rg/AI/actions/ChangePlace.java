@@ -18,13 +18,37 @@ public class ChangePlace implements Action {
         this.subplace = subplace;
     }
 
-    public void setPlace(String place){
+    public void setPlace(String place) {
         this.place = place;
     }
 
     @Override
     public void use(Consciousness agent) throws ActionException {
         agent.setPlacePosition(place, subplace, position);
+    }
+
+    public String getSubplace() {
+        return subplace;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    @Override
+    public boolean equals(Object action) {
+        if(action instanceof ChangePlace) {
+            return ((ChangePlace) action).getPlace().equals(place)
+                    && ((ChangePlace) action).getSubplace().equals(subplace)
+                    && ((ChangePlace) action).getPosition() == position;
+        }
+        else{
+            return false;
+        }
     }
 
     @Override

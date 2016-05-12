@@ -75,37 +75,37 @@ public class EnvironmentManager {
                         stay(matrix.getActionList(), x, y);
                         break;
                     case "Ball":
-                        playBall(matrix.getActionList(), x, y, position);
+                        playBall(matrix, matrix.getActionList(), x, y, position);
                         if (x - 1 > -1) {
-                            playBall(matrix.getActionList(), x - 1, y, position);
+                            playBall(matrix, matrix.getActionList(), x - 1, y, position);
                         }
                         if (x + 1 < 4) {
-                            playBall(matrix.getActionList(), x + 1, y, position);
+                            playBall(matrix, matrix.getActionList(), x + 1, y, position);
                         }
                         if (y - 1 > -1) {
-                            playBall(matrix.getActionList(), x, y - 1, position);
+                            playBall(matrix, matrix.getActionList(), x, y - 1, position);
                         }
                         if (y + 1 < 4) {
-                            playBall(matrix.getActionList(), x, y + 1, position);
+                            playBall(matrix, matrix.getActionList(), x, y + 1, position);
                         }
                         break;
                     case "Table":
-                        climbTable(matrix.getActionList(), x, y, position);
+                        climbTable(matrix, matrix.getActionList(), x, y, position);
                         if (x - 1 > -1) {
-                            climbTable(matrix.getActionList(), x - 1, y, position);
+                            climbTable(matrix, matrix.getActionList(), x - 1, y, position);
                         }
                         if (x + 1 < 4) {
-                            climbTable(matrix.getActionList(), x + 1, y, position);
+                            climbTable(matrix, matrix.getActionList(), x + 1, y, position);
                         }
                         if (y - 1 > -1) {
-                            climbTable(matrix.getActionList(), x, y - 1, position);
+                            climbTable(matrix, matrix.getActionList(), x, y - 1, position);
                         }
                         if (y + 1 < 4) {
-                            climbTable(matrix.getActionList(), x, y + 1, position);
+                            climbTable(matrix, matrix.getActionList(), x, y + 1, position);
                         }
                         break;
                     case "SubplaceTopDoor":
-                        changeSubplace(matrix.getActionList(), x, y, cells[x][y],
+                        changeSubplace(matrix,matrix.getActionList(), x, y, cells[x][y],
                                 ((SubplaceDoor) cells[x][y]).getX() + ((SubplaceDoor) cells[x][y]).getY() * 4);
                         if (x - 1 > -1) {
                             moveRight(matrix.getActionList(), x - 1, y);
@@ -122,7 +122,7 @@ public class EnvironmentManager {
                         stay(matrix.getActionList(), x, y);
                         break;
                     case "SubplaceDownDoor":
-                        changeSubplace(matrix.getActionList(), x, y, cells[x][y],
+                        changeSubplace(matrix, matrix.getActionList(), x, y, cells[x][y],
                                 ((SubplaceDoor) cells[x][y]).getX() + ((SubplaceDoor) cells[x][y]).getY() * 4);
                         if (x - 1 > -1) {
                             moveRight(matrix.getActionList(), x - 1, y);
@@ -139,7 +139,24 @@ public class EnvironmentManager {
                         stay(matrix.getActionList(), x, y);
                         break;
                     case "PlaceLeftDoor":
-                        changePlace(matrix.getActionList(), x, y, cells[x][y],
+                        changePlace(matrix, matrix.getActionList(), x, y, cells[x][y],
+                                ((PlaceDoor) cells[x][y]).getX() + ((PlaceDoor) cells[x][y]).getY() * 4);
+                        if (x - 1 > -1) {
+                            moveRight(matrix.getActionList(), x - 1, y);
+                        }
+                        if (x + 1 < 4) {
+                            moveLeft(matrix.getActionList(), x + 1, y);
+                        }
+                        if (y - 1 > -1) {
+                            moveDown(matrix.getActionList(), x, y - 1);
+                        }
+                        if (y + 1 < 4) {
+                            moveUp(matrix.getActionList(), x, y + 1);
+                        }
+                        stay(matrix.getActionList(), x, y);
+                        break;
+                    case "PlaceRightDoor":
+                        changePlace(matrix, matrix.getActionList(), x, y, cells[x][y],
                                 ((PlaceDoor) cells[x][y]).getX() + ((PlaceDoor) cells[x][y]).getY() * 4);
                         if (x - 1 > -1) {
                             moveRight(matrix.getActionList(), x - 1, y);
@@ -162,7 +179,7 @@ public class EnvironmentManager {
         return matrix;
     }
 
-    public void changePlace(ArrayList<HashMap<Action, Boolean>> list, int x, int y, Cell cell, int destination) {
+    public void changePlace(RMatrix matrix, ArrayList<HashMap<Action, Boolean>> list, int x, int y, Cell cell, int destination) {
         ChangePlace changePlace = new ChangePlace();
         if (!actionList.contains(changePlace)) {
             actionList.add(changePlace);
@@ -171,9 +188,12 @@ public class EnvironmentManager {
         changePlace.setPlace(((PlaceDoor) cell).getPlace());
         changePlace.setSubplace(((PlaceDoor) cell).getSubplace());
         list.get(x + 4 * y).put(changePlace, true);
+        if (!matrix.getPossibleActions().contains(changePlace)) {
+            matrix.addPossibleAction(changePlace);
+        }
     }
 
-    public void changeSubplace(ArrayList<HashMap<Action, Boolean>> list, int x, int y, Cell cell, int destination) {
+    public void changeSubplace(RMatrix matrix, ArrayList<HashMap<Action, Boolean>> list, int x, int y, Cell cell, int destination) {
         ChangeSubplace changeSubplace = new ChangeSubplace();
         if (!actionList.contains(changeSubplace)) {
             actionList.add(changeSubplace);
@@ -181,24 +201,33 @@ public class EnvironmentManager {
         changeSubplace.setPosition(destination);
         changeSubplace.setSubplace(((SubplaceDoor) cell).getSubplace());
         list.get(x + 4 * y).put(changeSubplace, true);
+        if (!matrix.getPossibleActions().contains(changeSubplace)) {
+            matrix.addPossibleAction(changeSubplace);
+        }
     }
 
-    public void playBall(ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
+    public void playBall(RMatrix matrix, ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
         PlayBall play = new PlayBall();
         if (!actionList.contains(play)) {
             actionList.add(play);
         }
         play.setPosition(position);
         list.get(x + 4 * y).put(play, true);
+        if (!matrix.getPossibleActions().contains(play)) {
+            matrix.addPossibleAction(play);
+        }
     }
 
-    public void climbTable(ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
+    public void climbTable(RMatrix matrix, ArrayList<HashMap<Action, Boolean>> list, int x, int y, int position) {
         ClimbTable climb = new ClimbTable();
         if (!actionList.contains(climb)) {
             actionList.add(climb);
         }
         climb.setPosition(position);
         list.get(x + 4 * y).put(climb, true);
+        if (!matrix.getPossibleActions().contains(climb)) {
+            matrix.addPossibleAction(climb);
+        }
     }
 
     public void pee(ArrayList<HashMap<Action, Boolean>> list, int x, int y) {

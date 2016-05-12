@@ -6,6 +6,6 @@ package puppynux.lb.env.objects;
 public class PlaceRightDoor extends PlaceDoor {
 
     public PlaceRightDoor(String place, String subplace, int x1, int y1) {
-        super(place, subplace, "SubplaceDownDoor", x1, y1);
+        super(place, subplace, "PlaceRightDoor", x1, y1);
     }
 }

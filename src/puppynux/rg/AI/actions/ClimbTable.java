@@ -14,6 +14,20 @@ public class ClimbTable implements Action {
         this.position = position;
     }
 
+    public int getPosition() {
+        return position;
+    }
+
+    @Override
+    public boolean equals(Object action) {
+        if(action instanceof ClimbTable) {
+            return ((ClimbTable) action).getPosition() == position;
+        }
+        else{
+            return false;
+        }
+    }
+
     @Override
     public void use(Consciousness agent) throws ActionException {
         agent.setState(position);

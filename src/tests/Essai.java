@@ -18,16 +18,5 @@ public class Essai {
 
     }
 
-    /*
-            <object type="PlaceDoor">
-                <attribute type="x">0</attribute>
-                <attribute type="y">3</attribute>
-                <attribute type="x1">2</attribute>
-                <attribute type="y1">0</attribute>
-                <attribute type="place">Garden</attribute>
-                <attribute type="subplace">Grass</attribute>
-                <attribute type="orientation">leftDoor</attribute>
-            </object>
 
-     */
 }

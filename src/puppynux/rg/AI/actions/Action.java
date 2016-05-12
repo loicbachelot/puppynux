@@ -16,5 +16,6 @@ public interface Action {
      * @throws ActionException If an error occured while performing action
      */
     void use(Consciousness agent) throws ActionException;
+    boolean equals(Object action);
     String toString();
 }

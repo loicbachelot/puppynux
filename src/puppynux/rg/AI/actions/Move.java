@@ -14,6 +14,16 @@ public abstract class Move implements Action {
         modifyCoordinate(agent);
     }
 
+    @Override
+    public boolean equals(Object action) {
+        if (action instanceof Move){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     /**
      * Allows to modify the Agent's coordinate by moving
      *

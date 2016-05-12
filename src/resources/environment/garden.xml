@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <env>
     <!-- Garden -->
-    <room type="Road"></room>
-    <room type="Grass"></room>
+    <room type="Road">
+    <list>
+        <object type="SubplaceDoor">
+            <attribute type="x">1</attribute>
+            <attribute type="y">3</attribute>
+            <attribute type="x1">2</attribute>
+            <attribute type="y1">0</attribute>
+            <attribute type="subplace">Grass</attribute>
+            <attribute type="orientation">DownDoor</attribute>
+        </object>
+    </list>
+    </room>
+    <room type="Grass">
+        <list>
+            <object type="PlaceDoor">
+                <attribute type="x">3</attribute>
+                <attribute type="y">2</attribute>
+                <attribute type="x1">0</attribute>
+                <attribute type="y1">3</attribute>
+                <attribute type="place">House</attribute>
+                <attribute type="subplace">LivingRoom</attribute>
+                <attribute type="orientation">rightDoor</attribute>
+            </object>
+            <object type="SubplaceDoor">
+                <attribute type="x">2</attribute>
+                <attribute type="y">0</attribute>
+                <attribute type="x1">1</attribute>
+                <attribute type="y1">3</attribute>
+                <attribute type="subplace">Road</attribute>
+                <attribute type="orientation">TopDoor</attribute>
+            </object>
+        </list>
+    </room>
 </env>
