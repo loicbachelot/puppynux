@@ -6,6 +6,7 @@ import puppynux.wr.gui.objects.Ball;
 import puppynux.wr.gui.objects.Objects;
 import puppynux.wr.gui.objects.Table;
 import puppynux.wr.gui.objects.doors.PlaceLeftDoor;
+import puppynux.wr.gui.objects.doors.PlaceRightDoor;
 import puppynux.wr.gui.objects.doors.SubplaceDownDoor;
 import puppynux.wr.gui.objects.doors.SubplaceTopDoor;
 
@@ -154,7 +155,7 @@ public class Dashboard extends BackgroundPanel {
                                     this.getWidth() / 4, this.getHeight() / 4, null);
                             break;
                         case "PlaceRightDoor":
-                            image = new PlaceLeftDoor(i, j).getImage();
+                            image = new PlaceRightDoor(i, j).getImage();
                             g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
                                     this.getWidth() / 4, this.getHeight() / 4, null);
                             break;
