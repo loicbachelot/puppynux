@@ -3,18 +3,19 @@ package puppynux.rg;
 import config.Config;
 import log.LoggerUtility;
 import org.apache.log4j.Logger;
-import puppynux.wr.gui.data.ConfigDialogInfo;
 import puppynux.lb.env.EnvironmentManager;
 import puppynux.rg.AI.AIBirth;
 import puppynux.rg.AI.AIManager;
+import puppynux.rg.AI.actions.Action;
+import puppynux.rg.AI.actions.ActionException;
 import puppynux.rg.AI.actions.EmptyActionException;
 import puppynux.rg.AI.actions.OutdatedActionException;
 import puppynux.rg.AI.mock.Observable;
 import puppynux.rg.AI.mock.Observer;
+import puppynux.wr.gui.data.ConfigDialogInfo;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -36,6 +37,8 @@ public class GameEngine extends Thread implements Observer, Observable {
     private int[] agentCoordinate = new int[2];
     private boolean createAgent = false;
     private boolean attributeReward = false;
+    private boolean forceAct = false;
+    private Action action;
     private int agentState;
     private String agentPlacePosition = "";
     private String agentSubplacePosition = "";
@@ -85,6 +88,11 @@ public class GameEngine extends Thread implements Observer, Observable {
     public synchronized void attributeReward (int reward) {
         attributeReward = true;
         this.reward = reward;
+    }
+
+    public void forceAct (Action action) {
+        forceAct = true;
+        this.action = action;
     }
 
     //// TODO: 07/04/16 makes the given objects be a list of attribute for the agent created
@@ -197,6 +205,18 @@ public class GameEngine extends Thread implements Observer, Observable {
                 createAgent = false;
                 createEnvironment(configDialogInfo.getEnv()); //ajout ici
                 createAgent();
+            }
+
+            if (forceAct) {
+                forceAct = false;
+                aiManager.pause();
+                try {
+                    aiManager.getAgent().forceAct(action);
+                } catch (ActionException e) {
+                    //// TODO: 5/15/16 remove JOPTION from here
+                    logger.warn("[GAME] " + e.getMessage());
+                    JOptionPane.showMessageDialog((Component) observers.get("mainWindow"), e.getMessage());
+                }
             }
 
             if (attributeReward) {

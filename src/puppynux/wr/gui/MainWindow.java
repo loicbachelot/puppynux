@@ -45,6 +45,7 @@ public class MainWindow extends JFrame implements Observer {
     private NewsPanel newsPanel;
     private boolean isRunning;
     private int state;
+    private String agentSubPlacePosition = "";
 
     public MainWindow() throws InterruptedException {
         GameEngine.getInstance().addObserver("mainWindow", this);
@@ -124,7 +125,6 @@ public class MainWindow extends JFrame implements Observer {
                     if (gameEngine.isLiving()) {
                         state = 0;
                         animation.setVisible(false);
-                        System.err.print("lol");
 //                        rewardsPanel.setJComboBox(gameEngine.getEnvironmentManager().getActionList());
                         add(dashboard, BorderLayout.CENTER);
                         add(rewardsPanel, BorderLayout.SOUTH);
@@ -202,7 +202,6 @@ public class MainWindow extends JFrame implements Observer {
 
     @Override
     public void update(String placePosition, String subplacePosition, int state) {
-        System.out.println(subplacePosition);
         dashboard.setSubplace(subplacePosition);
 
         int oldX = gameEngine.getAiManager().getAgent().getOldState() % 4;
@@ -215,13 +214,18 @@ public class MainWindow extends JFrame implements Observer {
         } else {
             dashboard.getAnimal().setImage("src/resources/img/dog.png");
         }
-        dashboard.setPlacePosition(placePosition);
-        dashboard.setSubplacePosition(subplacePosition);
         dashboard.getAnimal().setX(x);
         dashboard.getAnimal().setY(y);
 
-        rewardsPanel.setJComboBox(GameEngine.getInstance().getEnvironmentManager().getRMatrix(placePosition, subplacePosition).getActionList());
-
+        //// TODO: 5/15/16 POURQUOI ÇA PLANTE ??? 
+//        if (agentSubPlacePosition.equals(subplacePosition)) {
+            dashboard.setPlacePosition(placePosition);
+            dashboard.setSubplacePosition(subplacePosition);
+            rewardsPanel.setJComboBox(gameEngine.getEnvironmentManager().
+                    getRMatrix(placePosition, subplacePosition).getPossibleActions());
+            rewardsPanel.setJComboBox(GameEngine.getInstance().getEnvironmentManager().
+                    getRMatrix(placePosition, subplacePosition).getPossibleActions());
+//        }
 
         Agent agent = (Agent) gameEngine.getAiManager().getAgent();
         newsPanel.getIterationLabel().setText("Iteration : " + gameEngine.getIteration());

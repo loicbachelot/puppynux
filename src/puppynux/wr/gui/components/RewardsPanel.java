@@ -23,7 +23,7 @@ public class RewardsPanel extends JPanel {
     private PuppynuxLabel rewardLabel;
     private JTextArea sliderValue;
     private PuppynuxButton confirmButton, pauseButton, forceActionButton;
-    private JComboBox<String> actionComboBox;
+    private JComboBox<Action> actionComboBox;
     private int reward;
 
     public RewardsPanel() {
@@ -81,6 +81,12 @@ public class RewardsPanel extends JPanel {
 
         actionComboBox = new JComboBox<>();
         forceActionButton = new PuppynuxButton("Force action");
+        forceActionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameEngine.getInstance().forceAct((Action)actionComboBox.getSelectedItem());
+            }
+        });
         forceActionPanel.add(actionComboBox);
         forceActionPanel.add(forceActionButton);
 
@@ -89,14 +95,11 @@ public class RewardsPanel extends JPanel {
         add(forceActionPanel);
     }
 
-    public void setJComboBox (ArrayList list) {
-        String[] elements = new String[list.size()];
-        int i = 0;
-        for (Object o :
+    public void setJComboBox (ArrayList<Action> list) {
+        actionComboBox.removeAllItems();
+        for (Action action :
                 list) {
-            elements[i++] = o.toString();
+            actionComboBox.addItem(action);
         }
-        actionComboBox = new JComboBox<>(elements);
     }
-
 }
