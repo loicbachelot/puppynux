@@ -3,7 +3,7 @@
     <!-- environment -->
     <places>
         <place type="House">house2.xml</place>
-        <place type="Garden">garden.xml</place>
+        <place type="Garden">garden2.xml</place>
     </places>
 
 

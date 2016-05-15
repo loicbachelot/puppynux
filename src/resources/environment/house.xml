@@ -8,6 +8,11 @@
                 <attribute type="y">0</attribute>
                 <attribute type="state">0</attribute>
             </object>
+            <object type="Table">
+                <attribute type="x">1</attribute>
+                <attribute type="y">1</attribute>
+                <attribute type="state">0</attribute>
+            </object>
             <object type="SubplaceDoor">
                 <attribute type="x">2</attribute>
                 <attribute type="y">0</attribute>
