@@ -2,14 +2,15 @@ package puppynux.wr.gui;
 
 import puppynux.wr.gui.components.PuppynuxButton;
 import puppynux.wr.gui.components.PuppynuxLabel;
+import puppynux.wr.gui.data.Choices;
 import puppynux.wr.gui.data.IASettingDialogInfo;
-import puppynux.wr.gui.listeners.CancelListener;
-import puppynux.wr.gui.listeners.OKListener;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by niamor972 on 10/03/16.
@@ -20,16 +21,16 @@ import java.awt.*;
 public class IASettingDialog extends JDialog implements PuppyDialog {
 
     private IASettingDialogInfo iaSettingDialogInfo;
-    private boolean sendData;
-    private JPanel controlPanel, contentPanel;
-    private PuppynuxLabel value;
-    private JSlider slider; //TODO récupérer la dernière valeur et pas mettre valeur à 0
+    private JButton okButton, cancelButton;
+    private PuppynuxLabel learnSpeedLabel, refreshLabel, velocityLabel, noiseLabel, oversightLabel;
+    private JSlider learnSpeedSlider, refreshSlider, noiseSlider, oversightSlider;
+    private JSpinner velocitySpinner;
 
 
     public IASettingDialog(JFrame parent, String title, boolean modal) {
         super(parent, title, modal);
         setResizable(false);
-        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         initComponent();
         pack();
         getContentPane().setBackground(new Color(68, 145, 247));
@@ -37,46 +38,115 @@ public class IASettingDialog extends JDialog implements PuppyDialog {
     }
 
     private void initComponent() {
-        //Name
         JPanel agentPanel = new JPanel();
-        agentPanel.setBorder(BorderFactory.createTitledBorder("Agent's curiosity"));
-        slider = new JSlider(0, 10, 0);
-        value = new PuppynuxLabel(String.valueOf((double) slider.getValue() / 10));
-        slider.addChangeListener(new ChangeListener() {
+        agentPanel.setBorder(BorderFactory.createTitledBorder("Agent's attributes")); //TODO Configurations prédéfinies pour utilisateur lambda
+        learnSpeedLabel = new PuppynuxLabel("Learn speed : ", PuppynuxLabel.CENTER);
+        learnSpeedSlider = new JSlider();
+        learnSpeedSlider.setMaximum(10);
+        learnSpeedSlider.setMinimum(0);
+        learnSpeedSlider.setValue(5);
+        PuppynuxLabel learnValueLabel = new PuppynuxLabel(String.valueOf((double) learnSpeedSlider.getValue() / 10));
+        learnSpeedSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if (slider.getValueIsAdjusting()) {
-                    value.setText(String.valueOf((double) slider.getValue() / 10));
-                }
+                learnValueLabel.setText(String.valueOf((double) learnSpeedSlider.getValue() / 10));
             }
         });
+        JPanel sliderPanel = new JPanel();
+        sliderPanel.add(learnSpeedLabel);
+        sliderPanel.add(learnSpeedSlider);
+        sliderPanel.add(learnValueLabel);
+        agentPanel.add(sliderPanel);
 
-        agentPanel.add(slider);
-        agentPanel.add(value);
+        refreshLabel = new PuppynuxLabel("Refresh frequency : ", PuppynuxLabel.CENTER);
+        refreshSlider = new JSlider();
+        refreshSlider.setMaximum(10);
+        refreshSlider.setMinimum(0);
+        refreshSlider.setValue(5);
+        PuppynuxLabel refreshValueLabel = new PuppynuxLabel(String.valueOf((double) refreshSlider.getValue() / 10));
+        refreshSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                refreshValueLabel.setText(String.valueOf((double) refreshSlider.getValue() / 10));
+            }
+        });
+        JPanel refreshSliderPanel = new JPanel();
+        refreshSliderPanel.add(refreshLabel);
+        refreshSliderPanel.add(refreshSlider);
+        refreshSliderPanel.add(refreshValueLabel);
+        agentPanel.add(refreshSliderPanel);
 
-        contentPanel = new JPanel();
-        contentPanel.add(agentPanel);
-        controlPanel = new JPanel();
+        velocityLabel = new PuppynuxLabel("Velocity : ", PuppynuxLabel.CENTER);
+        SpinnerModel spinnerModel = new SpinnerNumberModel(5, 0, 10, 1);
+        velocitySpinner = new JSpinner(spinnerModel);
+        JPanel velocitySpinnerPanel = new JPanel();
+        velocitySpinnerPanel.add(velocityLabel);
+        velocitySpinnerPanel.add(velocitySpinner);
+        agentPanel.add(velocitySpinnerPanel);
 
-        PuppynuxButton ok = new PuppynuxButton("OK");
-        PuppynuxButton cancel = new PuppynuxButton("Cancel");
-        cancel.addActionListener(new CancelListener(this));
-        ok.addActionListener(new OKListener(this));
-        controlPanel.add(ok);
-        controlPanel.add(cancel);
+        oversightLabel = new PuppynuxLabel("Oversight factor : ", PuppynuxLabel.CENTER);
+        oversightSlider = new JSlider();
+        oversightSlider.setMaximum(10);
+        oversightSlider.setMinimum(0);
+        oversightSlider.setValue(5);
+        PuppynuxLabel oversightValueLabel = new PuppynuxLabel(String.valueOf(oversightSlider.getValue()));
+        oversightSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                oversightValueLabel.setText(String.valueOf(oversightSlider.getValue()));
+            }
+        });
+        JPanel oversightSliderPanel = new JPanel();
+        oversightSliderPanel.add(oversightLabel);
+        oversightSliderPanel.add(oversightSlider);
+        oversightSliderPanel.add(oversightValueLabel);
+        agentPanel.add(oversightSliderPanel);
 
-        getContentPane().add(contentPanel, BorderLayout.NORTH);
+        noiseLabel = new PuppynuxLabel("Noise factor : ", PuppynuxLabel.CENTER);
+        noiseSlider = new JSlider();
+        noiseSlider.setMaximum(10);
+        noiseSlider.setMinimum(0);
+        noiseSlider.setValue(5);
+        PuppynuxLabel noiseValueLabel = new PuppynuxLabel(String.valueOf(noiseSlider.getValue()));
+        noiseSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                noiseValueLabel.setText(String.valueOf(noiseSlider.getValue()));
+            }
+        });
+        JPanel noiseSliderPanel = new JPanel();
+        noiseSliderPanel.add(noiseLabel);
+        noiseSliderPanel.add(noiseSlider);
+        noiseSliderPanel.add(noiseValueLabel);
+        agentPanel.add(noiseSliderPanel);
+
+        JPanel controlPanel = new JPanel();
+        okButton = new JButton("OK");
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                initInfo();
+                iaSettingDialogInfo.setChoice(Choices.OK);
+            }
+        });
+        cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                initInfo();
+                setVisible(false);
+            }
+        });
+        controlPanel.add(okButton);
+        controlPanel.add(cancelButton);
+
+        getContentPane().add(agentPanel, BorderLayout.NORTH);
         getContentPane().add(controlPanel, BorderLayout.SOUTH);
     }
 
     @Override
-    public void setSendData(boolean sendData) {
-        this.sendData = sendData;
-    }
-
-    @Override
     public IASettingDialogInfo showDialog() {
-        sendData = false;
         setVisible(true);
         return iaSettingDialogInfo;
     }
@@ -88,6 +158,8 @@ public class IASettingDialog extends JDialog implements PuppyDialog {
 
     @Override
     public void initInfo() {
-        iaSettingDialogInfo = new IASettingDialogInfo(slider.getValue());
+        iaSettingDialogInfo  = new IASettingDialogInfo(learnSpeedSlider.getValue(),
+                refreshSlider.getValue(), (int) velocitySpinner.getValue(),
+                oversightSlider.getValue(), noiseSlider.getValue());
     }
 }

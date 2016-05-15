@@ -2,6 +2,7 @@ package puppynux.rg.AI;
 
 import puppynux.rg.AI.actions.Action;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,13 +13,9 @@ import java.util.Map;
  * >
  * This is a storage class representing the agent memory
  */
-public class QMatrix {
+public class QMatrix implements Serializable {
 
     private ArrayList<HashMap<Action, Double>> qmatrix;
-
-    public QMatrix () {
-        qmatrix = new ArrayList<>();
-    }
 
     public QMatrix (int knownStates) {
         qmatrix = new ArrayList<>();

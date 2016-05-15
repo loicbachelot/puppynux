@@ -45,7 +45,7 @@ public abstract class ComponentFactory {
      * @return LoadDialog
      */
     public static LoadDialog initLoadDialog(JFrame parent) {
-        LoadDialog loadDialog = new LoadDialog(parent, "Loader", true);
+        LoadDialog loadDialog = new LoadDialog(parent, "AgentLoader", true);
         logger.info("LoadDialog creation");
         return loadDialog;
     }

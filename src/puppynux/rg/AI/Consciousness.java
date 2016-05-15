@@ -8,6 +8,7 @@ import puppynux.rg.AI.mock.Observable;
 import puppynux.rg.AI.mock.Observer;
 import puppynux.wr.gui.data.ConfigDialogInfo;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -15,35 +16,36 @@ import java.util.*;
  * Parts of puppynux.rg.AI.
  * >
  */
-public abstract class Consciousness implements Observable {
+public abstract class Consciousness implements Serializable, Observable {
 
     private final static Logger logger = Logger.getLogger(Consciousness.class);
-    protected final double LEARN_FACTOR;
-    protected final double  ACTUALISATION_FACTOR;
-    protected final int NOISE_FACTOR;
-    protected final int OVERSIGHT_FACTOR;
-    protected HashMap<String, Observer> observers;
-    protected HashMap<Action, Integer> actionMap;
-    protected QMatrix Q;
-    protected int knownActions;
-    protected int actualState;
-    protected int oldState;
-    protected Action action;
+    private double LEARN_FACTOR;
+    private double  ACTUALISATION_FACTOR;
+    private int NOISE_FACTOR;
+    private int OVERSIGHT_FACTOR;
+    private HashMap<String, QMatrix> memory;
+    private HashMap<String, Observer> observers;
+    private HashMap<Action, Integer> actionMap;
+    private QMatrix Q;
+    private int knownActions;
+    private volatile int actualState;
+    private int oldState;
+    protected volatile Action action;
     protected volatile String name;
-    protected ArrayList<HashMap<Action, Boolean>> envTab;
-    protected LinkedList<ActionData> actionStack;
-    protected String placePosition;
-    protected String subplacePosition;
-    protected int age;
+    private ArrayList<HashMap<Action, Boolean>> envTab;
+    private LinkedList<ActionData> actionStack;
+    private String placePosition;
+    private String subplacePosition;
+    private int age;
 
     public Consciousness(ConfigDialogInfo info) {
         logger.info("Consciousness awaking");
         knownActions = 0;
         age = 0;
+        memory = new HashMap<>();
         actionStack = new LinkedList<>();
         actionMap = new HashMap<>();
         observers = new HashMap<>();
-        Q = new QMatrix(16);
         name = info.getName();
         LEARN_FACTOR = info.getLearnSpeed();
         ACTUALISATION_FACTOR = info.getRefreshFrequency();
@@ -71,6 +73,11 @@ public abstract class Consciousness implements Observable {
             actionMap.put(action, 0);
         }
         logger.info("[AGENT] Action tab initialized with " + jsonObject.toString());
+    }
+
+    public void setMemory(HashMap<String, QMatrix> memory) {
+        this.memory = memory;
+        Q = memory.get(subplacePosition);
     }
 
     /**
@@ -150,6 +157,8 @@ public abstract class Consciousness implements Observable {
                 continue;
             double reward = Q.getActionReward(actualState, entry.getKey());
             double noise = Math.random() * NOISE_FACTOR;
+            if (entry.getKey() instanceof Pee || entry.getKey() instanceof Stay)
+                noise *= 0.75;
             if (reward + noise >= max) {
                 action = entry.getKey();
                 max = reward + noise;
@@ -191,7 +200,7 @@ public abstract class Consciousness implements Observable {
      * Used by the Agent for reinforcement
      * @param actionData The Action Data to learn
      */
-    protected void learn(ActionData actionData) {
+    private void learn(ActionData actionData) {
         logger.trace("learned " + actionData.getReward());
         Q.addReward(actionData.getState(), actionData.getAction(), LEARN_FACTOR * actionData.getReward());
     }
@@ -202,7 +211,7 @@ public abstract class Consciousness implements Observable {
      * @param nextState The Agent's next state to check reward
      * @return The maximum reward available from next state
      */
-    protected double futureSight (int nextState) {
+    private double futureSight (int nextState) {
         if (Q.getStateActions(nextState).isEmpty()) {
             return 0;
         }
@@ -220,7 +229,7 @@ public abstract class Consciousness implements Observable {
      *
      * @param actionData The Action Data to stack
      */
-    protected void stackAction (ActionData actionData) {
+    private void stackAction (ActionData actionData) {
         actionStack.addFirst(actionData);
     }
 
@@ -228,8 +237,15 @@ public abstract class Consciousness implements Observable {
      *
      * @return The last Action Data recorded
      */
-    protected ActionData unstackAction () {
+    private ActionData unstackAction() {
         return actionStack.removeFirst();
+    }
+
+    public void set (ConfigDialogInfo config) {
+        LEARN_FACTOR = config.getLearnSpeed();
+        ACTUALISATION_FACTOR = config.getRefreshFrequency();
+        NOISE_FACTOR = config.getNoise();
+        OVERSIGHT_FACTOR = config.getOversight();
     }
 
     /**
@@ -260,6 +276,14 @@ public abstract class Consciousness implements Observable {
         return Q;
     }
 
+    public QMatrix getQfor (String subplacePosition) {
+        return memory.get(subplacePosition);
+    }
+
+    public HashMap<String, QMatrix> getMemory() {
+        return memory;
+    }
+
     /**
      *
      * @return A string representing the subplace position of the agent
@@ -274,6 +298,10 @@ public abstract class Consciousness implements Observable {
      */
     public void setSubplacePosition(String subplacePosition, int state) {
         this.subplacePosition = subplacePosition;
+        if (!memory.containsKey(subplacePosition)) {
+            memory.put(subplacePosition, new QMatrix(16));
+        }
+        Q = memory.get(subplacePosition);
         setState(state);
     }
 

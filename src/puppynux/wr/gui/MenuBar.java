@@ -30,7 +30,7 @@ public class MenuBar extends JMenuBar {
         //File Menu
         JMenu file = new JMenu("File");
         file.setMnemonic('F');
-        JMenuItem create = new JCheckBoxMenuItem("New");
+        JMenuItem create = new JMenuItem("New");
         create.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK));
         create.addActionListener(new ActionListener() {
             @Override
@@ -48,6 +48,15 @@ public class MenuBar extends JMenuBar {
             }
         });
         file.add(open);
+        JMenuItem save = new JMenuItem("Save");
+        save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK));
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                mainWindow.setState(6);
+            }
+        });
+        file.add(save);
         JMenuItem close = new JMenuItem("Close");
         close.addActionListener(new ActionListener() {
             @Override

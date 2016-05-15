@@ -5,14 +5,66 @@ package puppynux.wr.gui.data;
  * Manages IASettingDialog's info
  */
 public class IASettingDialogInfo implements PuppyDialogInfo {
-    private Double value;
+    private Choices choice;
+    private double learnSpeed, refresh;
+    private int velocity, oversight, noise;
+
+
+    public IASettingDialogInfo(double learnSpeed, double refresh, int velocity, int oversight, int noise) {
+        this.learnSpeed = learnSpeed;
+        this.refresh = refresh;
+        this.velocity = velocity;
+        this.oversight = oversight;
+        this.noise = noise;
+        choice = Choices.CANCEL;
+    }
 
     /**
      *
-     * @param value Value transmitted by IASettingDialog
+     * @return
      */
-    public IASettingDialogInfo(double value) {
-        this.value = value;
+    public int getNoise() {
+        return noise;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getOversight() {
+        return oversight;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getVelocity() {
+        return velocity;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getRefresh() {
+        return refresh;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getLearnSpeed() {
+        return learnSpeed;
+    }
+
+    /**
+     *
+     * @param choice
+     */
+    public void setChoice(Choices choice) {
+        this.choice = choice;
     }
 
     /**
@@ -20,11 +72,11 @@ public class IASettingDialogInfo implements PuppyDialogInfo {
      */
     @Override
     public Object getInfo() {
-        return null;
+        return choice;
     }
 
     @Override
     public Choices getChoice() {
-        return null;
+        return choice;
     }
 }

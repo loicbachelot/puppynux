@@ -11,7 +11,8 @@ public enum Choices {
     CANCEL("CANCEL"),
     OPEN("OPEN"),
     OK("OK"),
-    EDIT("EDIT");
+    EDIT("EDIT"),
+    STATS("STATS");
 
     private String name;
 

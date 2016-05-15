@@ -6,6 +6,7 @@ import puppynux.lb.env.place.Place;
 import puppynux.lb.env.subplaces.Subplace;
 import puppynux.rg.AI.actions.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 /**
  * Created by loic on 06/03/16.
  */
-public class EnvironmentManager {
+public class EnvironmentManager implements Serializable {
     private ArrayList<Action> actionList;
     private EnvironmentData environmentData;
 

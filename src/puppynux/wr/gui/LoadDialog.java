@@ -1,15 +1,17 @@
 package puppynux.wr.gui;
 
 import puppynux.wr.gui.components.PuppyTableCellRenderer;
-import puppynux.wr.gui.components.PuppyTableModel;
 import puppynux.wr.gui.components.PuppynuxButton;
 import puppynux.wr.gui.data.Choices;
 import puppynux.wr.gui.data.LoadDialogInfo;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Date;
 
 /**
  * Created by niamor972 on 10/03/16.
@@ -18,44 +20,63 @@ import java.awt.event.ActionListener;
  */
 public class LoadDialog extends JDialog implements PuppyDialog {
 
-    private boolean sendData;
     private LoadDialogInfo loadDialogInfo;
+    private JTable table;
+    private Object[][] elements;
 
     public LoadDialog(JFrame parent, String title, boolean modal) {
         super(parent, title, modal);
         setResizable(false);
-        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
         initComponent();
         pack();
         setLocationRelativeTo(null);
     }
 
-    public PuppyTableModel getNewLine() {
-        Object[][] elements = {{"Test", "Test", "0", new PuppynuxButton("Open")},
-                {"Foo", "Bar", "42", new PuppynuxButton("Open")}};
-        String[] title = {"Agent's name", "Environment", "Last played", "Open"};
-        return new PuppyTableModel(elements, title);
-        //return new DefaultTableModel(elements, title);
+    private DefaultTableModel setContent () {
+        String[] title = {"Agent's name", "Last played"};
+        elements = new Object[10][];
+        File backup = new File("src/resources/backup/");
+        int i = 0;
+        for (String pathname :
+                backup.list()) {
+            File file = new File ("src/resources/backup/" + pathname);
+            elements[i++] = new Object[] { pathname.split("\\.")[0], new Date(file.lastModified()) };
+            if (i > 9) {
+                //// TODO: 5/15/16 do better
+                break;
+            }
+        }
+//        return new PuppyTableModel(elements, title);
+        return new DefaultTableModel(elements, title);
     }
 
     //TODO interaction with JTable
     public void initComponent() {
         JPanel contentPanel = new JPanel();
-        JTable table = new JTable(getNewLine());
-        table.setDefaultRenderer(JComponent.class, new PuppyTableCellRenderer());
+        table = new JTable(setContent());
+//        table.setDefaultRenderer(JComponent.class, new PuppyTableCellRenderer());
         //table.getColumn("Open").setCellRenderer(new TableButtonRenderer());
-
         PuppynuxButton cancelButton = new PuppynuxButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                loadDialogInfo = new LoadDialogInfo(Choices.CANCEL);
-                sendData = false;
+                initInfo();
+                loadDialogInfo.setChoice(Choices.CANCEL);
                 setVisible(false);
-
+            }
+        });
+        PuppynuxButton okButton = new PuppynuxButton("OK");
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                initInfo();
+                loadDialogInfo.setChoice(Choices.OK);
+                setVisible(false);
             }
         });
         JPanel controlPanel = new JPanel();
+        controlPanel.add(okButton);
         controlPanel.add(cancelButton);
 
         contentPanel.add(new JScrollPane(table), BorderLayout.CENTER);
@@ -64,13 +85,7 @@ public class LoadDialog extends JDialog implements PuppyDialog {
     }
 
     @Override
-    public void setSendData(boolean sendData) {
-        this.sendData = sendData;
-    }
-
-    @Override
     public LoadDialogInfo showDialog() {
-        sendData = false;
         setVisible(true);
         return loadDialogInfo;
     }
@@ -82,10 +97,11 @@ public class LoadDialog extends JDialog implements PuppyDialog {
 
     @Override
     public void initInfo() {
-        if (!sendData) {
-            loadDialogInfo = new LoadDialogInfo(Choices.CANCEL);
-        } else {
-            loadDialogInfo = new LoadDialogInfo(Choices.OPEN);
+        if (table.getSelectedRow() == -1) {
+            loadDialogInfo = new LoadDialogInfo(null);
+            loadDialogInfo.setChoice(Choices.CANCEL);
+            setVisible(false);
         }
+        loadDialogInfo = new LoadDialogInfo((String) elements[table.getSelectedRow()][0]);
     }
 }

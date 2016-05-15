@@ -19,6 +19,12 @@ public class PlayBall implements Action {
     }
 
     @Override
+    public int hashCode() {
+        int out = position;
+        return out;
+    }
+
+    @Override
     public boolean equals(Object action) {
         if(action instanceof PlayBall) {
             return ((PlayBall) action).getPosition() == position;

@@ -19,6 +19,12 @@ public class ClimbTable implements Action {
     }
 
     @Override
+    public int hashCode() {
+        int out = position;
+        return out;
+    }
+
+    @Override
     public boolean equals(Object action) {
         if(action instanceof ClimbTable) {
             return ((ClimbTable) action).getPosition() == position;

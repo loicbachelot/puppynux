@@ -3,12 +3,13 @@ package puppynux.lb.env;
 import puppynux.lb.env.place.Place;
 import puppynux.lb.env.subplaces.Subplace;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Created by loic on 07/03/16.
  */
-public class EnvironmentData {
+public class EnvironmentData implements Serializable {
     private HashMap<String, Place> environment;
     private HashMap<String, HashMap<String, RMatrix>> envMatrix;
 

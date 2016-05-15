@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import puppynux.lb.env.EnvironmentManager;
 import puppynux.rg.AI.AIBirth;
 import puppynux.rg.AI.AIManager;
+import puppynux.rg.AI.AgentLoader;
 import puppynux.rg.AI.actions.Action;
 import puppynux.rg.AI.actions.ActionException;
 import puppynux.rg.AI.actions.EmptyActionException;
@@ -13,9 +14,11 @@ import puppynux.rg.AI.actions.OutdatedActionException;
 import puppynux.rg.AI.mock.Observable;
 import puppynux.rg.AI.mock.Observer;
 import puppynux.wr.gui.data.ConfigDialogInfo;
+import puppynux.wr.gui.data.IASettingDialogInfo;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 import java.util.HashMap;
 
 /**
@@ -36,8 +39,12 @@ public class GameEngine extends Thread implements Observer, Observable {
     private boolean isLiving;
     private int[] agentCoordinate = new int[2];
     private boolean createAgent = false;
+    private boolean setAgent = false;
     private boolean attributeReward = false;
     private boolean forceAct = false;
+    private boolean doSave = false;
+    private boolean doLoad = false;
+    private String pathname;
     private Action action;
     private int agentState;
     private String agentPlacePosition = "";
@@ -66,7 +73,6 @@ public class GameEngine extends Thread implements Observer, Observable {
         environmentManager.createEnvironment(path);
     }
 
-    //// TODO: 18/03/16 make function loadAgent()
 
     /**
      * Used to generate a new Agent
@@ -77,7 +83,6 @@ public class GameEngine extends Thread implements Observer, Observable {
         aiManager = new AIManager(configDialogInfo);
         aiManager.getAgent().addObserver("gameEngine", this);
         AIBirth.generate(aiManager.getAgent());
-//        aiManager.getAgent().sense(environmentManager.getRMatrix(agentPlacePosition, agentSubplacePosition));
         aiManager.start();
     }
 
@@ -197,6 +202,49 @@ public class GameEngine extends Thread implements Observer, Observable {
         super.start();
     }
 
+    public void setAgentParams (IASettingDialogInfo info) {
+        configDialogInfo.setInfo(info);
+        setAgent = true;
+    }
+
+    public void setAgentParams () {
+        aiManager.setVelocity(configDialogInfo.getVelocity());
+        aiManager.getAgent().set(configDialogInfo);
+    }
+
+    public void save () {
+        doSave = true;
+    }
+
+    private void save (String filename) throws IOException {
+        logger.info("[GAME] saving");
+        ObjectOutputStream oos = new ObjectOutputStream(
+                new BufferedOutputStream(
+                        new FileOutputStream(
+                                new File("src/resources/backup/" + filename + ".dat"))));
+        oos.writeObject(new AgentLoader(configDialogInfo, aiManager.getAgent().getMemory()));
+        oos.close();
+
+        aiManager.printQ();
+    }
+
+    public void load (String filename) {
+        doLoad = true;
+        pathname = filename;
+    }
+    private void load () throws IOException, ClassNotFoundException {
+        logger.info("[GAME] loading");
+        ObjectInputStream ois = new ObjectInputStream(
+                new BufferedInputStream(
+                        new FileInputStream(
+                                new File("src/resources/backup/" + pathname + ".dat"))));
+        AgentLoader loader = (AgentLoader) ois.readObject();
+        configDialogInfo = loader.getInfo();
+        createEnvironment(configDialogInfo.getEnv());
+        createAgent();
+        aiManager.getAgent().setMemory(loader.getMemory());
+    }
+
     @Override
     public void run() {
         logger.info("GameEngine started");
@@ -207,6 +255,35 @@ public class GameEngine extends Thread implements Observer, Observable {
                 createAgent();
             }
 
+            if (setAgent) {
+                setAgent = false;
+                setAgentParams();
+            }
+
+            if (doLoad) {
+                doLoad = false;
+                try {
+                    load();
+                } catch (Exception e) {
+                    //// TODO: 5/15/16 remove JOPTION from here
+                    logger.warn("[GAME] " + e.getMessage());
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog((Component) observers.get("mainWindow"), e.getMessage());
+                }
+            }
+
+            if (doSave) {
+                doSave = false;
+                try {
+                    save(configDialogInfo.getName());
+                } catch (IOException e) {
+                    //// TODO: 5/15/16 remove JOPTION from here
+                    logger.warn("[GAME] " + e.getMessage());
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog((Component) observers.get("mainWindow"), e.getMessage());
+                }
+            }
+
             if (forceAct) {
                 forceAct = false;
                 aiManager.pause();
@@ -215,6 +292,7 @@ public class GameEngine extends Thread implements Observer, Observable {
                 } catch (ActionException e) {
                     //// TODO: 5/15/16 remove JOPTION from here
                     logger.warn("[GAME] " + e.getMessage());
+                    e.printStackTrace();
                     JOptionPane.showMessageDialog((Component) observers.get("mainWindow"), e.getMessage());
                 }
             }
@@ -227,6 +305,7 @@ public class GameEngine extends Thread implements Observer, Observable {
                 } catch (OutdatedActionException | EmptyActionException e) {
                     //// TODO: 07/04/16 remove JOtionPane from here
                     logger.warn("[GAME] " + e.getMessage());
+                    e.printStackTrace();
                     JOptionPane.showMessageDialog((Component) observers.get("mainWindow"), e.getMessage());
                 }
             }

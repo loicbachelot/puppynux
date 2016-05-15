@@ -7,13 +7,10 @@ package puppynux.wr.gui.data;
 public class LoadDialogInfo implements PuppyDialogInfo {
 
     private Choices choice;
+    private String path;
 
-    /**
-     *
-     * @param choice Choice transmitted by LoadDialog
-     */
-    public LoadDialogInfo (Choices choice) {
-        this.choice = choice;
+    public LoadDialogInfo (String path) {
+        this.path = path;
     }
 
     /**
@@ -23,6 +20,14 @@ public class LoadDialogInfo implements PuppyDialogInfo {
     @Override
     public Object getInfo() {
         return choice;
+    }
+
+    public void setChoice(Choices choice) {
+        this.choice = choice;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public Choices getChoice() {

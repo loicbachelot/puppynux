@@ -190,22 +190,4 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
     public void initInfo() {
 
     }
-
-    /**
-     * Allows to make ConfigDialog visible
-     *
-     * @param b
-     */
-    @Override
-    public void setVisible(boolean b) {
-        super.setVisible(b);
-    }
-
-    /**
-     * @param sendData
-     */
-    @Override
-    public void setSendData(boolean sendData) {
-        this.sendData = sendData;
-    }
 }

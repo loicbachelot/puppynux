@@ -2,12 +2,14 @@ package puppynux.rg.AI;
 
 import config.Config;
 import org.apache.log4j.Logger;
+import puppynux.rg.AI.actions.Action;
 import puppynux.rg.AI.actions.Move;
 import puppynux.rg.GameEngine;
 import puppynux.wr.gui.data.ConfigDialogInfo;
 import puppynux.rg.AI.actions.ActionException;
 
 import java.io.*;
+import java.util.Map;
 
 /**
  * Created by niamor972 on 16/02/16.
@@ -18,7 +20,7 @@ import java.io.*;
 
 //TODO fixer un seuil de connaissance totale et faire varier celui de l'agent
 //de manière à ce que l'agent sache ce qu'il ne connait pas
-public class AIManager extends Thread {
+public class AIManager extends Thread implements Serializable {
     //TODO :
     //stock a pile of action / state
     //ask for reward to user
@@ -59,6 +61,22 @@ public class AIManager extends Thread {
      * @throws IOException
      */
     public void printQ() throws IOException {
+        File file = new File("src/log/q_logs/Q" + agent.getName() + ".txt");
+        PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+        for (Map.Entry<String, QMatrix> entry : agent.getMemory().entrySet()) {
+            printWriter.println(entry.getKey());
+            printWriter.println(entry.getValue().toString());
+        }
+        printWriter.close();
+        logger.info("QMatrix printed");
+    }
+    /**
+     * Used for exporting the Agent's Q-Matrix for interpretation
+     *
+     * @throws IOException
+     */
+    public void oldPrintQ() throws IOException {
+/*
         long saved = (long) config.get("SAVED_FILES") + 1;
         config.put("SAVED_FILES", saved);
         File file = new File("src/log/q_logs/Q" + saved + ".txt");
@@ -66,6 +84,7 @@ public class AIManager extends Thread {
         printWriter.println(agent.getQ().toString());
         printWriter.close();
         logger.info("QMatrix printed");
+*/
     }
 
     private void periodByRuleOf3() {
@@ -76,10 +95,9 @@ public class AIManager extends Thread {
         this.isDebug = isDebug;
     }
 
-    //// TODO: 17/03/16 find equation for velocity (0-10) = (500-2000) ms for wait()
     public void setVelocity(int velocity) {
         this.velocity = velocity;
-
+        periodByRuleOf3();
     }
 
     public long getVelocity() {

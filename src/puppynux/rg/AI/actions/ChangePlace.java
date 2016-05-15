@@ -40,6 +40,15 @@ public class ChangePlace implements Action {
     }
 
     @Override
+    public int hashCode() {
+        int out = position;
+        for (int i = 0; i < subplace.length(); i++) {
+            out += (int) subplace.charAt(i);
+        }
+        return out;
+    }
+
+    @Override
     public boolean equals(Object action) {
         if(action instanceof ChangePlace) {
             return ((ChangePlace) action).getPlace().equals(place)

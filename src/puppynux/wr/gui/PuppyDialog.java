@@ -9,7 +9,6 @@ import puppynux.wr.gui.data.PuppyDialogInfo;
  */
 public interface PuppyDialog {
 
-    void setSendData(boolean sendData);
     PuppyDialogInfo showDialog();
     void setVisible(boolean b);
     //TO-DO handle exception with controller

@@ -1,6 +1,10 @@
 package puppynux.wr.gui;
 
+import chart.BarChart_AWT;
+import chart.PieChart_AWT;
 import org.apache.log4j.Logger;
+import org.jfree.chart.demo.PieChartDemo1;
+import org.jfree.ui.RefineryUtilities;
 import puppynux.wr.gui.components.*;
 import puppynux.wr.gui.data.*;
 import puppynux.rg.AI.Agent;
@@ -93,11 +97,15 @@ public class MainWindow extends JFrame implements Observer {
             case NEW:
                 state = 1;
                 break;
-            case CANCEL:
-                JOptionPane.showMessageDialog(null, "No session launched", "WARN", JOptionPane.INFORMATION_MESSAGE);
-                break;
             case LOAD:
                 state = 2;
+                break;
+            case STATS:
+                state = 7;
+                break;
+            case CANCEL:
+            default:
+                JOptionPane.showMessageDialog(null, "No session launched", "WARN", JOptionPane.INFORMATION_MESSAGE);
                 break;
         }
 
@@ -109,23 +117,25 @@ public class MainWindow extends JFrame implements Observer {
                     showConfigDialog();
                     if (configDialogInfo.getChoice().equals(Choices.OK)) {
                         state = 3;
+                        newsPanel = ComponentFactory.initNewsPanel(configDialogInfo.getName());
+                        gameEngine.createAgent(configDialogInfo);
                     } else
                         JOptionPane.showMessageDialog(null, "No session launched", "WARN", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 2:
                     state = 0;
                     showLoadDialog();
+                    if (loadDialogInfo.getChoice().equals(Choices.OK)) {
+                        state = 3;
+                        newsPanel = ComponentFactory.initNewsPanel(loadDialogInfo.getPath());
+                        gameEngine.load(loadDialogInfo.getPath());
+                    } else
+                        JOptionPane.showMessageDialog(null, "No session launched", "WARN", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 3:
-                    state = 4;
-                    newsPanel = ComponentFactory.initNewsPanel(configDialogInfo.getName());
-                    gameEngine.createAgent(configDialogInfo);
-                    break;
-                case 4:
                     if (gameEngine.isLiving()) {
                         state = 0;
                         animation.setVisible(false);
-//                        rewardsPanel.setJComboBox(gameEngine.getEnvironmentManager().getActionList());
                         add(dashboard, BorderLayout.CENTER);
                         add(rewardsPanel, BorderLayout.SOUTH);
                         add(newsPanel, BorderLayout.EAST);
@@ -133,8 +143,25 @@ public class MainWindow extends JFrame implements Observer {
                         Thread.sleep(1L);
                     }
                     break;
+                case 4:
+                    break;
                 case 5:
+                    state = 0;
                     showIASettingDialog();
+                    if (iaSettingDialogInfo.getChoice().equals(Choices.OK)) {
+                        gameEngine.setAgentParams(iaSettingDialogInfo);
+                    }
+                    break;
+                case 6:
+                    state = 0;
+                    gameEngine.save();
+                    break;
+                case 7:
+                    state = 0;
+                    BarChart_AWT chart = new BarChart_AWT("Car Usage Statistics", "Which car do you like?");
+                    chart.pack( );
+                    RefineryUtilities.centerFrameOnScreen( chart );
+                    chart.setVisible( true );
                     break;
                 default:
                     Thread.sleep(0L, 1);
@@ -217,7 +244,7 @@ public class MainWindow extends JFrame implements Observer {
         dashboard.getAnimal().setX(x);
         dashboard.getAnimal().setY(y);
 
-        //// TODO: 5/15/16 POURQUOI ÇA PLANTE ??? 
+        //// TODO: 5/15/16 POURQUOI ÇA PLANTE ???
 //        if (agentSubPlacePosition.equals(subplacePosition)) {
             dashboard.setPlacePosition(placePosition);
             dashboard.setSubplacePosition(subplacePosition);
@@ -230,8 +257,14 @@ public class MainWindow extends JFrame implements Observer {
         Agent agent = (Agent) gameEngine.getAiManager().getAgent();
         newsPanel.getIterationLabel().setText("Iteration : " + gameEngine.getIteration());
         newsPanel.getLocationLabel().setText("Agent's location : " + state);
-        newsPanel.getActionLabel().setText("Agent performed action \"" + agent.getAction() + "\""); //TODO getAction
-        newsPanel.getRewardLabel().setText("With expected reward : " + agent.getQ().getActionReward(agent.getOldState(), agent.getAction())); //TODO getReward
+        if (agent.getAction() == null) {
+            newsPanel.getActionLabel().setText("Agent performed action \"none\"");
+            newsPanel.getRewardLabel().setText("With expected reward : none"); //TODO getReward
+        }
+        else {
+            newsPanel.getActionLabel().setText("Agent performed action \"" + agent.getAction() + "\"");
+            newsPanel.getRewardLabel().setText("With expected reward : " + agent.getQ().getActionReward(agent.getOldState(), agent.getAction())); //TODO getReward
+        }
         repaint();
         logger.trace("[WINDOW] updated");
     }

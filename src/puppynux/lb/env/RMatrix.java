@@ -2,6 +2,7 @@ package puppynux.lb.env;
 
 import puppynux.rg.AI.actions.Action;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
  * Created by loic
  * >
  */
-public class RMatrix {
+public class RMatrix implements Serializable {
 
     private final static int STATE_NUMBER = 16;
     private final static int ACTION_NUMBER = 8; //16;

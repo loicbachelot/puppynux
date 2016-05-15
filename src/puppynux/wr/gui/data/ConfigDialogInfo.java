@@ -68,6 +68,14 @@ public class ConfigDialogInfo implements PuppyDialogInfo {
         return velocity;
     }
 
+    public void setInfo (IASettingDialogInfo info) {
+        learnSpeed = info.getLearnSpeed();
+        refreshFrequency = info.getRefresh();
+        velocity = info.getVelocity();
+        oversight = info.getOversight();
+        noise = info.getNoise();
+    }
+
     /**
      * @return Choice
      */
