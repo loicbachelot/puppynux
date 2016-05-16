@@ -39,6 +39,11 @@
  *  IV)     How to use Puppynux ?
  *  *****************************
  * Simply execute Puppynux.jar file with Java application.
+ * WARNING :
+ * Do not try to :
+ *  °load game before having one saved
+ *  °check stats before having saved a game
+ *  °set IA when game is not running
  *
  *   V)      How works Puppynux ?
  *   ****************************

@@ -79,7 +79,7 @@ public class Config {
     public void load () throws IOException, ParseException {
         try {
             load(Config.class.getClassLoader().getResource("config/config.json").getFile());
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             load(getClass().getClassLoader().getResourceAsStream("config/config.json"));
         }
     }
