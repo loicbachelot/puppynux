@@ -24,6 +24,10 @@ public class QMatrix implements Serializable {
         }
     }
 
+    public ArrayList<HashMap<Action, Double>> getQmatrix() {
+        return qmatrix;
+    }
+
     /**
      *
      * @param state The state where check actions

@@ -222,7 +222,8 @@ public class GameEngine extends Thread implements Observer, Observable {
                 new BufferedOutputStream(
                         new FileOutputStream(
                                 new File("src/resources/backup/" + filename + ".dat"))));
-        oos.writeObject(new AgentLoader(configDialogInfo, aiManager.getAgent().getMemory()));
+        oos.writeObject(new AgentLoader(
+                configDialogInfo, aiManager.getAgent().getMemory(), aiManager.getAgent().getActionMap()));
         oos.close();
 
         aiManager.printQ();

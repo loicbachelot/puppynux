@@ -158,8 +158,8 @@ public class IASettingDialog extends JDialog implements PuppyDialog {
 
     @Override
     public void initInfo() {
-        iaSettingDialogInfo  = new IASettingDialogInfo(learnSpeedSlider.getValue(),
-                refreshSlider.getValue(), (int) velocitySpinner.getValue(),
-                oversightSlider.getValue(), noiseSlider.getValue());
+        iaSettingDialogInfo  = new IASettingDialogInfo(learnSpeedSlider.getValue() / 10,
+                refreshSlider.getValue() / 10, (int) velocitySpinner.getValue(),
+                oversightSlider.getValue(), noiseSlider.getValue() * 15);
     }
 }

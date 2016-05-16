@@ -11,10 +11,12 @@ import java.util.HashMap;
 public class AgentLoader implements Serializable {
     private ConfigDialogInfo info;
     private HashMap<String, QMatrix> memory;
+    private HashMap<String, Integer> actionMap;
 
-    public AgentLoader (ConfigDialogInfo info, HashMap memory) {
+    public AgentLoader (ConfigDialogInfo info, HashMap<String, QMatrix> memory, HashMap<String, Integer> actionMap) {
         this.info = info;
         this.memory = memory;
+        this.actionMap = actionMap;
     }
 
     public ConfigDialogInfo getInfo() {
@@ -23,5 +25,9 @@ public class AgentLoader implements Serializable {
 
     public HashMap<String, QMatrix> getMemory() {
         return memory;
+    }
+
+    public HashMap<String, Integer> getActionMap() {
+        return actionMap;
     }
 }

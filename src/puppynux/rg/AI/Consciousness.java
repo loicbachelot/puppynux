@@ -25,7 +25,7 @@ public abstract class Consciousness implements Serializable, Observable {
     private int OVERSIGHT_FACTOR;
     private HashMap<String, QMatrix> memory;
     private HashMap<String, Observer> observers;
-    private HashMap<Action, Integer> actionMap;
+    private HashMap<String, Integer> actionMap;
     private QMatrix Q;
     private int knownActions;
     private volatile int actualState;
@@ -36,6 +36,7 @@ public abstract class Consciousness implements Serializable, Observable {
     private LinkedList<ActionData> actionStack;
     private String placePosition;
     private String subplacePosition;
+    private String oldSubplacePosition;
     private int age;
 
     public Consciousness(ConfigDialogInfo info) {
@@ -57,7 +58,7 @@ public abstract class Consciousness implements Serializable, Observable {
     public void initActionMap (ArrayList<Action> actionList) {
         knownActions = actionList.size();
         for (Action action: actionList) {
-            actionMap.put(action, 0);
+            actionMap.put(action.toString(), 0);
         }
         logger.info("[AGENT] Action tab initialized with " + actionList.toString());
     }
@@ -70,7 +71,7 @@ public abstract class Consciousness implements Serializable, Observable {
         for (int i = 0; i < knownActions; i++) {
             Class cls = Class.forName("puppynux.rg.AI.actions." + jsonObject.get(String.valueOf(i)).toString());
             Action action = (Action) cls.newInstance();
-            actionMap.put(action, 0);
+            actionMap.put(action.toString(), 0);
         }
         logger.info("[AGENT] Action tab initialized with " + jsonObject.toString());
     }
@@ -128,13 +129,14 @@ public abstract class Consciousness implements Serializable, Observable {
      * The method used by the Agent to act
      * @throws ActionException If using the action causes inconsistencies
      */
-    protected void act() throws ActionException {
+    private void act() throws ActionException {
         oldState = actualState;
+        oldSubplacePosition = subplacePosition;
         action.use(this);
-        int count = actionMap.containsKey(action) ? actionMap.get(action) : 0;
-        actionMap.put(action, count + 1);
+        int count = actionMap.containsKey(action.toString()) ? actionMap.get(action.toString()) : 0;
+        actionMap.put(action.toString(), count + 1);
         if (!(action instanceof Move)) {
-            stackAction(new ActionData(oldState, action, actualState, age));
+            stackAction(new ActionData(oldState, action, actualState, age, oldSubplacePosition));
         }
         age++;
         logger.trace("[AGENT] from " + oldState + " performs " + action + " (to " + actualState + ") with expected reward : " + Q.getActionReward(oldState, action)+ "\n");
@@ -146,12 +148,12 @@ public abstract class Consciousness implements Serializable, Observable {
      * @param possibilities The tab of possibilities for actual state
      * @return The chosen action
      */
-    protected Action chooseAction (HashMap<Action, Boolean> possibilities) {
+    private Action chooseAction (HashMap<Action, Boolean> possibilities) {
         double max = 0.0;
         Action action = null;
         for (Map.Entry<Action, Boolean> entry : possibilities.entrySet()) {
-            if (!actionMap.containsKey(entry.getKey())) {
-                actionMap.put(entry.getKey(), 0);
+            if (!actionMap.containsKey(entry.getKey().toString())) {
+                actionMap.put(entry.getKey().toString(), 0);
             }
             if (!entry.getValue())
                 continue;
@@ -193,7 +195,8 @@ public abstract class Consciousness implements Serializable, Observable {
     private void learn () {
         double max = futureSight(actualState);
         double r = LEARN_FACTOR * ACTUALISATION_FACTOR * max + Q.getActionReward(oldState, action) * (1 - LEARN_FACTOR);
-        Q.setReward(oldState, action, r);
+        memory.get(oldSubplacePosition).setReward(oldState, action, r);
+//        Q.setReward(oldState, action, r);
     }
 
     /**
@@ -202,7 +205,9 @@ public abstract class Consciousness implements Serializable, Observable {
      */
     private void learn(ActionData actionData) {
         logger.trace("learned " + actionData.getReward());
-        Q.addReward(actionData.getState(), actionData.getAction(), LEARN_FACTOR * actionData.getReward());
+        memory.get(actionData.getSubplace()).
+                addReward(actionData.getState(), actionData.getAction(), LEARN_FACTOR * actionData.getReward());
+//        Q.addReward(actionData.getState(), actionData.getAction(), LEARN_FACTOR * actionData.getReward());
     }
 
     /**
@@ -246,6 +251,15 @@ public abstract class Consciousness implements Serializable, Observable {
         ACTUALISATION_FACTOR = config.getRefreshFrequency();
         NOISE_FACTOR = config.getNoise();
         OVERSIGHT_FACTOR = config.getOversight();
+        actionStack = new LinkedList<>();
+    }
+
+    /**
+     *
+     * @return The action map where key represents the action name and value its occurence
+     */
+    public HashMap<String, Integer> getActionMap() {
+        return actionMap;
     }
 
     /**
@@ -315,9 +329,9 @@ public abstract class Consciousness implements Serializable, Observable {
 
     /**
      *
-     * @param placePosition
-     * @param subplacePosition
-     * @param state
+     * @param placePosition The new place for the agent
+     * @param subplacePosition The new subplace for the agent
+     * @param state The new state for the agent
      */
     public void setPlacePosition(String placePosition, String subplacePosition, int state) {
         this.placePosition = placePosition;
@@ -348,7 +362,7 @@ public abstract class Consciousness implements Serializable, Observable {
     }
 
     @Override
-    public void notifyObserver(String name, String placPosition, String subplacePosition, int state) {
-        observers.get(name).update(placPosition, subplacePosition, state);
+    public void notifyObserver(String name, String placePosition, String subplacePosition, int state) {
+        observers.get(name).update(placePosition, subplacePosition, state);
     }
 }

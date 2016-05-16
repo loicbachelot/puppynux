@@ -5,9 +5,14 @@ import puppynux.rg.AI.Consciousness;
 /**
  * Created by loic on 21/04/16.
  */
-public class ChangeSubplace implements Action {
+public class ChangeSubplace extends Move {
     private String subplace = "";
     private int position = -1;
+
+    @Override
+    protected void modifyCoordinate(Consciousness agent) throws ActionException {
+        agent.setSubplacePosition(subplace, position);
+    }
 
     public void setPosition(int position) {
         this.position = position;
@@ -43,11 +48,6 @@ public class ChangeSubplace implements Action {
         else{
             return false;
         }
-    }
-
-    @Override
-    public void use(Consciousness agent) throws ActionException {
-        agent.setSubplacePosition(subplace, position);
     }
 
     @Override

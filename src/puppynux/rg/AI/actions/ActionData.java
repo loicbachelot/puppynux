@@ -10,13 +10,15 @@ package puppynux.rg.AI.actions;
 public class ActionData {
 
     private int state, nextState, reward, age;
+    private String subplace;
     private Action action;
 
-    public ActionData (int state, Action action, int nextState, int age) {
+    public ActionData (int state, Action action, int nextState, int age, String subplace) {
         this.age = age;
         this.state = state;
         this.action = action;
         this.nextState = nextState;
+        this.subplace = subplace;
         this.reward = 0;
     }
 
@@ -66,6 +68,14 @@ public class ActionData {
      */
     public Action getAction() {
         return action;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getSubplace() {
+        return subplace;
     }
 
     @Override

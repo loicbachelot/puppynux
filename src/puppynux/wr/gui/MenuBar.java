@@ -58,6 +58,7 @@ public class MenuBar extends JMenuBar {
         });
         file.add(save);
         JMenuItem close = new JMenuItem("Close");
+        close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_MASK));
         close.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -73,13 +74,19 @@ public class MenuBar extends JMenuBar {
         //Edit Menu
         JMenu edit = new JMenu("Edit");
         JMenuItem set = new JMenuItem("Set IA");
-        //TODO link set with IASettingDialog
         set.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 mainWindow.setState(5);
             }
         });
         edit.add(set);
+        JMenuItem stats = new JMenuItem("IA Stats");
+        stats.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                mainWindow.setState(4);
+            }
+        });
+        edit.add(stats);
         add(edit);
 
         JMenu history = new JMenu("History");

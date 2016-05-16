@@ -1,10 +1,12 @@
 package puppynux.wr.gui;
 
 import chart.BarChart_AWT;
+import chart.Charts_AWT;
 import chart.PieChart_AWT;
 import org.apache.log4j.Logger;
 import org.jfree.chart.demo.PieChartDemo1;
 import org.jfree.ui.RefineryUtilities;
+import puppynux.rg.AI.AgentLoader;
 import puppynux.wr.gui.components.*;
 import puppynux.wr.gui.data.*;
 import puppynux.rg.AI.Agent;
@@ -15,6 +17,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.*;
 
 /**
  * Created by niamor972 on 09/03/16.
@@ -43,6 +46,7 @@ public class MainWindow extends JFrame implements Observer {
     private ConfigDialogInfo configDialogInfo;
     private LoadDialogInfo loadDialogInfo;
     private IASettingDialogInfo iaSettingDialogInfo;
+    private AgentLoader loader;
     private MenuBar menuBar;
     private BorderLayout borderLayout;
     private AnimationPanel animation;
@@ -101,7 +105,7 @@ public class MainWindow extends JFrame implements Observer {
                 state = 2;
                 break;
             case STATS:
-                state = 7;
+                state = 4;
                 break;
             case CANCEL:
             default:
@@ -113,6 +117,7 @@ public class MainWindow extends JFrame implements Observer {
         while (isRunning) {
             switch (state) {
                 case 1:
+                    logger.info("[WINDOW] New agent");
                     state = 0;
                     showConfigDialog();
                     if (configDialogInfo.getChoice().equals(Choices.OK)) {
@@ -124,6 +129,7 @@ public class MainWindow extends JFrame implements Observer {
                     break;
                 case 2:
                     state = 0;
+                    logger.info("[WINDOW] Load agent");
                     showLoadDialog();
                     if (loadDialogInfo.getChoice().equals(Choices.OK)) {
                         state = 3;
@@ -134,6 +140,7 @@ public class MainWindow extends JFrame implements Observer {
                     break;
                 case 3:
                     if (gameEngine.isLiving()) {
+                        logger.info("[WINDOW] Agent created");
                         state = 0;
                         animation.setVisible(false);
                         add(dashboard, BorderLayout.CENTER);
@@ -144,9 +151,26 @@ public class MainWindow extends JFrame implements Observer {
                     }
                     break;
                 case 4:
+                    state = 0;
+                    logger.info("[WINDOW] Stats");
+                    showLoadDialog();
+                    if (loadDialogInfo.getChoice().equals(Choices.OK)) {
+                        state = 7;
+                        try {
+                            ObjectInputStream ois = new ObjectInputStream(
+                                    new BufferedInputStream(
+                                            new FileInputStream(
+                                                    new File("src/resources/backup/" + loadDialogInfo.getPath() + ".dat"))));
+                            loader = (AgentLoader)ois.readObject();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
                 case 5:
                     state = 0;
+                    logger.info("[WINDOW] Agent settings");
+                    gameEngine.getAiManager().pause();
                     showIASettingDialog();
                     if (iaSettingDialogInfo.getChoice().equals(Choices.OK)) {
                         gameEngine.setAgentParams(iaSettingDialogInfo);
@@ -154,14 +178,14 @@ public class MainWindow extends JFrame implements Observer {
                     break;
                 case 6:
                     state = 0;
+                    logger.info("[WINDOW] Save agent");
                     gameEngine.save();
                     break;
                 case 7:
                     state = 0;
-                    BarChart_AWT chart = new BarChart_AWT("Car Usage Statistics", "Which car do you like?");
-                    chart.pack( );
-                    RefineryUtilities.centerFrameOnScreen( chart );
-                    chart.setVisible( true );
+                    logger.info("[WINDOW] Agent stats");
+                    Charts_AWT chart = new Charts_AWT(loader.getInfo().getName(),
+                            loader.getMemory(), loader.getActionMap());
                     break;
                 default:
                     Thread.sleep(0L, 1);
