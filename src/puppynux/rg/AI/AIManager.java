@@ -60,9 +60,9 @@ public class AIManager extends Thread implements Serializable {
      */
     public void printQ() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
-        File create = new File(classLoader.getResource("log/q_logs/Q").getFile());
+        File create = new File(classLoader.getResource("log/q_logs/").getFile());
         create.mkdirs();
-        File file = new File(create + "/" + agent.getName() + ".txt");
+        File file = new File(create + "/Q" + agent.getName() + ".txt");
         PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(file)));
         printWriter.println(agent.getActionMap());
         for (Map.Entry<String, QMatrix> entry : agent.getMemory().entrySet()) {

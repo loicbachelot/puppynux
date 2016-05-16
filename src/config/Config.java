@@ -77,21 +77,19 @@ public class Config {
     }
 
     public void load () throws IOException, ParseException {
-        System.out.println("***********************" +
-                "test resource = " + getClass().getClassLoader().getResource("config/config.json") +
-                "***********************");
-        load(getClass().getClassLoader().getResourceAsStream("config/config.json"));
-//        load (Config.class.getResource("config/config.json").getFile());
+        try {
+            load(Config.class.getClassLoader().getResource("config/config.json").getFile());
+        } catch (NullPointerException e) {
+            load(getClass().getClassLoader().getResourceAsStream("config/config.json"));
+        }
     }
 
     public void save () throws IOException {
-        System.out.println("***********************" +
-                "test resource = " + getClass().getClassLoader().getResource("config/config.json") +
-                "***********************");
         ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("config/").getFile());
+        file.mkdirs();
 
-        File file = new File(Config.class.getResource("config.json").getFile());
-        FileWriter fileWriter = new FileWriter(file);//"src/config/config.json");
+        FileWriter fileWriter = new FileWriter(file + "/" + "config.json");//"src/config/config.json");
         fileWriter.write(data.toJSONString());
         fileWriter.flush();
         fileWriter.close();
