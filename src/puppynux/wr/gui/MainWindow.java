@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -190,9 +189,8 @@ public class MainWindow extends JFrame implements Observer {
                         state = 7;
                         try {
                             ObjectInputStream ois = new ObjectInputStream(
-                                    new BufferedInputStream(
                                             new FileInputStream(
-                                                    new File(getClass().getClassLoader().getResource("resources/backup/").getFile() + loadDialogInfo.getPath() + ".dat"))));
+                                                    new File(getClass().getClassLoader().getResource("resources/backup/").getFile() + loadDialogInfo.getPath() + ".dat")));
                             loader = (AgentLoader)ois.readObject();
                         } catch (Exception e) {
                             e.printStackTrace();

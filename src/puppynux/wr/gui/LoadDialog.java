@@ -43,9 +43,6 @@ public class LoadDialog extends JDialog implements PuppyDialog {
                 backup.list()) {
             File file = new File(classLoader.getResource("resources/backup/").getFile() + pathname);
             elements[i++] = new Object[]{pathname.split("\\.")[0], new Date(file.lastModified())};
-            if (i >= size) {
-                size++;
-            }
         }
         return new DefaultTableModel(elements, title);
     }
