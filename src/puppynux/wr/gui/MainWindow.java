@@ -184,14 +184,27 @@ public class MainWindow extends JFrame implements Observer {
                 case 4:
                     state = 0;
                     logger.info("[WINDOW] Stats");
+                    if (gameEngine.isLiving()) {
+                        try {
+                            ObjectInputStream ois = new ObjectInputStream(
+                                    new FileInputStream(
+                                            new File(getClass().getClassLoader().getResource("resources/backup/").getFile() + gameEngine.getAiManager().getAgent().getName() + ".dat")));
+                            loader = (AgentLoader)ois.readObject();
+                            state = 7;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+
                     showLoadDialog();
                     if (loadDialogInfo.getChoice().equals(Choices.OK)) {
-                        state = 7;
                         try {
                             ObjectInputStream ois = new ObjectInputStream(
                                             new FileInputStream(
                                                     new File(getClass().getClassLoader().getResource("resources/backup/").getFile() + loadDialogInfo.getPath() + ".dat")));
                             loader = (AgentLoader)ois.readObject();
+                            state = 7;
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

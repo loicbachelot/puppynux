@@ -7,7 +7,10 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RefineryUtilities;
+import puppynux.rg.AI.Agent;
+import puppynux.rg.AI.Consciousness;
 import puppynux.rg.AI.QMatrix;
+import puppynux.rg.GameEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,13 +51,13 @@ public class Charts_AWT extends JDialog {
         chartPanel.setPreferredSize(new java.awt.Dimension(560, 367));
         panel.add(chartPanel);
 
-        for (HashMap.Entry entry :
-                memory.entrySet()) {
+        if (GameEngine.getInstance().isLiving()) {
+            Consciousness agent = GameEngine.getInstance().getAiManager().getAgent();
             chart = ChartFactory.createBarChart(
-                    (String)entry.getKey(),
+                    agent.getSubplacePosition(),
                     "State",
                     "Reward",
-                    BarChart_AWT.createDataset((QMatrix)entry.getValue()),
+                    BarChart_AWT.createDataset(agent.getQ()),
                     PlotOrientation.VERTICAL,
                     true, true, false);
             chartPanel = new ChartPanel(chart);
