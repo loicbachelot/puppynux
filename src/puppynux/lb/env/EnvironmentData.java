@@ -19,7 +19,8 @@ public class EnvironmentData implements Serializable {
     }
 
     public void load (String path) {
-        environment.putAll(EnvFactory.Factory(path));
+        EnvFactory factory = new EnvFactory();
+        environment.putAll(factory.Factory(path));
     }
 
     public void addMatrixSubplace(String subplaceString, String placeString, RMatrix matrix){

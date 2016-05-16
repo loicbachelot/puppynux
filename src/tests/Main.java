@@ -20,7 +20,7 @@ public class Main {
         Config config = Config.getInstance();
 
         try {
-            config.load(new File("src/config/config.json"));//config.getClass().getResource("config.json").getFile());
+            config.load();
         } catch (ParseException | IOException e) {
             e.printStackTrace();
         }

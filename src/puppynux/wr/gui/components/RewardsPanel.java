@@ -38,7 +38,7 @@ public class RewardsPanel extends JPanel {
      * Initializes components
      */
     public void initComponent() {
-        pauseButton = new PuppynuxButton(new ImageIcon(new ImageIcon("src/resources/img/playButton.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+        pauseButton = new PuppynuxButton(new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/img/playButton.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

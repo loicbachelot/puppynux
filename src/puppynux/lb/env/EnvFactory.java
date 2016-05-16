@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class EnvFactory {
 
 
-    public static HashMap<String, Place> Factory(String path) {
+    public HashMap<String, Place> Factory(String path) {
         HashMap<String, Place> environment = new HashMap<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         String type;
@@ -38,10 +38,8 @@ public class EnvFactory {
         }
         Document document = null;
         try {
-            document = builder.parse(new File("src/resources/environment/" + path));
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            document = builder.parse(getClass().getClassLoader().getResourceAsStream("resources/environment/" + path));//new File("src/resources/environment/" + path));
+        } catch (SAXException | IOException e) {
             e.printStackTrace();
         }
         Element root = document.getDocumentElement();
@@ -65,7 +63,7 @@ public class EnvFactory {
         return environment;
     }
 
-    public static Place placeFactory(String path, String placeType) {
+    public Place placeFactory(String path, String placeType) {
         HashMap<String, Subplace> subplaces = new HashMap<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         String objecttype, subplacetype;
@@ -85,7 +83,7 @@ public class EnvFactory {
 
         Document document = null;
         try {
-            document = builder.parse(new File("src/resources/environment/" + path));
+            document = builder.parse(getClass().getClassLoader().getResourceAsStream("resources/environment/" + path));//new File("src/resources/environment/" + path));
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {

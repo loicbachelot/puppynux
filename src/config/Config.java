@@ -12,10 +12,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -73,8 +70,28 @@ public class Config {
         logger.info("[CONFIG] loaded");
     }
 
+    private void load (InputStream stream) throws IOException, ParseException {
+        JSONParser jsonParser = new JSONParser();
+        data = (JSONObject) jsonParser.parse(new InputStreamReader(stream));
+        logger.info("[CONFIG] loaded");
+    }
+
+    public void load () throws IOException, ParseException {
+        System.out.println("***********************" +
+                "test resource = " + getClass().getClassLoader().getResource("config/config.json") +
+                "***********************");
+        load(getClass().getClassLoader().getResourceAsStream("config/config.json"));
+//        load (Config.class.getResource("config/config.json").getFile());
+    }
+
     public void save () throws IOException {
-        FileWriter fileWriter = new FileWriter("src/config/config.json");
+        System.out.println("***********************" +
+                "test resource = " + getClass().getClassLoader().getResource("config/config.json") +
+                "***********************");
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        File file = new File(Config.class.getResource("config.json").getFile());
+        FileWriter fileWriter = new FileWriter(file);//"src/config/config.json");
         fileWriter.write(data.toJSONString());
         fileWriter.flush();
         fileWriter.close();

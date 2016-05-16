@@ -216,6 +216,7 @@ public class MainWindow extends JFrame implements Observer {
                     gameEngine.save();
                     break;
                 case 7:
+                    //// TODO: 5/16/16 if living presents total + bar for actual subplace if not presents only total for selected
                     state = 0;
                     logger.info("[WINDOW] Agent stats");
                     Charts_AWT chart = new Charts_AWT(loader.getInfo().getName(),
