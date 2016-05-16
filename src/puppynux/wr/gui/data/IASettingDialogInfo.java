@@ -21,7 +21,7 @@ public class IASettingDialogInfo implements PuppyDialogInfo {
 
     /**
      *
-     * @return
+     * @return noise
      */
     public int getNoise() {
         return noise;
@@ -29,7 +29,7 @@ public class IASettingDialogInfo implements PuppyDialogInfo {
 
     /**
      *
-     * @return
+     * @return oversight
      */
     public int getOversight() {
         return oversight;
@@ -37,7 +37,7 @@ public class IASettingDialogInfo implements PuppyDialogInfo {
 
     /**
      *
-     * @return
+     * @return velocity
      */
     public int getVelocity() {
         return velocity;
@@ -45,7 +45,7 @@ public class IASettingDialogInfo implements PuppyDialogInfo {
 
     /**
      *
-     * @return
+     * @return refresh
      */
     public double getRefresh() {
         return refresh;
@@ -53,18 +53,10 @@ public class IASettingDialogInfo implements PuppyDialogInfo {
 
     /**
      *
-     * @return
+     * @return learnSpeed
      */
     public double getLearnSpeed() {
         return learnSpeed;
-    }
-
-    /**
-     *
-     * @param choice
-     */
-    public void setChoice(Choices choice) {
-        this.choice = choice;
     }
 
     /**
@@ -78,5 +70,12 @@ public class IASettingDialogInfo implements PuppyDialogInfo {
     @Override
     public Choices getChoice() {
         return choice;
+    }
+
+    /**
+     * @param choice
+     */
+    public void setChoice(Choices choice) {
+        this.choice = choice;
     }
 }
