@@ -5,7 +5,7 @@ package puppynux.wr.gui.objects;
  */
 public class Table extends Objects {
     public Table(int x, int y) {
-        super("src/resources/img/table.png", x, y);
+        super("resources/img/table.png", x, y);
     }
 }
 

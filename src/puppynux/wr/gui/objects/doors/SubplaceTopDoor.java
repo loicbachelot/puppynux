@@ -7,7 +7,7 @@ import puppynux.wr.gui.objects.Objects;
  */
 public class SubplaceTopDoor extends Objects {
     public SubplaceTopDoor(int x, int y) {
-        super("src/resources/img/topDoor.png", x, y);
+        super("resources/img/topDoor.png", x, y);
     }
 }
 
