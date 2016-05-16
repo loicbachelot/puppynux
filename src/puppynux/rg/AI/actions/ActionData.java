@@ -72,7 +72,7 @@ public class ActionData {
 
     /**
      *
-     * @return
+     * @return subplace
      */
     public String getSubplace() {
         return subplace;
