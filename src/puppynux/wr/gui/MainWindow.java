@@ -1,14 +1,9 @@
 package puppynux.wr.gui;
 
-import chart.BarChart_AWT;
 import chart.Charts_AWT;
-import chart.PieChart_AWT;
 import org.apache.log4j.Logger;
-import org.jfree.ui.RefineryUtilities;
-import puppynux.rg.AI.AgentLoader;
-import puppynux.wr.gui.components.*;
-import puppynux.wr.gui.data.*;
 import puppynux.rg.AI.Agent;
+import puppynux.rg.AI.AgentLoader;
 import puppynux.rg.AI.mock.Observer;
 import puppynux.rg.GameEngine;
 import puppynux.wr.gui.components.*;
@@ -18,7 +13,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 /**
  * Created by niamor972 on 09/03/16.
@@ -194,7 +192,7 @@ public class MainWindow extends JFrame implements Observer {
                             ObjectInputStream ois = new ObjectInputStream(
                                     new BufferedInputStream(
                                             new FileInputStream(
-                                                    new File("src/resources/backup/" + loadDialogInfo.getPath() + ".dat"))));
+                                                    new File(getClass().getClassLoader().getResource("resources/backup/").getFile() + loadDialogInfo.getPath() + ".dat"))));
                             loader = (AgentLoader)ois.readObject();
                         } catch (Exception e) {
                             e.printStackTrace();

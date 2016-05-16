@@ -32,21 +32,21 @@ public class LoadDialog extends JDialog implements PuppyDialog {
         setLocationRelativeTo(null);
     }
 
-    private DefaultTableModel setContent () {
+    private DefaultTableModel setContent() {
+        int size = 10;
+        ClassLoader classLoader = getClass().getClassLoader();
         String[] title = {"Agent's name", "Last played"};
-        elements = new Object[10][];
-        File backup = new File(getClass().getClassLoader().getResource("resources/backup/").toString());
+        elements = new Object[size][];
+        File backup = new File(classLoader.getResource("resources/backup/").getFile());
         int i = 0;
         for (String pathname :
                 backup.list()) {
-            File file = new File(getClass().getClassLoader().getResource("resources/backup/" + pathname).toString());
-            elements[i++] = new Object[] { pathname.split("\\.")[0], new Date(file.lastModified()) };
-            if (i > 9) {
-                //// TODO: 5/15/16 do better
-                break;
+            File file = new File(classLoader.getResource("resources/backup/").getFile() + pathname);
+            elements[i++] = new Object[]{pathname.split("\\.")[0], new Date(file.lastModified())};
+            if (i >= size) {
+                size++;
             }
         }
-//        return new PuppyTableModel(elements, title);
         return new DefaultTableModel(elements, title);
     }
 

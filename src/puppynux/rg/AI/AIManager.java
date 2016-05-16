@@ -2,11 +2,9 @@ package puppynux.rg.AI;
 
 import config.Config;
 import org.apache.log4j.Logger;
-import puppynux.rg.AI.actions.Action;
-import puppynux.rg.AI.actions.Move;
-import puppynux.rg.GameEngine;
-import puppynux.wr.gui.data.ConfigDialogInfo;
 import puppynux.rg.AI.actions.ActionException;
+import puppynux.rg.AI.actions.Move;
+import puppynux.wr.gui.data.ConfigDialogInfo;
 
 import java.io.*;
 import java.util.Map;
@@ -61,7 +59,10 @@ public class AIManager extends Thread implements Serializable {
      * @throws IOException
      */
     public void printQ() throws IOException {
-        File file = new File("src/log/q_logs/Q" + agent.getName() + ".txt");
+        ClassLoader classLoader = getClass().getClassLoader();
+        File create = new File(classLoader.getResource("log/q_logs/Q").getFile());
+        create.mkdirs();
+        File file = new File(create + "/" + agent.getName() + ".txt");
         PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(file)));
         printWriter.println(agent.getActionMap());
         for (Map.Entry<String, QMatrix> entry : agent.getMemory().entrySet()) {
@@ -96,13 +97,13 @@ public class AIManager extends Thread implements Serializable {
         this.isDebug = isDebug;
     }
 
+    public long getVelocity() {
+        return velocity;
+    }
+
     public void setVelocity(int velocity) {
         this.velocity = velocity;
         periodByRuleOf3();
-    }
-
-    public long getVelocity() {
-        return velocity;
     }
 
     /**

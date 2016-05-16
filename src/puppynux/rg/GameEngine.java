@@ -85,7 +85,7 @@ public class GameEngine extends Thread implements Observer, Observable {
     /**
      * Used to create a new Environment
      */
-    public void createEnvironment (String path) {
+    public void createEnvironment(String path) {
         environmentManager = new EnvironmentManager();
         environmentManager.createEnvironment(path);
     }
@@ -93,7 +93,7 @@ public class GameEngine extends Thread implements Observer, Observable {
     /**
      * Used to generate a new Agent
      */
-    private void createAgent () {
+    private void createAgent() {
         logger.info("Creating agent");
         iteration = 0;
         aiManager = new AIManager(configDialogInfo);
@@ -104,26 +104,26 @@ public class GameEngine extends Thread implements Observer, Observable {
 
     /**
      * Used to active the reward attribution mechanism
+     *
      * @param reward The reward to grant
      */
-    public synchronized void attributeReward (int reward) {
+    public synchronized void attributeReward(int reward) {
         attributeReward = true;
         this.reward = reward;
     }
 
-    public void forceAct (Action action) {
+    public void forceAct(Action action) {
         forceAct = true;
         this.action = action;
     }
 
     //// TODO: 07/04/16 makes the given objects be a list of attribute for the agent created
-    public void createAgent (ConfigDialogInfo info) {
+    public void createAgent(ConfigDialogInfo info) {
         configDialogInfo = info;
         createAgent = true;
     }
 
     /**
-     *
      * @return The Agent's lifetime
      */
     public synchronized int getIteration() {
@@ -147,7 +147,6 @@ public class GameEngine extends Thread implements Observer, Observable {
     }
 
     /**
-     *
      * @return An instance of the AI Manager
      */
     public AIManager getAiManager() {
@@ -159,7 +158,6 @@ public class GameEngine extends Thread implements Observer, Observable {
     }
 
     /**
-     *
      * @return An instance of the Environment Manager
      */
     public EnvironmentManager getEnvironmentManager() {
@@ -201,43 +199,45 @@ public class GameEngine extends Thread implements Observer, Observable {
         super.start();
     }
 
-    public void setAgentParams (IASettingDialogInfo info) {
+    public void setAgentParams(IASettingDialogInfo info) {
         configDialogInfo.setInfo(info);
         setAgent = true;
     }
 
-    public void setAgentParams () {
+    public void setAgentParams() {
         aiManager.setVelocity(configDialogInfo.getVelocity());
         aiManager.getAgent().set(configDialogInfo);
     }
 
-    public void save () {
+    public void save() {
         doSave = true;
     }
 
-    private void save (String filename) throws IOException {
+    private void save(String filename) throws IOException {
         logger.info("[GAME] saving");
+        ClassLoader classLoader = getClass().getClassLoader();
+        File toSave = new File(classLoader.getResource("resources/backup").getFile());
+        toSave.mkdirs();
         ObjectOutputStream oos = new ObjectOutputStream(
-                new BufferedOutputStream(
-                        new FileOutputStream(
-                                new File(getClass().getClassLoader().getResource("resources/backup/" + filename + ".dat").toString()))));
+                new FileOutputStream(toSave + "/" + filename + ".dat"));
         oos.writeObject(new AgentLoader(
                 configDialogInfo, aiManager.getAgent().getMemory(), aiManager.getAgent().getActionMap()));
         oos.close();
-
         aiManager.printQ();
     }
 
-    public void load (String filename) {
+    public void load(String filename) {
         doLoad = true;
         pathname = filename;
     }
-    private void load () throws IOException, ClassNotFoundException {
+
+    private void load() throws IOException, ClassNotFoundException {
         logger.info("[GAME] loading");
+        ClassLoader classLoader = getClass().getClassLoader();
         ObjectInputStream ois = new ObjectInputStream(
                 new BufferedInputStream(
                         new FileInputStream(
-                                new File(getClass().getClassLoader().getResource("resources/backup/" + pathname + ".dat").toString()))));
+                                new File(classLoader.getResource("resources/backup/").getFile() + pathname + ".dat"))));
         AgentLoader loader = (AgentLoader) ois.readObject();
         configDialogInfo = loader.getInfo();
         createEnvironment(configDialogInfo.getEnv());
