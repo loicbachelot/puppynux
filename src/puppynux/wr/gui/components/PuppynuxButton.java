@@ -6,6 +6,7 @@ import java.awt.geom.RoundRectangle2D;
 
 /**
  * Created by william on 21/04/16.
+ * Custom buttons
  */
 public class PuppynuxButton extends JButton {
     public PuppynuxButton(String title) {

@@ -6,6 +6,7 @@ import javax.swing.*;
 
 /**
  * Created by william on 21/04/16.
+ * Custom labels
  */
 public class PuppynuxLabel extends JLabel {
     public PuppynuxLabel(String text) {

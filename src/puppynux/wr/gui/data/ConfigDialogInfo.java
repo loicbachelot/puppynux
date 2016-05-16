@@ -48,32 +48,39 @@ public class ConfigDialogInfo implements PuppyDialogInfo {
         return env;
     }
 
+    /**
+     * @return learnSpeed
+     */
     public double getLearnSpeed() {
         return learnSpeed;
     }
 
+    /**
+     * @return frequency
+     */
     public double getRefreshFrequency() {
         return refreshFrequency;
     }
 
+    /**
+     * @return noise
+     */
     public int getNoise() {
         return noise;
     }
 
+    /**
+     * @return oversight
+     */
     public int getOversight() {
         return oversight;
     }
 
+    /**
+     * @return velocity
+     */
     public int getVelocity() {
         return velocity;
-    }
-
-    public void setInfo (IASettingDialogInfo info) {
-        learnSpeed = info.getLearnSpeed();
-        refreshFrequency = info.getRefresh();
-        velocity = info.getVelocity();
-        oversight = info.getOversight();
-        noise = info.getNoise();
     }
 
     /**
@@ -82,6 +89,18 @@ public class ConfigDialogInfo implements PuppyDialogInfo {
     @Override
     public Object getInfo() {
         return choice;
+    }
+
+    /**
+     * @param info
+     * Allow to set all parameters
+     */
+    public void setInfo (IASettingDialogInfo info) {
+        learnSpeed = info.getLearnSpeed();
+        refreshFrequency = info.getRefresh();
+        velocity = info.getVelocity();
+        oversight = info.getOversight();
+        noise = info.getNoise();
     }
 
     public Choices getChoice() {

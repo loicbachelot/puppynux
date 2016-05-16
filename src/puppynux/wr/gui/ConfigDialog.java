@@ -6,13 +6,9 @@ import puppynux.wr.gui.data.Choices;
 import puppynux.wr.gui.data.ConfigDialogInfo;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Enumeration;
 
 /**
@@ -152,6 +148,10 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
 
     }
 
+    /**
+     * @param buttonGroup
+     * @return selected config
+     */
     public int getSelectedConfig(ButtonGroup buttonGroup) {
         int config = 0;
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements(); ) {
