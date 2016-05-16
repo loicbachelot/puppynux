@@ -113,12 +113,10 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
         JPanel envPanel = new JPanel();
         envPanel.setBorder(BorderFactory.createTitledBorder("Environment's attribute"));
         envLabel = new PuppynuxLabel("Choose environement : ");
-        String[] elements = {"env.xml", "env2.xml"};
+        String[] elements = {"Rich", "Simple"};
         environment = new JComboBox<>(elements);
-        PuppynuxButton edit = new PuppynuxButton("Edit");
         envPanel.add(envLabel);
         envPanel.add(environment);
-        envPanel.add(edit);
 
         contentPanel = new JPanel();
         contentPanel.setLayout(new GridLayout(0, 2));
@@ -170,19 +168,37 @@ public class ConfigDialog extends JDialog implements PuppyDialog {
     }
 
     /**
+     * @return selected environment
+     */
+    public String getSelectedEnvironment() {
+        String env = "";
+        String selected = environment.getItemAt(environment.getSelectedIndex());
+        switch (selected) {
+            case "Rich":
+                env = "env.xml";
+                break;
+            case "Simple":
+                env = "env2.xml";
+                break;
+        }
+        return env;
+    }
+
+    /**
      * Initializes info to send to ConfigDialogInfo
      */
     @Override
     public void initInfo(int config) {
+        String env = getSelectedEnvironment();
         if (config == 1) {
             configDialogInfo = new ConfigDialogInfo(name.getText(),
-                    environment.getItemAt(environment.getSelectedIndex()), 0.2, 0.3, 0, 3, 2000);
+                    env, 0.2, 0.3, 0, 3, 2000);
         } else if (config == 2) {
             configDialogInfo = new ConfigDialogInfo(name.getText(),
-                    environment.getItemAt(environment.getSelectedIndex()), .4, .6, 10, 6, 1500);
+                    env, .4, .6, 10, 6, 1500);
         } else if (config == 3) {
             configDialogInfo = new ConfigDialogInfo(name.getText(),
-                    environment.getItemAt(environment.getSelectedIndex()), .8, .9, 8, 10, 1000);
+                    env, .8, .9, 8, 10, 1000);
         }
     }
 
