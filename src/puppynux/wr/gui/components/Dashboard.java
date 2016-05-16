@@ -24,7 +24,6 @@ public class Dashboard extends BackgroundPanel {
     private Objects animal;
     private Objects objects;
     private Graphics g;
-    private int value = 0;
     private boolean button = false;
     private JButton debug = new JButton("Debug");
     private volatile String placePosition = "";
@@ -97,8 +96,6 @@ public class Dashboard extends BackgroundPanel {
         debug(button, g);
 
         drawEnvironment();
-//        colorPointDraw(g, 0, 1, "red");
-//        colorPointDraw(g, 3, 3, "blue");
         drawAnimal();
     }
 
@@ -106,7 +103,6 @@ public class Dashboard extends BackgroundPanel {
     /**
      * Draw dashboard's animal
      */
-
     public void drawAnimal() { //Todo animations
         Image image = animal.getImage();
 
@@ -116,6 +112,9 @@ public class Dashboard extends BackgroundPanel {
                 this.getWidth() / 4, this.getHeight() / 4, null);
     }
 
+    /**
+     * Draw dashboard's environment
+     */
     public void drawEnvironment() {
         Image image;
         Cell[][] map = GameEngine.getInstance().getEnvironmentManager().
@@ -128,38 +127,29 @@ public class Dashboard extends BackgroundPanel {
                             this.getWidth() / 5, this.getHeight() / 5);
                 }
                 if (map[i][j].getType() != "Empty") {
+                    image = null;
                     switch (map[i][j].getType()) {
                         case "Ball":
                             image = new Ball(i, j).getImage();
-                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                                    this.getWidth() / 4, this.getHeight() / 4, null);
                             break;
                         case "Table":
                             image = new Table(i, j).getImage();
-                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                                    this.getWidth() / 4, this.getHeight() / 4, null);
                             break;
                         case "SubplaceTopDoor":
                             image = new SubplaceTopDoor(i, j).getImage();
-                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                                    this.getWidth() / 4, this.getHeight() / 4, null);
                             break;
                         case "SubplaceDownDoor":
                             image = new SubplaceDownDoor(i, j).getImage();
-                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                                    this.getWidth() / 4, this.getHeight() / 4, null);
                             break;
                         case "PlaceLeftDoor":
                             image = new PlaceLeftDoor(i, j).getImage();
-                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                                    this.getWidth() / 4, this.getHeight() / 4, null);
                             break;
                         case "PlaceRightDoor":
                             image = new PlaceRightDoor(i, j).getImage();
-                            g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
-                                    this.getWidth() / 4, this.getHeight() / 4, null);
                             break;
                     }
+                    g.drawImage(image, i * (this.getWidth() / 4), j * (this.getHeight() / 4),
+                            this.getWidth() / 4, this.getHeight() / 4, null);
                 }
             }
         }
@@ -167,8 +157,7 @@ public class Dashboard extends BackgroundPanel {
 
     /**
      * Debug's element
-     * Draw a cross
-     *
+     * Draw lines
      * @param g
      * @param xPlace x coordonate
      * @param yPlace y coordonate
@@ -181,7 +170,6 @@ public class Dashboard extends BackgroundPanel {
     /**
      * Debug's element
      * Draw a "wall"
-     *
      * @param g
      * @param xPlace      x coordonate
      * @param yPlace      y coordonate
@@ -197,7 +185,6 @@ public class Dashboard extends BackgroundPanel {
     /**
      * Debug's element
      * Draw a colored point
-     *
      * @param g
      * @param xPlace x coordonate
      * @param yPlace y coordonate
