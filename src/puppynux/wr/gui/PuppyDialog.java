@@ -5,7 +5,7 @@ import puppynux.wr.gui.data.PuppyDialogInfo;
 /**
  * Created by niamor972 on 10/03/16.
  * Parts of puppynux.wr.gui.
- * >
+ * Interface for config's dialogs
  */
 public interface PuppyDialog {
 

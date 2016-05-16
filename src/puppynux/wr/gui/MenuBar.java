@@ -26,6 +26,9 @@ public class MenuBar extends JMenuBar {
         setBorder(border);
     }
 
+    /**
+     * Init components of menu bar
+     */
     private void initComponent() {
         //File Menu
         JMenu file = new JMenu("File");

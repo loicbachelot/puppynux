@@ -7,6 +7,6 @@ import puppynux.wr.gui.objects.Objects;
  */
 public class PlaceLeftDoor extends Objects {
     public PlaceLeftDoor(int x, int y) {
-        super("src/resources/img/placeLeftDoor.png", x, y);
+        super("resources/img/placeLeftDoor.png", x, y);
     }
 }

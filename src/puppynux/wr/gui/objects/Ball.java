@@ -5,6 +5,6 @@ package puppynux.wr.gui.objects;
  */
 public class Ball extends Objects {
     public Ball(int x, int y) {
-        super("src/resources/img/ball.png", x, y);
+        super("resources/img/ball.png", x, y);
     }
 }

@@ -6,6 +6,6 @@ package puppynux.wr.gui.objects;
 public class Cat extends Objects {
 
     public Cat(int x, int y) {
-        super("src/resources/img/cat.png", x, y);
+        super("resources/img/cat.png", x, y);
     }
 }

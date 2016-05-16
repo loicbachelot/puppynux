@@ -34,17 +34,20 @@ public class RewardsPanel extends JPanel {
         setBorder(border);
     }
 
-    public void initComponent() { //TODO Bouton à l'échelle de la fenètre
+    /**
+     * Initializes components
+     */
+    public void initComponent() {
         pauseButton = new PuppynuxButton(new ImageIcon(new ImageIcon("src/resources/img/playButton.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (GameEngine.getInstance().getAiManager().isActing()) {
                     GameEngine.getInstance().getAiManager().pause();
-                    pauseButton.setIcon(new ImageIcon(new ImageIcon("src/resources/img/playButton.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+                    pauseButton.setIcon(new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/img/playButton.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
                 } else {
                     GameEngine.getInstance().getAiManager().play();
-                    pauseButton.setIcon(new ImageIcon(new ImageIcon("src/resources/img/pauseButton.png").getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+                    pauseButton.setIcon(new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/img/pauseButton.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
                 }
             }
         });
@@ -84,7 +87,8 @@ public class RewardsPanel extends JPanel {
         forceActionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameEngine.getInstance().forceAct((Action)actionComboBox.getSelectedItem());
+                GameEngine.getInstance().forceAct((Action) actionComboBox.getSelectedItem());
+                pauseButton.setIcon(new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/img/playButton.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
             }
         });
         forceActionPanel.add(actionComboBox);
@@ -95,7 +99,12 @@ public class RewardsPanel extends JPanel {
         add(forceActionPanel);
     }
 
-    public void setJComboBox (ArrayList<Action> list) {
+    /**
+     * Set action combobox
+     *
+     * @param list
+     */
+    public void setJComboBox(ArrayList<Action> list) {
         actionComboBox.removeAllItems();
         for (Action action :
                 list) {
