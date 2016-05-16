@@ -91,10 +91,5 @@ public class MenuBar extends JMenuBar {
         });
         edit.add(stats);
         add(edit);
-
-        JMenu history = new JMenu("History");
-        JMenuItem opened = new JMenuItem("Opened...");
-        history.add(opened);
-        add(history);
     }
 }
