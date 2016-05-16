@@ -66,13 +66,29 @@ public class GameEngine extends Thread implements Observer, Observable {
     //// TODO: 18/03/16 make function loadEnvironment()
 
     /**
+     * @return The Game Engine unique instance
+     */
+    public static GameEngine getInstance() {
+        return INSTANCE;
+    }
+
+    /**
+     * Used to change the number number to an array representing its coordinates
+     *
+     * @param state The state number
+     * @return An array representing the state coordinates
+     */
+    public static int[] getCoordinate(int state) {
+        return new int[]{(state % 4), (state / 4)};
+    }
+
+    /**
      * Used to create a new Environment
      */
     public void createEnvironment (String path) {
         environmentManager = new EnvironmentManager();
         environmentManager.createEnvironment(path);
     }
-
 
     /**
      * Used to generate a new Agent
@@ -108,14 +124,6 @@ public class GameEngine extends Thread implements Observer, Observable {
 
     /**
      *
-     * @return The Game Engine unique instance
-     */
-    public static GameEngine getInstance() {
-        return INSTANCE;
-    }
-
-    /**
-     *
      * @return The Agent's lifetime
      */
     public synchronized int getIteration() {
@@ -126,8 +134,16 @@ public class GameEngine extends Thread implements Observer, Observable {
         return agentPlacePosition;
     }
 
+    public synchronized void setAgentPlacePosition(String agentPlacePosition) {
+        this.agentPlacePosition = agentPlacePosition;
+    }
+
     public synchronized String getAgentSubplacePosition() {
         return agentSubplacePosition;
+    }
+
+    public synchronized void setAgentSubplacePosition(String agentSubplacePosition) {
+        this.agentSubplacePosition = agentSubplacePosition;
     }
 
     /**
@@ -138,9 +154,10 @@ public class GameEngine extends Thread implements Observer, Observable {
         return aiManager;
     }
 
-    public synchronized boolean isLiving () {
+    public synchronized boolean isLiving() {
         return (aiManager != null) && aiManager.isLiving();
     }
+
     /**
      *
      * @return An instance of the Environment Manager
@@ -150,28 +167,10 @@ public class GameEngine extends Thread implements Observer, Observable {
     }
 
     /**
-     * Used to change the number number to an array representing its coordinates
-     *
-     * @param state The state number
-     * @return An array representing the state coordinates
-     */
-    public static int[] getCoordinate(int state) {
-        return new int[]{(state % 4), (state / 4)};
-    }
-
-    /**
      * Used to save the Agent coordinates
      */
     public synchronized void setAgentCoordinate() {
         agentCoordinate = getCoordinate(agentState);
-    }
-
-    public synchronized void setAgentPlacePosition(String agentPlacePosition) {
-        this.agentPlacePosition = agentPlacePosition;
-    }
-
-    public synchronized void setAgentSubplacePosition(String agentSubplacePosition) {
-        this.agentSubplacePosition = agentSubplacePosition;
     }
 
     public synchronized void setDebug(boolean debug) {
@@ -221,7 +220,7 @@ public class GameEngine extends Thread implements Observer, Observable {
         ObjectOutputStream oos = new ObjectOutputStream(
                 new BufferedOutputStream(
                         new FileOutputStream(
-                                new File("src/resources/backup/" + filename + ".dat"))));
+                                new File(getClass().getClassLoader().getResource("resources/backup/" + filename + ".dat").toString()))));
         oos.writeObject(new AgentLoader(
                 configDialogInfo, aiManager.getAgent().getMemory(), aiManager.getAgent().getActionMap()));
         oos.close();
@@ -238,7 +237,7 @@ public class GameEngine extends Thread implements Observer, Observable {
         ObjectInputStream ois = new ObjectInputStream(
                 new BufferedInputStream(
                         new FileInputStream(
-                                new File("src/resources/backup/" + pathname + ".dat"))));
+                                new File(getClass().getClassLoader().getResource("resources/backup/" + pathname + ".dat").toString()))));
         AgentLoader loader = (AgentLoader) ois.readObject();
         configDialogInfo = loader.getInfo();
         createEnvironment(configDialogInfo.getEnv());

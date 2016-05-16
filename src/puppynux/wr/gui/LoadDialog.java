@@ -1,6 +1,5 @@
 package puppynux.wr.gui;
 
-import puppynux.wr.gui.components.PuppyTableCellRenderer;
 import puppynux.wr.gui.components.PuppynuxButton;
 import puppynux.wr.gui.data.Choices;
 import puppynux.wr.gui.data.LoadDialogInfo;
@@ -16,7 +15,7 @@ import java.util.Date;
 /**
  * Created by niamor972 on 10/03/16.
  * Parts of puppynux.wr.gui.
- * >
+ * Dialog when user clicks on "load" button
  */
 public class LoadDialog extends JDialog implements PuppyDialog {
 
@@ -36,11 +35,11 @@ public class LoadDialog extends JDialog implements PuppyDialog {
     private DefaultTableModel setContent () {
         String[] title = {"Agent's name", "Last played"};
         elements = new Object[10][];
-        File backup = new File("src/resources/backup/");
+        File backup = new File(getClass().getClassLoader().getResource("resources/backup/").toString());
         int i = 0;
         for (String pathname :
                 backup.list()) {
-            File file = new File ("src/resources/backup/" + pathname);
+            File file = new File(getClass().getClassLoader().getResource("resources/backup/" + pathname).toString());
             elements[i++] = new Object[] { pathname.split("\\.")[0], new Date(file.lastModified()) };
             if (i > 9) {
                 //// TODO: 5/15/16 do better
